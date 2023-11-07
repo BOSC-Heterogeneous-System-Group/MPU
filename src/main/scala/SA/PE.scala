@@ -1,6 +1,7 @@
 package SA
 
 import chisel3._
+import MUL._
 
 
 
@@ -25,10 +26,15 @@ class PE(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module {
   val b_reg = RegInit(0.U(IN_WIDTH.W))
   val c_reg = RegInit(0.U(C_WIDTH.W))
 
+  val mac = Module(new MACUnit(IN_WIDTH, C_WIDTH))
+  mac.io.in_a := io.in_a
+  mac.io.in_b := io.in_b
+  mac.io.in_c := c_reg
+
   a_reg := io.in_a
   b_reg := io.in_b
 
-  c_reg := Mux(io.in_control.done === true.B, io.in_c, io.in_a * io.in_b + c_reg)
+  c_reg := Mux(io.in_control.done === true.B, io.in_c, mac.io.out_c)
 
   io.out_a := a_reg
   io.out_b := b_reg

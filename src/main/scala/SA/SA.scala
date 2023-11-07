@@ -18,7 +18,7 @@ class SA(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int
     val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
   })
 
-  val sa = Seq.fill(SA_ROWS, SA_COLS)(Module(new PE(8, 32)))
+  val sa = Seq.fill(SA_ROWS, SA_COLS)(Module(new PE(IN_WIDTH, C_WIDTH)))
   val sa_t = sa.transpose
 
   for (r <- 0 until SA_ROWS) {

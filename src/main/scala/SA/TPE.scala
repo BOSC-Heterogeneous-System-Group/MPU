@@ -46,8 +46,8 @@ class TPE(val IN_WIDTH: Int, val C_WIDTH: Int, val DP_WIDTH:Int, val TPE_WIDTH: 
     }
   }
 
-  val reg_a = Reg(Vec(TPE_WIDTH, Vec(DP_WIDTH, SInt(IN_WIDTH.W))))
-  val reg_b = Reg(Vec(TPE_WIDTH, Vec(DP_WIDTH, SInt(IN_WIDTH.W))))
+  val reg_a = Reg(Vec(TPE_WIDTH, Vec(DP_WIDTH, UInt(IN_WIDTH.W))))
+  val reg_b = Reg(Vec(TPE_WIDTH, Vec(DP_WIDTH, UInt(IN_WIDTH.W))))
 
   for (i <- 0 until TPE_WIDTH) {
     for (j <- 0 until DP_WIDTH) {

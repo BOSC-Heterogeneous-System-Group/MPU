@@ -79,7 +79,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
   }.otherwise { // state === data_out
 
-    when(count_out_cycles === (QUEUE_LEN + QUEUE_NUM).U) {
+    when(count_out_cycles === (QUEUE_LEN + QUEUE_NUM-1).U) {
       count_out_cycles := 0.U
       data_out_done := true.B
       state := idle

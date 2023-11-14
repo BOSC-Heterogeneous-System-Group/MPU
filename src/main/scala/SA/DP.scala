@@ -23,7 +23,7 @@ class DP(val IN_WIDTH: Int, val C_WIDTH: Int, val DP_WIDTH: Int) extends Module 
     val out_data = Output(new DPdataIO(IN_WIDTH, C_WIDTH, DP_WIDTH))
   })
 
-  val multiplier = Seq.fill(DP_WIDTH)(Module(new MACUnit(8, 32)))
+  val multiplier = Seq.fill(DP_WIDTH)(Module(new Multiplier(8)))
 
   for(i <- 0 until DP_WIDTH) {
     multiplier(i).io.in_a := io.in_data.a(i)

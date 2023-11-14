@@ -8,9 +8,9 @@ class DPcontrolIO extends Bundle {
 
 // TODO 横向dataflow和纵向dataflow分离
 class DPdataIO(val IN_WIDTH: Int, val C_WIDTH: Int, val DP_WIDTH: Int) extends Bundle {
-  val a = Vec(DP_WIDTH, SInt(IN_WIDTH.W))
-  val b = Vec(DP_WIDTH, SInt(IN_WIDTH.W))
-  val c = SInt(C_WIDTH.W)
+  val a = Vec(DP_WIDTH, UInt(IN_WIDTH.W))
+  val b = Vec(DP_WIDTH, UInt(IN_WIDTH.W))
+  val c = UInt(C_WIDTH.W)
 }
 
 // Dot Product
@@ -23,7 +23,7 @@ class DP(val IN_WIDTH: Int, val C_WIDTH: Int, val DP_WIDTH: Int) extends Module 
     val out_data = Output(new DPdataIO(IN_WIDTH, C_WIDTH, DP_WIDTH))
   })
 
-  val multiplier = Seq.fill(DP_WIDTH)(Module(new Multiplier(8)))
+  val multiplier = Seq.fill(DP_WIDTH)(Module(new MACUnit(8, 32)))
 
   for(i <- 0 until DP_WIDTH) {
     multiplier(i).io.in_a := io.in_data.a(i)

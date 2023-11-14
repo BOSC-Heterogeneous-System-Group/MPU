@@ -1,22 +1,21 @@
-package SA
+package miniTPU.SystolicArray
 
 import chisel3._
-import MUL._
 
 
-
-class PEControl extends Bundle {
+class PE_Control extends Bundle {
   val done = Bool()
+  // TODO add bias preload control signals
 }
 
 class PE(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module {
   val io = IO(new Bundle {
-    val in_control = Input(new PEControl)
+    val in_control = Input(new PE_Control)
     val in_a = Input(UInt(IN_WIDTH.W))
     val in_b = Input(UInt(IN_WIDTH.W))
     val in_c = Input(UInt(C_WIDTH.W))
 
-    val out_control = Output(new PEControl)
+    val out_control = Output(new PE_Control)
     val out_a = Output(UInt(IN_WIDTH.W))
     val out_b = Output(UInt(IN_WIDTH.W))
     val out_c = Output(UInt(C_WIDTH.W))
@@ -26,7 +25,7 @@ class PE(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module {
   val b_reg = RegInit(0.U(IN_WIDTH.W))
   val c_reg = RegInit(0.U(C_WIDTH.W))
 
-  val mac = Module(new MACUnit(IN_WIDTH, C_WIDTH))
+  val mac = Module(new MacUnit(IN_WIDTH, C_WIDTH))
   mac.io.in_a := io.in_a
   mac.io.in_b := io.in_b
   mac.io.in_c := c_reg

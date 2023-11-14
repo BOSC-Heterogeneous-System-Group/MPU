@@ -1,4 +1,4 @@
-package SA
+package miniTPU.DataBuffer
 
 import chisel3._
 import chisel3.util._
@@ -21,7 +21,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   // when delay_count count to 0, queue start to output data
   // deq_count count deq element number
   // only delay_count count to 0, deq_count start to decrease
-  val delay_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_NUM).W))) // 0 ~ QUEUE_NUM-1
+  val delay_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_NUM).W)))
   val deq_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_LEN + 1).W)))
 
   // count input and output cycles

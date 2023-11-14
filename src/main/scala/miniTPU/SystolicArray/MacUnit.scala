@@ -1,11 +1,10 @@
-package SA
+package miniTPU.SystolicArray
 
 import chisel3._
-import chisel3.util.Fill
-import chisel3.util.Cat
-import MUL._
+import chisel3.util.{Cat, Fill}
+import miniTPU.SystolicArray.Multiplier._
 
-class MACUnit(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module {
+class MacUnit(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module {
   val io = IO(new Bundle {
     val in_a = Input(UInt(IN_WIDTH.W))
     val in_b = Input(UInt(IN_WIDTH.W))
@@ -13,7 +12,7 @@ class MACUnit(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module {
     val out_c = Output(UInt(C_WIDTH.W))
   })
 
-  val mul = Module(new Mul(IN_WIDTH, 2*IN_WIDTH))
+  val mul = Module(new Multiplier(IN_WIDTH, 2*IN_WIDTH))
   val rca = Module(new RCA(C_WIDTH))
 
   mul.input.multiplicand := io.in_a

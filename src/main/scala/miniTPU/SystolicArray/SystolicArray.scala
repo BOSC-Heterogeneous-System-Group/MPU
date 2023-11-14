@@ -1,18 +1,19 @@
-package SA
+package miniTPU.SystolicArray
 
 import chisel3._
 
 
-// C = A * B
-// A: INT8  B: INT8  C: INT32
-class SA(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
+// when no bias: C = A * B
+// when need bias: C = A * B + D    D is preloaded into SA before A * B
+// for example: A: INT8  B: INT8  C: INT32  D: INT32
+class SystolicArray(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val in_control = Input(Vec(SA_COLS, new PEControl))
+    val in_control = Input(Vec(SA_COLS, new PE_Control))
     val in_a = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
     val in_b = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
     val in_c = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
 
-    val out_control = Output(Vec(SA_COLS, new PEControl))
+    val out_control = Output(Vec(SA_COLS, new PE_Control))
     val out_a = Output(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
     val out_b = Output(Vec(SA_COLS, UInt(IN_WIDTH.W)))
     val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
@@ -23,8 +24,8 @@ class SA(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int
 
   for (r <- 0 until SA_ROWS) {
     sa(r).foldLeft(io.in_a(r)) {
-      case (in_a, pe) =>     // in_a的初始值为io.in_a(r)
-        pe.io.in_a := in_a   // 对每个pe，从左向右依次操作
+      case (in_a, pe) =>
+        pe.io.in_a := in_a
         pe.io.out_a
     }
   }

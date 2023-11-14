@@ -1,11 +1,10 @@
 # RV-Tensor
 ## get started
+for WSL2:  
 `make bsp`  
-`make idea`
-用linux版idea打开，使用jdk11  
-## 仿真
-chiseltest or verilator
-
+`make idea`  
+then open with IDEA(Linux version)  
+choose JDK version 11
 
 
 

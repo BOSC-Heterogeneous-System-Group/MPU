@@ -1,4 +1,4 @@
-package MUL
+package miniTPU.SystolicArray.Multiplier
 
 import chisel3._
 import chisel3.util.Decoupled
@@ -14,7 +14,7 @@ class MultiplierOutputBundle(val w:Int) extends Bundle{
     val product = Output(UInt(w.W))
 }
 
-class Mul(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module{
+class Multiplier(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module{
     val input  = IO(new MultiplierInputBundle(IN_WIDTH))
     val output = IO(new MultiplierOutputBundle(C_WIDTH))
 

@@ -30,18 +30,21 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val idle :: data_in :: data_out :: Nil = Enum(3)
   val state = RegInit(idle)
 
-  val data_out_reg = RegInit(VecInit(Seq.fill(QUEUE_NUM)(0.U(IN_WIDTH.W))))
+  val data_in_done = WireDefault(false.B)
+  val data_out_done = WireDefault(false.B)
+
+  io.data_in_done := data_in_done
+  io.data_out_done := data_out_done
+
+  val canDeq = RegInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
 
   for (i <- 0 until QUEUE_NUM) {
     data_queue(i).io.enq := (state === idle && io.ctrl_data_in) || state === data_in
     data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U // deq late 1 cycle
+    canDeq(i) := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U
     data_queue(i).io.enqData := io.data_in(i)
-    data_out_reg(i) := data_queue(i).io.deqData
-    io.data_out(i) := data_out_reg(i)
+    io.data_out(i) := Mux(canDeq(i), data_queue(i).io.deqData, 0.U)
   }
-
-  val data_in_done = WireDefault(false.B)
-  val data_out_done = WireDefault(false.B)
 
   // FSM
   when(state === idle) {
@@ -60,7 +63,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
   }.elsewhen(state === data_in) {
 
-    when(count_in_cycles === (QUEUE_LEN-1).U) {
+    when(count_in_cycles === (QUEUE_LEN - 1).U) {
       count_in_cycles := 0.U
       data_in_done := true.B
       state := idle
@@ -70,7 +73,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
   }.otherwise { // state === data_out
 
-    when(count_out_cycles === (QUEUE_LEN + QUEUE_NUM).U) {
+    when(count_out_cycles === (QUEUE_LEN + QUEUE_NUM - 1).U) {
       count_out_cycles := 0.U
       data_out_done := true.B
       state := idle
@@ -87,9 +90,6 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     }
 
   }
-
-  io.data_in_done := data_in_done
-  io.data_out_done := data_out_done
 
 }
 

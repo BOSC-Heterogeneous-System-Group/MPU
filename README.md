@@ -1,5 +1,4 @@
-# Matrix-XS
-香山Matrix扩展开发仓库  
+# RV-Tensor
 ## get started
 `make bsp`  
 `make idea`

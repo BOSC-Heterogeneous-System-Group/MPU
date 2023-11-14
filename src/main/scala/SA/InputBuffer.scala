@@ -12,10 +12,11 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
     val data_out = Output(Vec(QUEUE_NUM, UInt(IN_WIDTH.W)))
     val data_in_done = Output(Bool())
+    val cal_start    = Output(Bool())  // to controller start to start calculating
     val data_out_done = Output(Bool())
   })
 
-  val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(8, 4)))
+  val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(IN_WIDTH, QUEUE_LEN)))
 
   // when delay_count count to 0, queue start to output data
   // deq_count count deq element number
@@ -30,18 +31,26 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val idle :: data_in :: data_out :: Nil = Enum(3)
   val state = RegInit(idle)
 
-  val data_out_reg = RegInit(VecInit(Seq.fill(QUEUE_NUM)(0.U(IN_WIDTH.W))))
+  val cal_start_r = RegInit(false.B)
+  val delay_cal_start = RegInit(false.B)
+  cal_start_r := io.ctrl_data_out
+  io.cal_start := cal_start_r
+
+  val canDeq = RegInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
 
   for (i <- 0 until QUEUE_NUM) {
     data_queue(i).io.enq := (state === idle && io.ctrl_data_in) || state === data_in
     data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U // deq late 1 cycle
+    canDeq(i) := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U
     data_queue(i).io.enqData := io.data_in(i)
-    data_out_reg(i) := data_queue(i).io.deqData
-    io.data_out(i) := data_out_reg(i)
+    io.data_out(i) := Mux(canDeq(i), data_queue(i).io.deqData, 0.U)
   }
+
 
   val data_in_done = WireDefault(false.B)
   val data_out_done = WireDefault(false.B)
+  io.data_in_done := data_in_done
+  io.data_out_done := data_out_done
 
   // FSM
   when(state === idle) {
@@ -87,9 +96,6 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     }
 
   }
-
-  io.data_in_done := data_in_done
-  io.data_out_done := data_out_done
 
 }
 

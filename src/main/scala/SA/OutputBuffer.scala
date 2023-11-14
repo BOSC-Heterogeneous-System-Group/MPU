@@ -14,7 +14,7 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     val data_out_done = Output(Bool())
   })
 
-  val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(32, 4)))
+  val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(C_WIDTH, QUEUE_LEN)))
 
   // when state is data_out, deq start to decrease
   val deq_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_LEN + 1).W)))
@@ -26,15 +26,21 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val idle :: data_in :: data_out :: Nil = Enum(3)
   val state = RegInit(idle)
 
+  val canDeq = RegInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
+
   for (i <- 0 until QUEUE_NUM) {
     data_queue(i).io.enq := (state === idle && io.ctrl_data_in) || state === data_in
-    data_queue(i).io.deq := state === data_out  && deq_count(i) =/= 0.U // deq late 1 cycle
+    data_queue(i).io.deq := state === data_out  && deq_count(i) =/= 0.U
     data_queue(i).io.enqData := io.data_in(i)
-    io.data_out(i) := data_queue(i).io.deqData
+    canDeq(i) := state === data_out  && deq_count(i) =/= 0.U
+    io.data_out(i) := Mux(canDeq(i), data_queue(i).io.deqData, 0.U)
   }
 
   val data_in_done = WireDefault(false.B)
   val data_out_done = WireDefault(false.B)
+  io.data_in_done := data_in_done
+  io.data_out_done := data_out_done
+
 
   // FSM
   when(state === idle) {
@@ -77,8 +83,5 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     }
 
   }
-
-  io.data_in_done := data_in_done
-  io.data_out_done := data_out_done
 
 }

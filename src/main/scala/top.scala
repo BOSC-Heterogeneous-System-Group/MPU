@@ -36,33 +36,51 @@ import SA._
 //}
 class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val in_start   = Input(Bool())
+    val ctrl_data_in = Input(Bool())
     val in_a = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
     val in_b = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
     val in_c = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
 
-
-    val out_a = Output(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
-    val out_b = Output(Vec(SA_COLS, UInt(IN_WIDTH.W)))
+    val valid = Output(Bool())                        // todo decoupledIO
+    val done  = Output(Bool())
     val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
   })
 
   val sa = Module(new SA(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS))
   val controller = Module(new Controller(SA_ROWS, SA_COLS))
+  val inBuffer   = Seq.fill(2)(Module(new InputBuffer(IN_WIDTH, SA_COLS, SA_ROWS)))
+  val outBuffer  = Module(new OutputBuffer(C_WIDTH, SA_COLS, SA_ROWS))
 
 
-  sa.io.in_a := io.in_a
-  sa.io.in_b := io.in_b
-  sa.io.in_c := io.in_c
+  inBuffer(0).io.data_in := io.in_a
+  inBuffer(1).io.data_in := io.in_b
 
-  for (c <- 0 until 2) {
+  sa.io.in_a := inBuffer(0).io.data_out
+  sa.io.in_b := inBuffer(1).io.data_out
+  sa.io.in_c := io.in_c                 // to do inputBuffer
+
+
+
+  for (c <- 0 until SA_COLS) {
     sa.io.in_control(c).done := controller.io.cal_done
   }
-  controller.io.start := io.in_start
+  controller.io.start := inBuffer(0).io.cal_start & inBuffer(1).io.cal_start
 
-  io.out_a := sa.io.out_a
-  io.out_b := sa.io.out_b
-  io.out_c := sa.io.out_c
+  controller.io.ctrl_data_in := io.ctrl_data_in
+  controller.io.in_done := inBuffer(0).io.data_in_done & inBuffer(1).io.data_in_done
+
+  for (i <- 0 until 2) {
+    inBuffer(i).io.ctrl_data_in := io.ctrl_data_in
+    inBuffer(i).io.ctrl_data_out := controller.io.ctrl_data_out
+  }
+
+  outBuffer.io.ctrl_data_in := controller.io.cal_valid
+  outBuffer.io.ctrl_data_out := controller.io.out_done
+  outBuffer.io.data_in := sa.io.out_c
+
+  io.valid := outBuffer.io.data_in_done
+  io.done  := outBuffer.io.data_out_done
+  io.out_c := outBuffer.io.data_out
 }
 
 

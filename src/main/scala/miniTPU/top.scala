@@ -8,12 +8,12 @@ import miniTPU.SystolicArray._
 
 class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val ctrl_data_in = Input(Bool())
+    val start = Input(Bool())
     val in_a = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
     val in_b = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
     val in_c = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
 
-    val valid = Output(Bool())                        // todo decoupledIO
+    val valid = Output(Bool())                        // TODO: decoupledIO
     val done  = Output(Bool())
     val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
   })
@@ -36,22 +36,20 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
 
 
   for (c <- 0 until SA_COLS) {
-    sa.io.in_control(c).done := controller.io.cal_done
+    sa.io.in_control(c).done := controller.io.ctrl_cal_done
   }
-  controller.io.start := inBuffer_h.io.cal_start & inBuffer_v.io.cal_start
-
-  controller.io.ctrl_data_in := io.ctrl_data_in
-  controller.io.in_done := inBuffer_h.io.data_in_done & inBuffer_v.io.data_in_done
+  controller.io.ctrl_cal_start := inBuffer_h.io.cal_start & inBuffer_v.io.cal_start
+  controller.io.ctrl_in_done := inBuffer_h.io.data_in_done & inBuffer_v.io.data_in_done
 
 
-  inBuffer_h.io.ctrl_data_in := io.ctrl_data_in
+  inBuffer_h.io.ctrl_data_in := io.start
   inBuffer_h.io.ctrl_data_out := controller.io.ctrl_data_out
-  inBuffer_v.io.ctrl_data_in := io.ctrl_data_in
+  inBuffer_v.io.ctrl_data_in := io.start
   inBuffer_v.io.ctrl_data_out := controller.io.ctrl_data_out
 
 
-  outBuffer.io.ctrl_data_in := controller.io.cal_valid
-  outBuffer.io.ctrl_data_out := controller.io.out_done
+  outBuffer.io.ctrl_data_in := controller.io.ctrl_cal_valid
+  outBuffer.io.ctrl_data_out := controller.io.ctrl_out_done
   outBuffer.io.data_in := sa.io.out_c
 
   io.valid := outBuffer.io.data_in_done

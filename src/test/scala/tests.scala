@@ -17,7 +17,7 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
     (new ChiselStage).emitVerilog(new top(8, 32, 2, 2), Array("--target-dir", "./genVerilog/top"))
 
     test(new top(8, 32, 2, 2)).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
-      dut.io.ctrl_data_in.poke(false.B)
+      dut.io.start.poke(false.B)
       dut.io.in_a(0).poke(0.U)
       dut.io.in_a(1).poke(0.U)
       dut.io.in_b(0).poke(0.U)
@@ -27,7 +27,7 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
 
       dut.clock.step()
 
-      dut.io.ctrl_data_in.poke(true.B)
+      dut.io.start.poke(true.B)
       dut.io.in_a(0).poke(1.U)
       dut.io.in_a(1).poke(3.U)
       dut.io.in_b(0).poke(5.U)
@@ -37,7 +37,7 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
 
       dut.clock.step()
 
-      dut.io.ctrl_data_in.poke(false.B)
+      dut.io.start.poke(false.B)
       dut.io.in_a(0).poke(2.U)
       dut.io.in_a(1).poke(4.U)
       dut.io.in_b(0).poke(7.U)

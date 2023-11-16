@@ -40,6 +40,7 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   }
   controller.io.ctrl_cal_start := inBuffer_h.io.cal_start & inBuffer_v.io.cal_start
   controller.io.ctrl_in_done := inBuffer_h.io.data_in_done & inBuffer_v.io.data_in_done
+  controller.io.ctrl_ob_empty := outBuffer.io.all_empty
 
 
   inBuffer_h.io.ctrl_data_in := io.start

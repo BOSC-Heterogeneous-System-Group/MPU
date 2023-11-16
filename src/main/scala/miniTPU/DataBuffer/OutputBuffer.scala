@@ -10,6 +10,7 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     val data_in = Input(Vec(QUEUE_NUM, UInt(C_WIDTH.W)))
 
     val data_out = Output(Vec(QUEUE_NUM, UInt(C_WIDTH.W)))
+    val all_empty  = Output(Bool())
     val data_in_done = Output(Bool())
     val data_out_done = Output(Bool())
   })
@@ -42,6 +43,7 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
   allFull := data_queue.tail.foldLeft(data_queue.head.io.full)(_ & _.io.full)
   allEmpty := data_queue.tail.foldLeft(data_queue.head.io.empty)(_ & _.io.empty)
+  io.all_empty := allEmpty
 
   // FSM
   when(state === idle) {

@@ -35,6 +35,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
     val ctrl_cal_start = Input(Bool())
     val ctrl_in_done   = Input(Bool())  // from InputBuffer: data_in_done
+    val ctrl_ob_empty  = Input(Bool())    // from OutputBuffer: all empty
 
     val ctrl_data_out  = Output(Bool()) // to InputBuffer: ctrl_data_out
     val ctrl_cal_done  = Output(Bool())
@@ -69,7 +70,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   }.elsewhen(io.ctrl_data_out) {
     in_done_r := false.B
   }
-  ctrl_data_out_w := in_done_r & isIdle
+  ctrl_data_out_w := in_done_r & isIdle & io.ctrl_ob_empty
   delay_ctrl_data_out := ctrl_data_out_w
   ctrl_data_out_edge := !delay_ctrl_data_out & ctrl_data_out_w
   io.ctrl_data_out := ctrl_data_out_edge

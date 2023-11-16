@@ -8,9 +8,11 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val io = IO(new Bundle {
     val ctrl_data_in = Input(Bool())
     val ctrl_data_out = Input(Bool())
+    val ctrl_data_valid = Input(Bool())
     val data_in = Input(Vec(QUEUE_NUM, UInt(IN_WIDTH.W)))
 
     val data_out = Output(Vec(QUEUE_NUM, UInt(IN_WIDTH.W)))
+    val all_full     = Output(Bool())
     val data_in_done = Output(Bool())
     val cal_start    = Output(Bool())  // to controller: start calculating
     val data_out_done = Output(Bool())
@@ -42,7 +44,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val canDeq = WireInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
 
   for (i <- 0 until QUEUE_NUM) {
-    data_queue(i).io.enq := (state === idle && io.ctrl_data_in) || state === data_in
+    data_queue(i).io.enq := ((state === idle && io.ctrl_data_in) || state === data_in) & io.ctrl_data_valid
     data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U
     canDeq(i) := state === data_out && delay_count(i) === 0.U
     data_queue(i).io.enqData := io.data_in(i)
@@ -51,6 +53,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
   allFull := data_queue.tail.foldLeft(data_queue.head.io.full)(_ & _.io.full)
   allEmpty := data_queue.tail.foldLeft(data_queue.head.io.empty)(_ & _.io.empty)
+  io.all_full := allFull
 
   // FSM
   when(state === idle) {

@@ -33,14 +33,19 @@ class GlobalCounter(val maxCount:Int) extends Module {
 
 class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val ctrl_cal_start = Input(Bool())
-    val ctrl_in_done   = Input(Bool())  // from InputBuffer: data_in_done
-    val ctrl_ob_empty  = Input(Bool())    // from OutputBuffer: all empty
+    val ctrl_cal_start   = Input(Bool())
+    val ctrl_in_done     = Input(Bool())  // from InputBuffer: data_in_done
+    val ctrl_ibh_full    = Input(Bool())  // from InputBuffer: all full
+    val ctrl_ibv_full    = Input(Bool())  // from InputBuffer: all full
+    val ctrl_post_ready  = Input(Bool())  // from top: next stage ready
+    val ctrl_ob_empty    = Input(Bool())  // from OutputBuffer: all empty
 
-    val ctrl_data_out  = Output(Bool()) // to InputBuffer: ctrl_data_out
-    val ctrl_cal_done  = Output(Bool())
-    val ctrl_cal_valid = Output(Bool())
-    val ctrl_out_done  = Output(Bool())
+    val ctrl_pre_ready   = Output(Bool())
+    val ctrl_post_valid  = Output(Bool())
+    val ctrl_ib_data_out = Output(Bool()) // to InputBuffer: ctrl_data_out
+    val ctrl_cal_done    = Output(Bool())
+    val ctrl_out_done    = Output(Bool())
+    val ctrl_ob_ready    = Output(Bool())
   })
 
   // idle：wait for instruction
@@ -53,27 +58,29 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val in_done_r    = RegInit(false.B)
   val isIdle       = RegInit(true.B)
 
-  val ctrl_data_out_w = WireDefault(false.B)
-  val delay_ctrl_data_out = RegInit(false.B)
-  val ctrl_data_out_edge = WireDefault(false.B)
+  val ctrl_ib_data_out_w = WireDefault(false.B)
+  val delay_ctrl_ib_data_out = RegInit(false.B)
+  val ctrl_ib_data_out_edge = WireDefault(false.B)
 
   val cal_done_r   = RegInit(false.B)
   val out_done_r   = RegInit(false.B)
 
-  val delay_cal_done = RegInit(false.B)
-  val cal_done_edge  = WireDefault(false.B)
 
-  // generate ctrl_data_out, meaning that data start to input SA
+  // when input buffer is full, not ready
+  io.ctrl_pre_ready := !io.ctrl_ibh_full & !io.ctrl_ibv_full
+  io.ctrl_post_valid := !io.ctrl_ob_empty
+
+  // generate ctrl_ib_data_out, meaning that data start to input SA
   // when data finish filling in input buffer and SA is idle, data can output to SA from input buffer
   when(io.ctrl_in_done) {
     in_done_r := true.B
-  }.elsewhen(io.ctrl_data_out) {
+  }.elsewhen(io.ctrl_ib_data_out) {
     in_done_r := false.B
   }
-  ctrl_data_out_w := in_done_r & isIdle & io.ctrl_ob_empty
-  delay_ctrl_data_out := ctrl_data_out_w
-  ctrl_data_out_edge := !delay_ctrl_data_out & ctrl_data_out_w
-  io.ctrl_data_out := ctrl_data_out_edge
+  ctrl_ib_data_out_w := in_done_r & isIdle & io.ctrl_ob_empty
+  delay_ctrl_ib_data_out := ctrl_ib_data_out_w
+  ctrl_ib_data_out_edge := !delay_ctrl_ib_data_out & ctrl_ib_data_out_w
+  io.ctrl_ib_data_out := ctrl_ib_data_out_edge
 
   // generate cal_done, meaning that calculation is done
   val cal_gc       = Module(new GlobalCounter(3*SA_ROWS-2)) // todo ROWs和COLs取最大值
@@ -81,13 +88,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   when(cal_gc.io.tick) {
     cal_done_r     := true.B
   }
-
-  // generate cal_valid, meaning that results can start to fill in the output buffer
-  // generate when cal_done is set, the output process begin when calculation finish
-  delay_cal_done  := cal_done_r
   io.ctrl_cal_done     := cal_done_r
-  cal_done_edge   := !delay_cal_done & cal_done_r
-  io.ctrl_cal_valid    := cal_done_edge
 
   // generate out_done, meaning that output is done
   val out_gc       = Module(new GlobalCounter(SA_COLS-1))
@@ -96,6 +97,9 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
     out_done_r     := true.B
   }
   io.ctrl_out_done     := out_done_r
+
+  // generate ob_ready, meaning that enq is set
+  io.ctrl_ob_ready := cal_done_r & !out_done_r
 
   // FSM
   when(state === idle) {
@@ -109,10 +113,12 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
     }
   }.elsewhen(state === completed) {
     when(out_done_r) {
-      state := idle
-      isIdle := true.B
-      cal_done_r := false.B
-      out_done_r := false.B
+      when(io.ctrl_post_ready) {
+        state := idle
+        isIdle := true.B
+        cal_done_r := false.B
+        out_done_r := false.B
+      }
     }
   }
 }

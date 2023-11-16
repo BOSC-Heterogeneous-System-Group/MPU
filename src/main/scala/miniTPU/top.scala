@@ -2,9 +2,47 @@ package miniTPU
 
 import chisel3._
 import chisel3.stage._
+import chisel3.util._
 import miniTPU.DataBuffer._
 import miniTPU.SystolicArray._
 
+class miniTPUInput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
+  val in_a = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
+  val in_b = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
+  val in_c = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
+}
+
+class miniTPUOutput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
+  val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
+}
+
+class miniTPUIO (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
+
+
+  val in = Flipped(DecoupledIO(new miniTPUInput(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS)))
+
+  val out = DecoupledIO(new miniTPUOutput(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS))
+}
+class top_wrapper (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
+  val io = IO(new Bundle {
+    val start = Input(Bool())
+    val tpuIO = new miniTPUIO(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS)
+  })
+
+  val top = Module(new top(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS))
+
+  top.io.in_start := io.start
+  top.io.in_valid := io.tpuIO.in.valid
+  top.io.in_ready := io.tpuIO.out.ready
+  top.io.in_a     := io.tpuIO.in.bits.in_a
+  top.io.in_b     := io.tpuIO.in.bits.in_b
+  top.io.in_c     := io.tpuIO.in.bits.in_c
+
+  io.tpuIO.out.valid      := top.io.out_valid
+  io.tpuIO.in.ready       := top.io.out_ready
+  io.tpuIO.out.bits.out_c := top.io.out_c
+
+}
 
 class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {

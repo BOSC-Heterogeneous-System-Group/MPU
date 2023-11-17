@@ -13,6 +13,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
     val data_out = Output(Vec(QUEUE_NUM, UInt(IN_WIDTH.W)))
     val all_full     = Output(Bool())
+    val all_empty    = Output(Bool())
     val data_in_done = Output(Bool())
     val cal_start    = Output(Bool())  // to controller: start calculating
     val data_out_done = Output(Bool())
@@ -54,6 +55,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   allFull := data_queue.tail.foldLeft(data_queue.head.io.full)(_ & _.io.full)
   allEmpty := data_queue.tail.foldLeft(data_queue.head.io.empty)(_ & _.io.empty)
   io.all_full := allFull
+  io.all_empty := allEmpty
 
   // FSM
   when(state === idle) {

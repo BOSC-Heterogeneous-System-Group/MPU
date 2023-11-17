@@ -16,17 +16,19 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
   val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(C_WIDTH, QUEUE_LEN)))
 
-  val canDeq = WireInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
   val allFull       = WireDefault(false.B)
   val allEmpty      = WireDefault(false.B)
+
+  val data_out = RegInit(VecInit(Seq.fill(QUEUE_NUM)(0.U(C_WIDTH.W))))
 
   for (i <- 0 until QUEUE_NUM) {
     data_queue(i).io.enq := io.ctrl_ob_ready
     data_queue(i).io.deq := io.ctrl_valid && io.ctrl_ready
     data_queue(i).io.enqData := io.data_in(i)
-    canDeq(i) := io.ctrl_valid && io.ctrl_ready
-    io.data_out(i) := Mux(canDeq(i), data_queue(i).io.deqData, 0.U)
+    io.data_out(i) := data_queue(i).io.deqData
   }
+
+  //io.data_out := data_out
 
 
   allFull := data_queue.tail.foldLeft(data_queue.head.io.full)(_ & _.io.full)

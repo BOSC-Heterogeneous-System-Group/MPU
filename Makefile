@@ -8,7 +8,7 @@ clean:
 	rm -rf genVerilog test_run_dir
 
 clean_mill:
-    rm -rf out
+	rm -rf out
 
 clean_all: clean clean_mill
 

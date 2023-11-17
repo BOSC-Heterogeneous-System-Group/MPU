@@ -42,14 +42,12 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   io.data_in_done := data_in_done
   io.data_out_done := data_out_done
 
-  val canDeq = WireInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
 
   for (i <- 0 until QUEUE_NUM) {
     data_queue(i).io.enq := ((state === idle && io.ctrl_data_in) || state === data_in) & io.ctrl_data_valid
     data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U
-    canDeq(i) := state === data_out && delay_count(i) === 0.U
     data_queue(i).io.enqData := io.data_in(i)
-    io.data_out(i) := Mux(canDeq(i), data_queue(i).io.deqData, 0.U)
+    io.data_out(i) := data_queue(i).io.deqData
   }
 
   allFull := data_queue.tail.foldLeft(data_queue.head.io.full)(_ & _.io.full)

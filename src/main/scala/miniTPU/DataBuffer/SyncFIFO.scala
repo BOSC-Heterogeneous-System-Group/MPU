@@ -22,6 +22,7 @@ class SyncFIFO(width: Int, depth: Int) extends Module {
 
   val isFull = WireInit(false.B)
   val isEmpty = WireInit(false.B)
+  val deqData = WireInit(0.U(width.W))
 
   isEmpty := readPtr === writePtr
   isFull := readPtr === Cat(~writePtr(addr_width), writePtr(addr_width - 1, 0))
@@ -33,10 +34,12 @@ class SyncFIFO(width: Int, depth: Int) extends Module {
 
   when(io.deq && !isEmpty) {
     readPtr := readPtr + 1.U
+    deqData := mem(readPtr)
   }
 
+  io.deqData := deqData
   io.full := isFull
   io.empty := isEmpty
-  io.deqData := mem(readPtr)
+
 
 }

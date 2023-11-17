@@ -37,11 +37,15 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
     val ctrl_in_done     = Input(Bool())  // from InputBuffer: data_in_done
     val ctrl_ibh_full    = Input(Bool())  // from InputBuffer: all full
     val ctrl_ibv_full    = Input(Bool())  // from InputBuffer: all full
+    val ctrl_ibh_empty   = Input(Bool())  // from InputBuffer: all empty
+    val ctrl_ibv_empty   = Input(Bool())  // from InputBuffer: all empty
+    val ctrl_pre_valid   = Input(Bool())  // from top: last stage valid
     val ctrl_post_ready  = Input(Bool())  // from top: next stage ready
     val ctrl_ob_empty    = Input(Bool())  // from OutputBuffer: all empty
 
     val ctrl_pre_ready   = Output(Bool())
     val ctrl_post_valid  = Output(Bool())
+    val ctrl_ib_data_in  = Output(Bool()) // to InputBuffer: ctrl_data_in
     val ctrl_ib_data_out = Output(Bool()) // to InputBuffer: ctrl_data_out
     val ctrl_cal_done    = Output(Bool())
     val ctrl_out_done    = Output(Bool())
@@ -58,6 +62,10 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val in_done_r    = RegInit(false.B)
   val isIdle       = RegInit(true.B)
 
+  val ctrl_ib_data_in_w = WireDefault(false.B)
+  val delay_ctrl_ib_data_in = RegInit(false.B)
+  val ctrl_ib_data_in_edge = WireDefault(false.B)
+
   val ctrl_ib_data_out_w = WireDefault(false.B)
   val delay_ctrl_ib_data_out = RegInit(false.B)
   val ctrl_ib_data_out_edge = WireDefault(false.B)
@@ -69,6 +77,12 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   // when input buffer is full, not ready
   io.ctrl_pre_ready := !io.ctrl_ibh_full & !io.ctrl_ibv_full
   io.ctrl_post_valid := !io.ctrl_ob_empty
+
+  // generate ctrl_ib_data_in, meaning that data start to input input buffer
+  ctrl_ib_data_in_w := io.ctrl_ibh_empty & io.ctrl_ibv_empty & io.ctrl_pre_valid
+  delay_ctrl_ib_data_in := ctrl_ib_data_in_w
+  ctrl_ib_data_in_edge := !delay_ctrl_ib_data_in & ctrl_ib_data_in_w
+  io.ctrl_ib_data_in := ctrl_ib_data_in_edge
 
   // generate ctrl_ib_data_out, meaning that data start to input SA
   // when data finish filling in input buffer and SA is idle, data can output to SA from input buffer

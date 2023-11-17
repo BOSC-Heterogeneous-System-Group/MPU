@@ -25,13 +25,11 @@ class miniTPUIO (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_C
 }
 class top_wrapper (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val start = Input(Bool())
     val tpuIO = new miniTPUIO(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS)
   })
 
   val top = Module(new top(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS))
 
-  top.io.in_start := io.start
   top.io.in_valid := io.tpuIO.in.valid
   top.io.in_ready := io.tpuIO.out.ready
   top.io.in_a     := io.tpuIO.in.bits.in_a
@@ -46,7 +44,6 @@ class top_wrapper (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA
 
 class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val in_start  = Input(Bool())
     val in_valid  = Input(Bool())
     val in_ready  = Input(Bool())
     val in_a      = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
@@ -65,6 +62,7 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   val inBuffer_v  = Module(new InputBuffer(IN_WIDTH, SA_COLS, SA_ROWS)) // TODO: add control logic to select data( B or D)
   val outBuffer  = Module(new OutputBuffer(C_WIDTH, SA_COLS, SA_ROWS))
 
+  val ready = RegInit(false.B)
 
   inBuffer_h.io.data_in := io.in_a
   inBuffer_v.io.data_in := io.in_b
@@ -73,6 +71,7 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   sa.io.in_b := inBuffer_v.io.data_out
   sa.io.in_c := io.in_c                 // TODO: preload in_c as bias
 
+  ready := io.in_ready
 
 
   for (c <- 0 until SA_COLS) {
@@ -83,14 +82,17 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   controller.io.ctrl_ob_empty := outBuffer.io.all_empty
   controller.io.ctrl_ibh_full := inBuffer_h.io.all_full
   controller.io.ctrl_ibv_full := inBuffer_v.io.all_full
+  controller.io.ctrl_ibh_empty := inBuffer_h.io.all_empty
+  controller.io.ctrl_ibv_empty := inBuffer_v.io.all_empty
+  controller.io.ctrl_pre_valid := io.in_valid
   controller.io.ctrl_post_ready := io.in_ready
 
 
   inBuffer_h.io.ctrl_data_valid := io.in_valid
   inBuffer_v.io.ctrl_data_valid := io.in_valid
-  inBuffer_h.io.ctrl_data_in := io.in_start
+  inBuffer_h.io.ctrl_data_in := controller.io.ctrl_ib_data_in
   inBuffer_h.io.ctrl_data_out := controller.io.ctrl_ib_data_out
-  inBuffer_v.io.ctrl_data_in := io.in_start
+  inBuffer_v.io.ctrl_data_in := controller.io.ctrl_ib_data_in
   inBuffer_v.io.ctrl_data_out := controller.io.ctrl_ib_data_out
 
   outBuffer.io.ctrl_valid := controller.io.ctrl_post_valid

@@ -33,10 +33,10 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   cal_start_r := io.ctrl_data_out
   io.cal_start := cal_start_r
 
-  val data_in_done = WireDefault(false.B)
-  val data_out_done = WireDefault(false.B)
-  val allFull       = WireDefault(false.B)
-  val allEmpty      = WireDefault(false.B)
+  val data_in_done = WireInit(false.B)
+  val data_out_done = WireInit(false.B)
+  val allFull       = WireInit(false.B)
+  val allEmpty      = WireInit(false.B)
 
   io.data_in_done := data_in_done
   io.data_out_done := data_out_done
@@ -44,15 +44,15 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val canDeq = WireInit(VecInit(Seq.fill(QUEUE_NUM)(false.B)))
 
   for (i <- 0 until QUEUE_NUM) {
-    data_queue(i).io.enq := ((state === idle && io.ctrl_data_in) || state === data_in) & io.ctrl_data_valid
-    data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U
-    canDeq(i) := state === data_out && delay_count(i) === 0.U
+    data_queue(i).io.enq := ((state === idle && io.ctrl_data_in) || state === data_in) && io.ctrl_data_valid
+    data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U
+    canDeq(i) := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U
     data_queue(i).io.enqData := io.data_in(i)
     io.data_out(i) := Mux(canDeq(i), data_queue(i).io.deqData, 0.U)
   }
 
-  allFull := data_queue.tail.foldLeft(data_queue.head.io.full)(_ & _.io.full)
-  allEmpty := data_queue.tail.foldLeft(data_queue.head.io.empty)(_ & _.io.empty)
+  allFull := data_queue.map(_.io.full).reduce(_ & _)
+  allEmpty := data_queue.map(_.io.empty).reduce(_ & _)
   io.all_full := allFull
 
   // FSM

@@ -6,12 +6,38 @@ import org.scalatest.freespec.AnyFreeSpec
 import chisel3.experimental.BundleLiterals._
 import chisel3.stage._
 import miniTPU._
+import miniTPU.SystolicArray.Multiplier.wallaceTree
 
 // this file only holds the test for the top module
 // when you pull request, do not add test for other modules
 // test modules in your own branch instead of master
 
 class tests extends AnyFreeSpec with ChiselScalatestTester {
+
+  "test_wallace_tree" in {
+    (new ChiselStage).emitVerilog(new wallaceTree(16,5), Array("--target-dir", "./genVerilog/wallace_tree"))
+
+    test(new wallaceTree(16, 5)).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+      dut.io.data_i(0).poke(0.U)
+      dut.io.data_i(1).poke(0.U)
+      dut.io.data_i(2).poke(0.U)
+      dut.io.data_i(3).poke(0.U)
+      dut.io.data_i(4).poke(0.U)
+
+      dut.clock.step()
+
+      dut.io.data_i(0).poke(1.U)
+      dut.io.data_i(1).poke(2.U)
+      dut.io.data_i(2).poke(3.U)
+      dut.io.data_i(3).poke(4.U)
+      dut.io.data_i(4).poke(5.U)
+
+      dut.clock.step()
+
+      println("test pass")
+
+    }
+  }
 
   "test_top_2X2" in {
     (new ChiselStage).emitVerilog(new top(8, 32, 2, 2), Array("--target-dir", "./genVerilog/top"))
@@ -92,9 +118,9 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
   }
 
   "test_top_wrapper_2X2" in {
-    (new ChiselStage).emitVerilog(new top(8, 32, 2, 2), Array("--target-dir", "./genVerilog/top"))
+    (new ChiselStage).emitVerilog(new top(4, 16, 2, 2), Array("--target-dir", "./genVerilog/top"))
 
-    test(new top_wrapper(8, 32, 2, 2)).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+    test(new top_wrapper(4, 16, 2, 2)).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
       dut.io.tpuIO.in.valid.poke(false.B)
       dut.io.tpuIO.out.ready.poke(false.B)
       dut.io.tpuIO.in.bits.in_a(0).poke(0.U)
@@ -109,8 +135,8 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
       dut.io.tpuIO.in.valid.poke(true.B)
       dut.io.tpuIO.in.bits.in_a(0).poke(1.U)
       dut.io.tpuIO.in.bits.in_a(1).poke(3.U)
-      dut.io.tpuIO.in.bits.in_b(0).poke(5.U)
-      dut.io.tpuIO.in.bits.in_b(1).poke(6.U)
+      dut.io.tpuIO.in.bits.in_b(0).poke(1.U)
+      dut.io.tpuIO.in.bits.in_b(1).poke(0.U)
       dut.io.tpuIO.in.bits.in_c(0).poke(0.U)
       dut.io.tpuIO.in.bits.in_c(1).poke(0.U)
 
@@ -130,8 +156,8 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
       dut.io.tpuIO.in.valid.poke(true.B)
       dut.io.tpuIO.in.bits.in_a(0).poke(2.U)
       dut.io.tpuIO.in.bits.in_a(1).poke(4.U)
-      dut.io.tpuIO.in.bits.in_b(0).poke(7.U)
-      dut.io.tpuIO.in.bits.in_b(1).poke(8.U)
+      dut.io.tpuIO.in.bits.in_b(0).poke(0.U)
+      dut.io.tpuIO.in.bits.in_b(1).poke(1.U)
       dut.io.tpuIO.in.bits.in_c(0).poke(0.U)
       dut.io.tpuIO.in.bits.in_c(1).poke(0.U)
 

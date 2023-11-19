@@ -1,14 +1,17 @@
 # RV-Tensor
 ## get started
 for WSL2:  
+
 `make bsp`  
+
 `make idea`  
+
 then open with IDEA(Linux version)  
 choose JDK version 11
 ## simulation with chiseltest && generate verilog
 click the green arrow to start simulation and generate verilog
 
-then enter "test_run_dir" directory and find your sim project
+enter "test_run_dir" directory and find your sim project
 
 `gtkwave your_design.vcd`
 ## simulation with iverilog

@@ -7,13 +7,13 @@ import miniTPU.DataBuffer._
 import miniTPU.SystolicArray._
 
 class miniTPUInput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
-  val in_a = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
-  val in_b = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
-  val in_c = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
+  val in_a = Input(Vec(SA_ROWS, SInt(IN_WIDTH.W)))
+  val in_b = Input(Vec(SA_COLS, SInt(IN_WIDTH.W)))
+  val in_c = Input(Vec(SA_COLS, SInt(C_WIDTH.W)))
 }
 
 class miniTPUOutput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
-  val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
+  val out_c = Output(Vec(SA_COLS, SInt(C_WIDTH.W)))
 }
 
 class miniTPUIO (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
@@ -46,13 +46,13 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   val io = IO(new Bundle {
     val in_valid  = Input(Bool())
     val in_ready  = Input(Bool())
-    val in_a      = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
-    val in_b      = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
-    val in_c      = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
+    val in_a      = Input(Vec(SA_ROWS, SInt(IN_WIDTH.W)))
+    val in_b      = Input(Vec(SA_COLS, SInt(IN_WIDTH.W)))
+    val in_c      = Input(Vec(SA_COLS, SInt(C_WIDTH.W)))
 
     val out_valid = Output(Bool())                        // TODO: decoupledIO
     val out_ready = Output(Bool())
-    val out_c     = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
+    val out_c     = Output(Vec(SA_COLS, SInt(C_WIDTH.W)))
   })
 
   val sa = Module(new SystolicArray(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS))

@@ -38,42 +38,42 @@ module ppGenerator(
   reg [7:0] pp_0; // @[pp_generator.scala 36:29]
   reg [7:0] pp_1; // @[pp_generator.scala 36:29]
   reg [7:0] sign_com; // @[pp_generator.scala 37:29]
-  wire [4:0] _pp_X2_0_T_1 = {inputData_multiplicand,1'h0}; // @[Cat.scala 33:92]
-  wire [4:0] _pp_X2_0_T_3 = {inputData_multiplicand[3],inputData_multiplicand}; // @[Cat.scala 33:92]
-  wire [4:0] pp_X2_0 = inputCtrl_X2[0] ? _pp_X2_0_T_1 : _pp_X2_0_T_3; // @[pp_generator.scala 40:25]
-  wire [4:0] pp_set_0 = inputCtrl_Set0[0] ? 5'h0 : pp_X2_0; // @[pp_generator.scala 42:25]
-  wire [4:0] _pp_inv_0_T_1 = ~pp_set_0; // @[pp_generator.scala 43:44]
-  wire [4:0] pp_inv_0 = inputCtrl_inv[0] ? _pp_inv_0_T_1 : pp_set_0; // @[pp_generator.scala 43:25]
+  wire [4:0] _pp_X2_0_T_2 = {inputData_multiplicand,1'h0}; // @[Cat.scala 33:92]
+  wire [4:0] _pp_X2_0_T_4 = {inputData_multiplicand[3],inputData_multiplicand}; // @[Cat.scala 33:92]
+  wire [4:0] pp_X2_0 = inputCtrl_X2[0] ? _pp_X2_0_T_2 : _pp_X2_0_T_4; // @[pp_generator.scala 41:90]
+  wire [4:0] pp_set_0 = inputCtrl_Set0[0] ? $signed(5'sh0) : $signed(pp_X2_0); // @[pp_generator.scala 42:25]
+  wire [4:0] _pp_inv_0_T_3 = ~pp_set_0; // @[pp_generator.scala 43:51]
   wire  E_inv_0 = inputCtrl_Set0[0] ? inputCtrl_inv[0] : inputCtrl_inv[0] ^ inputData_multiplicand[3]; // @[pp_generator.scala 44:25]
   wire  E_0 = ~E_inv_0; // @[pp_generator.scala 45:22]
-  wire [7:0] pp_temp_0 = {E_0,E_inv_0,E_inv_0,pp_inv_0}; // @[Cat.scala 33:92]
-  wire [4:0] pp_X2_1 = inputCtrl_X2[1] ? _pp_X2_0_T_1 : _pp_X2_0_T_3; // @[pp_generator.scala 40:25]
-  wire [4:0] pp_set_1 = inputCtrl_Set0[1] ? 5'h0 : pp_X2_1; // @[pp_generator.scala 42:25]
-  wire [4:0] _pp_inv_1_T_1 = ~pp_set_1; // @[pp_generator.scala 43:44]
-  wire [4:0] pp_inv_1 = inputCtrl_inv[1] ? _pp_inv_1_T_1 : pp_set_1; // @[pp_generator.scala 43:25]
+  wire [4:0] pp_temp_0_lo_lo = inputCtrl_inv[0] ? $signed(_pp_inv_0_T_3) : $signed(pp_set_0); // @[Cat.scala 33:92]
+  wire [7:0] pp_temp_0 = {E_0,E_inv_0,E_inv_0,pp_temp_0_lo_lo}; // @[pp_generator.scala 49:86]
+  wire [4:0] pp_X2_1 = inputCtrl_X2[1] ? _pp_X2_0_T_2 : _pp_X2_0_T_4; // @[pp_generator.scala 41:90]
+  wire [4:0] pp_set_1 = inputCtrl_Set0[1] ? $signed(5'sh0) : $signed(pp_X2_1); // @[pp_generator.scala 42:25]
+  wire [4:0] _pp_inv_1_T_3 = ~pp_set_1; // @[pp_generator.scala 43:51]
   wire  E_inv_1 = inputCtrl_Set0[1] ? inputCtrl_inv[1] : inputCtrl_inv[1] ^ inputData_multiplicand[3]; // @[pp_generator.scala 44:25]
   wire  E_1 = ~E_inv_1; // @[pp_generator.scala 45:22]
-  wire [7:0] pp_temp_1 = {2'h1,E_1,pp_inv_1}; // @[Cat.scala 33:92]
-  wire [7:0] _pp_1_T_2 = {pp_temp_1[5:0],1'h0,inputCtrl_inv[0]}; // @[Cat.scala 33:92]
-  wire [3:0] _sign_com_T_1 = {1'h0,inputCtrl_inv[1],2'h0}; // @[Cat.scala 33:92]
+  wire [4:0] pp_temp_1_lo_lo = inputCtrl_inv[1] ? $signed(_pp_inv_1_T_3) : $signed(pp_set_1); // @[Cat.scala 33:92]
+  wire [7:0] pp_temp_1 = {2'h1,E_1,pp_temp_1_lo_lo}; // @[pp_generator.scala 55:94]
+  wire [7:0] _pp_1_T_3 = {pp_temp_1[5:0],1'h0,inputCtrl_inv[0]}; // @[pp_generator.scala 63:85]
+  wire [3:0] _sign_com_T_2 = {1'h0,inputCtrl_inv[1],2'h0}; // @[pp_generator.scala 68:97]
   assign outputData_pp_out_0 = pp_0; // @[pp_generator.scala 70:25]
   assign outputData_pp_out_1 = pp_1; // @[pp_generator.scala 70:25]
   assign outputData_sig_out = sign_com; // @[pp_generator.scala 71:25]
   always @(posedge clock) begin
     if (reset) begin // @[pp_generator.scala 36:29]
-      pp_0 <= 8'h0; // @[pp_generator.scala 36:29]
+      pp_0 <= 8'sh0; // @[pp_generator.scala 36:29]
     end else begin
       pp_0 <= pp_temp_0; // @[pp_generator.scala 61:19]
     end
     if (reset) begin // @[pp_generator.scala 36:29]
-      pp_1 <= 8'h0; // @[pp_generator.scala 36:29]
+      pp_1 <= 8'sh0; // @[pp_generator.scala 36:29]
     end else begin
-      pp_1 <= _pp_1_T_2; // @[pp_generator.scala 63:19]
+      pp_1 <= _pp_1_T_3; // @[pp_generator.scala 63:19]
     end
     if (reset) begin // @[pp_generator.scala 37:29]
-      sign_com <= 8'h0; // @[pp_generator.scala 37:29]
+      sign_com <= 8'sh0; // @[pp_generator.scala 37:29]
     end else begin
-      sign_com <= {{4'd0}, _sign_com_T_1}; // @[pp_generator.scala 68:14]
+      sign_com <= {{4{_sign_com_T_2[3]}},_sign_com_T_2}; // @[pp_generator.scala 68:14]
     end
   end
 // Register and memory initialization
@@ -159,9 +159,7 @@ module RCA(
   wire  c_comb_7 = c_comb_6 & p_comb_6 | g_comb_6; // @[rca.scala 33:46]
   wire  p_comb_7 = input_a_in[7] ^ input_b_in[7]; // @[rca.scala 31:39]
   wire  s_comb_7 = p_comb_7 ^ c_comb_7; // @[rca.scala 32:34]
-  wire [3:0] output_S_lo = {s_comb_3,s_comb_2,s_comb_1,p_comb_0}; // @[rca.scala 36:24]
-  wire [3:0] output_S_hi = {s_comb_7,s_comb_6,s_comb_5,s_comb_4}; // @[rca.scala 36:24]
-  assign output_S = {output_S_hi,output_S_lo}; // @[rca.scala 36:24]
+  assign output_S = {s_comb_7,s_comb_6,s_comb_5,s_comb_4,s_comb_3,s_comb_2,s_comb_1,p_comb_0}; // @[rca.scala 36:31]
 endmodule
 module pp_compressor3_2(
   input  [7:0] input_pp0_in,
@@ -202,11 +200,9 @@ module pp_compressor3_2(
   wire  p_comb_7 = input_pp0_in[7] ^ input_pp1_in[7]; // @[pp_compressor3_2.scala 29:39]
   wire  s_comb_7 = p_comb_7 ^ input_pp2_in[7]; // @[pp_compressor3_2.scala 30:32]
   wire  c_comb_7 = input_pp2_in[7] & p_comb_7 | g_comb_7; // @[pp_compressor3_2.scala 31:57]
-  wire [3:0] output_S_lo = {s_comb_3,s_comb_2,s_comb_1,s_comb_0}; // @[pp_compressor3_2.scala 34:24]
-  wire [3:0] output_S_hi = {s_comb_7,s_comb_6,s_comb_5,s_comb_4}; // @[pp_compressor3_2.scala 34:24]
   wire [7:0] _output_C_T = {c_comb_7,c_comb_6,c_comb_5,c_comb_4,c_comb_3,c_comb_2,c_comb_1,c_comb_0}; // @[pp_compressor3_2.scala 35:29]
-  assign output_S = {output_S_hi,output_S_lo}; // @[pp_compressor3_2.scala 34:24]
-  assign output_C = {_output_C_T[6:0],1'h0}; // @[Cat.scala 33:92]
+  assign output_S = {s_comb_7,s_comb_6,s_comb_5,s_comb_4,s_comb_3,s_comb_2,s_comb_1,s_comb_0}; // @[pp_compressor3_2.scala 34:31]
+  assign output_C = {_output_C_T[6:0],1'h0}; // @[pp_compressor3_2.scala 35:61]
 endmodule
 module wallaceTree(
   input  [7:0] io_data_i_0,
@@ -366,8 +362,7 @@ module RCA_1(
   wire  p_comb_15 = input_a_in[15] ^ input_b_in[15]; // @[rca.scala 31:39]
   wire  s_comb_15 = p_comb_15 ^ c_comb_15; // @[rca.scala 32:34]
   wire [7:0] output_S_lo = {s_comb_7,s_comb_6,s_comb_5,s_comb_4,s_comb_3,s_comb_2,s_comb_1,p_comb_0}; // @[rca.scala 36:24]
-  wire [7:0] output_S_hi = {s_comb_15,s_comb_14,s_comb_13,s_comb_12,s_comb_11,s_comb_10,s_comb_9,s_comb_8}; // @[rca.scala 36:24]
-  assign output_S = {output_S_hi,output_S_lo}; // @[rca.scala 36:24]
+  assign output_S = {s_comb_15,s_comb_14,s_comb_13,s_comb_12,s_comb_11,s_comb_10,s_comb_9,s_comb_8,output_S_lo}; // @[rca.scala 36:31]
 endmodule
 module MacUnit(
   input         clock,
@@ -403,7 +398,7 @@ module MacUnit(
   assign mul_reset = reset;
   assign mul_input_multiplicand = io_in_a; // @[MacUnit.scala 18:26]
   assign mul_input_multiplier = io_in_b; // @[MacUnit.scala 19:26]
-  assign rca_input_a_in = {_rca_input_a_in_T_2,mul_output_product}; // @[Cat.scala 33:92]
+  assign rca_input_a_in = {_rca_input_a_in_T_2,mul_output_product}; // @[MacUnit.scala 21:108]
   assign rca_input_b_in = io_in_c; // @[MacUnit.scala 22:19]
 endmodule
 module PE(
@@ -451,17 +446,17 @@ module PE(
   assign mac_io_in_c = c_reg; // @[PE.scala 31:15]
   always @(posedge clock) begin
     if (reset) begin // @[PE.scala 24:22]
-      a_reg <= 4'h0; // @[PE.scala 24:22]
+      a_reg <= 4'sh0; // @[PE.scala 24:22]
     end else begin
       a_reg <= io_in_a; // @[PE.scala 33:9]
     end
     if (reset) begin // @[PE.scala 25:22]
-      b_reg <= 4'h0; // @[PE.scala 25:22]
+      b_reg <= 4'sh0; // @[PE.scala 25:22]
     end else begin
       b_reg <= io_in_b; // @[PE.scala 34:9]
     end
     if (reset) begin // @[PE.scala 26:22]
-      c_reg <= 16'h0; // @[PE.scala 26:22]
+      c_reg <= 16'sh0; // @[PE.scala 26:22]
     end else if (io_in_control_done) begin // @[PE.scala 36:15]
       c_reg <= io_in_c;
     end else begin
@@ -557,12 +552,12 @@ module PE_2(
   assign mac_io_in_c = c_reg; // @[PE.scala 31:15]
   always @(posedge clock) begin
     if (reset) begin // @[PE.scala 24:22]
-      a_reg <= 4'h0; // @[PE.scala 24:22]
+      a_reg <= 4'sh0; // @[PE.scala 24:22]
     end else begin
       a_reg <= io_in_a; // @[PE.scala 33:9]
     end
     if (reset) begin // @[PE.scala 26:22]
-      c_reg <= 16'h0; // @[PE.scala 26:22]
+      c_reg <= 16'sh0; // @[PE.scala 26:22]
     end else if (io_in_control_done) begin // @[PE.scala 36:15]
       c_reg <= io_in_c;
     end else begin
@@ -1117,20 +1112,20 @@ module SyncFIFO(
   wire  isFull = readPtr == _isFull_T_3; // @[SyncFIFO.scala 28:21]
   wire [1:0] _writePtr_T_1 = writePtr + 2'h1; // @[SyncFIFO.scala 32:26]
   wire [1:0] _readPtr_T_1 = readPtr + 2'h1; // @[SyncFIFO.scala 36:24]
-  wire [3:0] _GEN_6 = readPtr[0] ? mem_1 : mem_0; // @[SyncFIFO.scala 37:{13,13}]
-  assign io_deqData = io_deq & ~isEmpty ? _GEN_6 : 4'h0; // @[SyncFIFO.scala 35:28 37:13]
+  wire [3:0] _GEN_6 = readPtr[0] ? $signed(mem_1) : $signed(mem_0); // @[SyncFIFO.scala 37:{13,13}]
+  assign io_deqData = io_deq & ~isEmpty ? $signed(_GEN_6) : $signed(4'sh0); // @[SyncFIFO.scala 35:28 37:13]
   assign io_full = readPtr == _isFull_T_3; // @[SyncFIFO.scala 28:21]
   assign io_empty = readPtr == writePtr; // @[SyncFIFO.scala 27:22]
   always @(posedge clock) begin
     if (reset) begin // @[SyncFIFO.scala 17:20]
-      mem_0 <= 4'h0; // @[SyncFIFO.scala 17:20]
+      mem_0 <= 4'sh0; // @[SyncFIFO.scala 17:20]
     end else if (io_enq & ~isFull) begin // @[SyncFIFO.scala 30:27]
       if (~writePtr[0]) begin // @[SyncFIFO.scala 31:19]
         mem_0 <= io_enqData; // @[SyncFIFO.scala 31:19]
       end
     end
     if (reset) begin // @[SyncFIFO.scala 17:20]
-      mem_1 <= 4'h0; // @[SyncFIFO.scala 17:20]
+      mem_1 <= 4'sh0; // @[SyncFIFO.scala 17:20]
     end else if (io_enq & ~isFull) begin // @[SyncFIFO.scala 30:27]
       if (writePtr[0]) begin // @[SyncFIFO.scala 31:19]
         mem_1 <= io_enqData; // @[SyncFIFO.scala 31:19]
@@ -1421,19 +1416,19 @@ module SyncFIFO_4(
   wire  isFull = readPtr == _isFull_T_3; // @[SyncFIFO.scala 28:21]
   wire [1:0] _writePtr_T_1 = writePtr + 2'h1; // @[SyncFIFO.scala 32:26]
   wire [1:0] _readPtr_T_1 = readPtr + 2'h1; // @[SyncFIFO.scala 36:24]
-  wire [15:0] _GEN_6 = readPtr[0] ? mem_1 : mem_0; // @[SyncFIFO.scala 37:{13,13}]
-  assign io_deqData = io_deq & ~isEmpty ? _GEN_6 : 16'h0; // @[SyncFIFO.scala 35:28 37:13]
+  wire [15:0] _GEN_6 = readPtr[0] ? $signed(mem_1) : $signed(mem_0); // @[SyncFIFO.scala 37:{13,13}]
+  assign io_deqData = io_deq & ~isEmpty ? $signed(_GEN_6) : $signed(16'sh0); // @[SyncFIFO.scala 35:28 37:13]
   assign io_empty = readPtr == writePtr; // @[SyncFIFO.scala 27:22]
   always @(posedge clock) begin
     if (reset) begin // @[SyncFIFO.scala 17:20]
-      mem_0 <= 16'h0; // @[SyncFIFO.scala 17:20]
+      mem_0 <= 16'sh0; // @[SyncFIFO.scala 17:20]
     end else if (io_enq & ~isFull) begin // @[SyncFIFO.scala 30:27]
       if (~writePtr[0]) begin // @[SyncFIFO.scala 31:19]
         mem_0 <= io_enqData; // @[SyncFIFO.scala 31:19]
       end
     end
     if (reset) begin // @[SyncFIFO.scala 17:20]
-      mem_1 <= 16'h0; // @[SyncFIFO.scala 17:20]
+      mem_1 <= 16'sh0; // @[SyncFIFO.scala 17:20]
     end else if (io_enq & ~isFull) begin // @[SyncFIFO.scala 30:27]
       if (writePtr[0]) begin // @[SyncFIFO.scala 31:19]
         mem_1 <= io_enqData; // @[SyncFIFO.scala 31:19]

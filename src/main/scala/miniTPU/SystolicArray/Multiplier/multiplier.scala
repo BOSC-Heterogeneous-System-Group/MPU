@@ -6,12 +6,12 @@ import chisel3.util.Cat
 
 //todo DecoupledIO
 class MultiplierInputBundle(val w:Int) extends Bundle{
-    val multiplicand = Input(UInt(w.W))
-    val multiplier   = Input(UInt(w.W))
+    val multiplicand = Input(SInt(w.W))
+    val multiplier   = Input(SInt(w.W))
 }
 
 class MultiplierOutputBundle(val w:Int) extends Bundle{
-    val product = Output(UInt(w.W))
+    val product = Output(SInt(w.W))
 }
 
 class Multiplier(val IN_WIDTH: Int, val C_WIDTH: Int) extends Module{

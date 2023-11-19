@@ -5,14 +5,14 @@ import chisel3.util.Decoupled
 import chisel3.util.Cat
 
 class rcaInputBundle(val w:Int) extends Bundle{
-    val a_in  = Input(UInt(w.W))
-    val b_in  = Input(UInt(w.W))
-    val c_in   = Input(UInt(1.W))
+    val a_in  = Input(SInt(w.W))
+    val b_in  = Input(SInt(w.W))
+    val c_in   = Input(SInt(1.W))
 }
 
 class rcaOutputBundle(val w:Int) extends Bundle{
-    val S    = Output(UInt(w.W))
-    val C    = Output(UInt(w.W))
+    val S    = Output(SInt(w.W))
+    val C    = Output(SInt(w.W))
 }
 
 class RCA(val C_WIDTH: Int) extends Module{
@@ -33,7 +33,7 @@ class RCA(val C_WIDTH: Int) extends Module{
         c_comb(i+1) := c_comb(i) & p_comb(i) | g_comb(i) 
     }
 
-    output.S := s_comb.asUInt
-    output.C := c_comb(C_WIDTH).asUInt
+    output.S := s_comb.asUInt.asSInt
+    output.C := c_comb(C_WIDTH).asUInt.asSInt
 
 }

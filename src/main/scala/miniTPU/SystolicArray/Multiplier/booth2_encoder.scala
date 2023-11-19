@@ -6,7 +6,7 @@ import chisel3.util.Cat
 
 //todo decoupledIO
 class beInputBundle(val w:Int) extends Bundle{
-    val multiplier = Input(UInt(w.W))
+    val multiplier = Input(SInt(w.W))
 }
 
 class beOutputBundle(val w:Int) extends Bundle{

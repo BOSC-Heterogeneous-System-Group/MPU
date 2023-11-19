@@ -6,8 +6,8 @@ import chisel3.util.Cat
 
 class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
   val io = IO(new Bundle {
-    val data_i = Input(Vec(IN_CHANNEL, UInt(C_WIDTH.W)))
-    val data_o = Output(UInt(C_WIDTH.W))
+    val data_i = Input(Vec(IN_CHANNEL, SInt(C_WIDTH.W)))
+    val data_o = Output(SInt(C_WIDTH.W))
   })
 
   val rca = Module(new RCA(C_WIDTH))
@@ -49,13 +49,13 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
   val L7_RES_N = L6_OUT_N - L7_INP_N
   val L7_OUT_N = 2*L7_CSA_N + L7_RES_N
 
-  val rca_in = WireInit(VecInit(Seq.fill(2)(0.U(C_WIDTH.W))))
+  val rca_in = WireInit(VecInit(Seq.fill(2)(0.S(C_WIDTH.W))))
 
   // layer1
-  val l1_csa_in  = WireInit(VecInit(Seq.fill(L1_INP_N)(0.U(C_WIDTH.W))))
-  val l1_csa_os  = WireInit(VecInit(Seq.fill(L1_CSA_N)(0.U(C_WIDTH.W))))
-  val l1_csa_oc  = WireInit(VecInit(Seq.fill(L1_CSA_N)(0.U(C_WIDTH.W))))
-  val l1_csa_out = WireInit(VecInit(Seq.fill(L1_OUT_N)(0.U(C_WIDTH.W))))
+  val l1_csa_in  = WireInit(VecInit(Seq.fill(L1_INP_N)(0.S(C_WIDTH.W))))
+  val l1_csa_os  = WireInit(VecInit(Seq.fill(L1_CSA_N)(0.S(C_WIDTH.W))))
+  val l1_csa_oc  = WireInit(VecInit(Seq.fill(L1_CSA_N)(0.S(C_WIDTH.W))))
+  val l1_csa_out = WireInit(VecInit(Seq.fill(L1_OUT_N)(0.S(C_WIDTH.W))))
   val layer1CSA = Seq.fill(L1_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
   for(i <- 0 until L1_INP_N){l1_csa_in(i) := io.data_i(i)}
@@ -78,10 +78,10 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
   } else {
 
     // layer2
-    val l2_csa_in = WireInit(VecInit(Seq.fill(L2_INP_N)(0.U(C_WIDTH.W))))
-    val l2_csa_os = WireInit(VecInit(Seq.fill(L2_CSA_N)(0.U(C_WIDTH.W))))
-    val l2_csa_oc = WireInit(VecInit(Seq.fill(L2_CSA_N)(0.U(C_WIDTH.W))))
-    val l2_csa_out = WireInit(VecInit(Seq.fill(L2_OUT_N)(0.U(C_WIDTH.W))))
+    val l2_csa_in = WireInit(VecInit(Seq.fill(L2_INP_N)(0.S(C_WIDTH.W))))
+    val l2_csa_os = WireInit(VecInit(Seq.fill(L2_CSA_N)(0.S(C_WIDTH.W))))
+    val l2_csa_oc = WireInit(VecInit(Seq.fill(L2_CSA_N)(0.S(C_WIDTH.W))))
+    val l2_csa_out = WireInit(VecInit(Seq.fill(L2_OUT_N)(0.S(C_WIDTH.W))))
     val layer2CSA = Seq.fill(L2_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
     for (i <- 0 until L2_INP_N){l2_csa_in(i) := l1_csa_out(i)}
@@ -104,10 +104,10 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
     } else {
 
       // layer3
-      val l3_csa_in = WireInit(VecInit(Seq.fill(L3_INP_N)(0.U(C_WIDTH.W))))
-      val l3_csa_os = WireInit(VecInit(Seq.fill(L3_CSA_N)(0.U(C_WIDTH.W))))
-      val l3_csa_oc = WireInit(VecInit(Seq.fill(L3_CSA_N)(0.U(C_WIDTH.W))))
-      val l3_csa_out = WireInit(VecInit(Seq.fill(L3_OUT_N)(0.U(C_WIDTH.W))))
+      val l3_csa_in = WireInit(VecInit(Seq.fill(L3_INP_N)(0.S(C_WIDTH.W))))
+      val l3_csa_os = WireInit(VecInit(Seq.fill(L3_CSA_N)(0.S(C_WIDTH.W))))
+      val l3_csa_oc = WireInit(VecInit(Seq.fill(L3_CSA_N)(0.S(C_WIDTH.W))))
+      val l3_csa_out = WireInit(VecInit(Seq.fill(L3_OUT_N)(0.S(C_WIDTH.W))))
       val layer3CSA = Seq.fill(L3_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
       for (i <- 0 until L3_INP_N){l3_csa_in(i) := l2_csa_out(i)}
@@ -131,10 +131,10 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
 
         // layer4
 
-        val l4_csa_in = WireInit(VecInit(Seq.fill(L4_INP_N)(0.U(C_WIDTH.W))))
-        val l4_csa_os = WireInit(VecInit(Seq.fill(L4_CSA_N)(0.U(C_WIDTH.W))))
-        val l4_csa_oc = WireInit(VecInit(Seq.fill(L4_CSA_N)(0.U(C_WIDTH.W))))
-        val l4_csa_out = WireInit(VecInit(Seq.fill(L4_OUT_N)(0.U(C_WIDTH.W))))
+        val l4_csa_in = WireInit(VecInit(Seq.fill(L4_INP_N)(0.S(C_WIDTH.W))))
+        val l4_csa_os = WireInit(VecInit(Seq.fill(L4_CSA_N)(0.S(C_WIDTH.W))))
+        val l4_csa_oc = WireInit(VecInit(Seq.fill(L4_CSA_N)(0.S(C_WIDTH.W))))
+        val l4_csa_out = WireInit(VecInit(Seq.fill(L4_OUT_N)(0.S(C_WIDTH.W))))
         val layer4CSA = Seq.fill(L4_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
         for (i <- 0 until L4_INP_N) {l4_csa_in(i) := l3_csa_out(i)}
@@ -158,10 +158,10 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
 
           // layer5
 
-          val l5_csa_in = WireInit(VecInit(Seq.fill(L5_INP_N)(0.U(C_WIDTH.W))))
-          val l5_csa_os = WireInit(VecInit(Seq.fill(L5_CSA_N)(0.U(C_WIDTH.W))))
-          val l5_csa_oc = WireInit(VecInit(Seq.fill(L5_CSA_N)(0.U(C_WIDTH.W))))
-          val l5_csa_out = WireInit(VecInit(Seq.fill(L5_OUT_N)(0.U(C_WIDTH.W))))
+          val l5_csa_in = WireInit(VecInit(Seq.fill(L5_INP_N)(0.S(C_WIDTH.W))))
+          val l5_csa_os = WireInit(VecInit(Seq.fill(L5_CSA_N)(0.S(C_WIDTH.W))))
+          val l5_csa_oc = WireInit(VecInit(Seq.fill(L5_CSA_N)(0.S(C_WIDTH.W))))
+          val l5_csa_out = WireInit(VecInit(Seq.fill(L5_OUT_N)(0.S(C_WIDTH.W))))
           val layer5CSA = Seq.fill(L5_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
           for (i <- 0 until L5_INP_N) {l5_csa_in(i) := l4_csa_out(i)}
@@ -185,10 +185,10 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
 
             // layer6
 
-            val l6_csa_in = WireInit(VecInit(Seq.fill(L6_INP_N)(0.U(C_WIDTH.W))))
-            val l6_csa_os = WireInit(VecInit(Seq.fill(L6_CSA_N)(0.U(C_WIDTH.W))))
-            val l6_csa_oc = WireInit(VecInit(Seq.fill(L6_CSA_N)(0.U(C_WIDTH.W))))
-            val l6_csa_out = WireInit(VecInit(Seq.fill(L6_OUT_N)(0.U(C_WIDTH.W))))
+            val l6_csa_in = WireInit(VecInit(Seq.fill(L6_INP_N)(0.S(C_WIDTH.W))))
+            val l6_csa_os = WireInit(VecInit(Seq.fill(L6_CSA_N)(0.S(C_WIDTH.W))))
+            val l6_csa_oc = WireInit(VecInit(Seq.fill(L6_CSA_N)(0.S(C_WIDTH.W))))
+            val l6_csa_out = WireInit(VecInit(Seq.fill(L6_OUT_N)(0.S(C_WIDTH.W))))
             val layer6CSA = Seq.fill(L6_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
             for (i <- 0 until L6_INP_N) {l6_csa_in(i) := l5_csa_out(i)}
@@ -212,10 +212,10 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
 
               // layer7
 
-              val l7_csa_in = WireInit(VecInit(Seq.fill(L7_INP_N)(0.U(C_WIDTH.W))))
-              val l7_csa_os = WireInit(VecInit(Seq.fill(L7_CSA_N)(0.U(C_WIDTH.W))))
-              val l7_csa_oc = WireInit(VecInit(Seq.fill(L7_CSA_N)(0.U(C_WIDTH.W))))
-              val l7_csa_out = WireInit(VecInit(Seq.fill(L7_OUT_N)(0.U(C_WIDTH.W))))
+              val l7_csa_in = WireInit(VecInit(Seq.fill(L7_INP_N)(0.S(C_WIDTH.W))))
+              val l7_csa_os = WireInit(VecInit(Seq.fill(L7_CSA_N)(0.S(C_WIDTH.W))))
+              val l7_csa_oc = WireInit(VecInit(Seq.fill(L7_CSA_N)(0.S(C_WIDTH.W))))
+              val l7_csa_out = WireInit(VecInit(Seq.fill(L7_OUT_N)(0.S(C_WIDTH.W))))
               val layer7CSA = Seq.fill(L7_CSA_N)(Module(new pp_compressor3_2(C_WIDTH)))
 
               for (i <- 0 until L7_INP_N) {
@@ -249,6 +249,6 @@ class wallaceTree (val C_WIDTH: Int, val IN_CHANNEL: Int) extends Module{
 
   rca.input.a_in := rca_in(0)
   rca.input.b_in := rca_in(1)
-  rca.input.c_in := 0.U
+  rca.input.c_in := 0.S
   io.data_o      := rca.output.S
 }

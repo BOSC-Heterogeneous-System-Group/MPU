@@ -7,19 +7,19 @@ parameter OUT_WIDTH          = 16;
 parameter SA_ROWS            = 2;
 parameter SA_COLS            = 2;
 
-logic                   clk                                   ;
-logic                   rst                                   ;
-logic                   valid_in                              ;
-logic                   ready_out                             ;
-logic [ IN_WIDTH-1:0]   in_a        [0:SA_ROWS-1]             ;
-logic [ IN_WIDTH-1:0]   in_b        [0:SA_COLS-1]             ;
-logic [OUT_WIDTH-1:0]   in_c        [0:SA_COLS-1]             ; 
-logic                   valid_out                             ;
-logic                   ready_in                              ;
-logic [ IN_WIDTH-1:0]   a_ref       [0:SA_ROWS-1][0:SA_COLS-1];
-logic [ IN_WIDTH-1:0]   b_ref       [0:SA_COLS-1][0:SA_COLS-1];
-logic [OUT_WIDTH-1:0]   c_ref       [0:SA_COLS-1][0:SA_COLS-1];
-logic [OUT_WIDTH-1:0]   out_c       [0:SA_COLS-1]             ;
+logic                          clk                                   ;
+logic                          rst                                   ;
+logic                          valid_in                              ;
+logic                          ready_out                             ;
+logic signed [ IN_WIDTH-1:0]   in_a        [0:SA_ROWS-1]             ;
+logic signed [ IN_WIDTH-1:0]   in_b        [0:SA_COLS-1]             ;
+logic signed [OUT_WIDTH-1:0]   in_c        [0:SA_COLS-1]             ; 
+logic                          valid_out                             ;
+logic                          ready_in                              ;
+logic signed [ IN_WIDTH-1:0]   a_ref       [0:SA_ROWS-1][0:SA_COLS-1];
+logic signed [ IN_WIDTH-1:0]   b_ref       [0:SA_ROWS-1][0:SA_COLS-1];
+logic signed [OUT_WIDTH-1:0]   c_ref       [0:SA_ROWS-1][0:SA_COLS-1];
+logic signed [OUT_WIDTH-1:0]   out_c       [0:SA_COLS-1]             ;
 
 integer cnt;
 integer err;
@@ -57,36 +57,56 @@ initial begin
     rst = 1'b1;
     valid_in = 1'b0;
     ready_in = 1'b1;
-    a_ref[0][0] = 1;
-    a_ref[0][1] = 2;
-    a_ref[1][0] = 3;
-    a_ref[1][1] = 4;
-    b_ref[0][0] = 1;
-    b_ref[0][1] = 0;
-    b_ref[1][0] = 0;
-    b_ref[1][1] = 1;
     err = 0;
     cnt = SA_ROWS-1;
+    
+    #(clk_period*5);
+    @(negedge clk); rst = 1'b0;
+
+    #(clk_period*5)
+    for (int i = 0; i < SA_COLS; i++) begin
+        @(negedge clk)
+        for (int j = 0; j < SA_ROWS; j++) begin
+            a_ref[j][i] = in_a[j];
+            b_ref[i][j] = in_b[j];
+        end
+    end
+    // @(negedge clk)
+    // a_ref[0][0] = in_a[0];
+    // a_ref[1][0] = in_a[1];
+    // b_ref[0][0] = in_b[0];
+    // b_ref[0][1] = in_b[1];
+    
+    // @(negedge clk)
+    // a_ref[0][1] = in_a[0];
+    // a_ref[1][1] = in_a[1];
+    // b_ref[1][0] = in_b[0];
+    // b_ref[1][1] = in_b[1];
+    // for (int i = 0; i < SA_COLS; i++) begin
+    //     for (int j = 0; j < SA_ROWS; j++) begin
+    //         $display("a_ref[%d][%d]:%d, b_ref[%d][%d]:%d", i, j, a_ref[i][j], i, j, b_ref[i][j]);
+    //     end
+    // end
+   
 
     for(int i = 0; i < SA_ROWS; i++) begin
         for (int j = 0; j < SA_COLS; j++) begin
             c_ref[i][j] = 0;
             for(int k = 0; k < SA_COLS; k++) begin
-                c_ref[i][j] += a_ref[i][k] * b_ref[k][j];
+                c_ref[i][j] += {{(OUT_WIDTH-IN_WIDTH){a_ref[i][k][IN_WIDTH-1]}},a_ref[i][k]} * 
+                               {{(OUT_WIDTH-IN_WIDTH){b_ref[k][j][IN_WIDTH-1]}},b_ref[k][j]};
             end
         end
     end
 
     // for(int i = 0; i < SA_ROWS; i++) begin
     //     for (int j = 0; j < SA_COLS; j++) begin
-    //         for(int k = 0; k < SA_COLS; k++) begin
-    //             $display("c_ref[%d][%d]:%d", i, j, c_ref[i][j]);
-    //         end
+    //         $display("a_ref[%d][%d]:%d, b_ref[%d][%d]:%d", i, j, a_ref[i][j], i, j, b_ref[i][j]);
+    //         $display("c_ref[%d][%d]:%d", i, j, c_ref[i][j]);
     //     end
     // end
 
-    #(clk_period*5);
-    @(negedge clk); rst = 1'b0;
+    
 
     while(1) begin
         @(posedge clk) begin
@@ -107,27 +127,37 @@ initial begin
     $display("*********** Systolic-Array-Test *****************");
     #(clk_period*10)
     
-    @(negedge clk)
-    in_a[0]  = 1;
-    in_a[1]  = 3;
-    in_b[0]  = 1;
-    in_b[1]  = 0;
-    in_c[0]  = 0;
-    valid_in = 1'b1;
+    for (int i = 0; i < SA_COLS; i++) begin
+        @(negedge clk)
+        for (int j = 0; j < SA_ROWS; j++) begin
+            in_a[j] = $random;
+            in_b[j] = $random;
+            in_c[j] = 1'b0;
+            valid_in = 1'b1;
+        end
+    end
 
-    @(negedge clk)
-    in_a[0]  = 2;
-    in_a[1]  = 4;
-    in_b[0]  = 0;
-    in_b[1]  = 1;
-    in_c[0]  = 0;
-    valid_in = 1'b1;
+    // @(negedge clk)
+    // in_a[0]  = $random;
+    // in_a[1]  = $random;
+    // in_b[0]  = $random;
+    // in_b[1]  = $random;
+    // in_c[0]  = 0;
+    // valid_in = 1'b1;
+
+    // @(negedge clk)
+    // in_a[0]  = $random;
+    // in_a[1]  = $random;
+    // in_b[0]  = $random;
+    // in_b[1]  = $random;
+    // in_c[0]  = 0;
+    // valid_in = 1'b1;
 
     @(negedge clk)
     valid_in = 1'b0;
 
     
-    #(clk_period*20); 
+    #(clk_period*30); 
     if(err == 0)
         $display("******************PASSED*************************");
     else

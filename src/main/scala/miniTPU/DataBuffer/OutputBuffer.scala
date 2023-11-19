@@ -8,9 +8,9 @@ class OutputBuffer(val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     val ctrl_valid    = Input(Bool())
     val ctrl_ready    = Input(Bool())
     val ctrl_ob_ready = Input(Bool())
-    val data_in = Input(Vec(QUEUE_NUM, UInt(C_WIDTH.W)))
+    val data_in = Input(Vec(QUEUE_NUM, SInt(C_WIDTH.W)))
 
-    val data_out = Output(Vec(QUEUE_NUM, UInt(C_WIDTH.W)))
+    val data_out = Output(Vec(QUEUE_NUM, SInt(C_WIDTH.W)))
     val all_empty  = Output(Bool())
   })
 

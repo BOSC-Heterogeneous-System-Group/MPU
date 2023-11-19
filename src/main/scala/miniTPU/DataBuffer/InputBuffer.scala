@@ -9,9 +9,9 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     val ctrl_data_in = Input(Bool())
     val ctrl_data_out = Input(Bool())
     val ctrl_data_valid = Input(Bool())
-    val data_in = Input(Vec(QUEUE_NUM, UInt(IN_WIDTH.W)))
+    val data_in = Input(Vec(QUEUE_NUM, SInt(IN_WIDTH.W)))
 
-    val data_out = Output(Vec(QUEUE_NUM, UInt(IN_WIDTH.W)))
+    val data_out = Output(Vec(QUEUE_NUM, SInt(IN_WIDTH.W)))
     val all_full     = Output(Bool())
     val all_empty    = Output(Bool())
     val data_in_done = Output(Bool())

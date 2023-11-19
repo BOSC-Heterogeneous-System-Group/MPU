@@ -9,14 +9,14 @@ import chisel3._
 class SystolicArray(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
     val in_control = Input(Vec(SA_COLS, new PE_Control))
-    val in_a = Input(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
-    val in_b = Input(Vec(SA_COLS, UInt(IN_WIDTH.W)))
-    val in_c = Input(Vec(SA_COLS, UInt(C_WIDTH.W)))
+    val in_a = Input(Vec(SA_ROWS, SInt(IN_WIDTH.W)))
+    val in_b = Input(Vec(SA_COLS, SInt(IN_WIDTH.W)))
+    val in_c = Input(Vec(SA_COLS, SInt(C_WIDTH.W)))
 
     val out_control = Output(Vec(SA_COLS, new PE_Control))
-    val out_a = Output(Vec(SA_ROWS, UInt(IN_WIDTH.W)))
-    val out_b = Output(Vec(SA_COLS, UInt(IN_WIDTH.W)))
-    val out_c = Output(Vec(SA_COLS, UInt(C_WIDTH.W)))
+    val out_a = Output(Vec(SA_ROWS, SInt(IN_WIDTH.W)))
+    val out_b = Output(Vec(SA_COLS, SInt(IN_WIDTH.W)))
+    val out_c = Output(Vec(SA_COLS, SInt(C_WIDTH.W)))
   })
 
   val sa = Seq.fill(SA_ROWS, SA_COLS)(Module(new PE(IN_WIDTH, C_WIDTH)))

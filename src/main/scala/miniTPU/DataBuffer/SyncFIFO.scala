@@ -8,13 +8,13 @@ class SyncFIFO(width: Int, depth: Int) extends Module {
   val io = IO(new Bundle {
     val enq = Input(Bool())
     val deq = Input(Bool())
-    val enqData = Input(UInt(width.W))
-    val deqData = Output(UInt(width.W))
+    val enqData = Input(SInt(width.W))
+    val deqData = Output(SInt(width.W))
     val full = Output(Bool())
     val empty = Output(Bool())
   })
 
-  val mem = RegInit(VecInit(Seq.fill(depth)(0.U(width.W))))
+  val mem = RegInit(VecInit(Seq.fill(depth)(0.S(width.W))))
 
   val addr_width = log2Ceil(depth)
   val readPtr = RegInit(0.U((addr_width + 1).W)) // extra bit to indicate full or empty
@@ -22,7 +22,7 @@ class SyncFIFO(width: Int, depth: Int) extends Module {
 
   val isFull = WireInit(false.B)
   val isEmpty = WireInit(false.B)
-  val deqData = WireInit(0.U(width.W))
+  val deqData = WireInit(0.S(width.W))
 
   isEmpty := readPtr === writePtr
   isFull := readPtr === Cat(~writePtr(addr_width), writePtr(addr_width - 1, 0))

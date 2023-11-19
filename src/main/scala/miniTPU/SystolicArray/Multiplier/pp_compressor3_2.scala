@@ -5,14 +5,14 @@ import chisel3.util.Decoupled
 import chisel3.util.Cat
 
 class pp_compressor3_2InputBundle(val w:Int) extends Bundle{
-    val pp0_in  = Input(UInt(w.W))
-    val pp1_in  = Input(UInt(w.W))
-    val pp2_in  = Input(UInt(w.W))
+    val pp0_in  = Input(SInt(w.W))
+    val pp1_in  = Input(SInt(w.W))
+    val pp2_in  = Input(SInt(w.W))
 }
 
 class pp_compressor3_2OutputBundle(val w:Int) extends Bundle{
-    val S    = Output(UInt(w.W))
-    val C    = Output(UInt(w.W))
+    val S    = Output(SInt(w.W))
+    val C    = Output(SInt(w.W))
 }
 
 class pp_compressor3_2(val C_WIDTH: Int) extends Module{
@@ -31,7 +31,7 @@ class pp_compressor3_2(val C_WIDTH: Int) extends Module{
         c_comb(i) := input.pp2_in(i).asBool & p_comb(i) | g_comb(i) 
     }
 
-    output.S := s_comb.asUInt
-    output.C := Cat((c_comb.asUInt)(C_WIDTH-2,0), 0.U(1.W))
+    output.S := s_comb.asUInt.asSInt
+    output.C := Cat((c_comb.asUInt)(C_WIDTH-2,0), 0.U(1.W)).asSInt
 
 }

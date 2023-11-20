@@ -75,7 +75,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
 
 
   // when input buffer is full, not ready
-  io.ctrl_pre_ready := !io.ctrl_ibh_full & !io.ctrl_ibv_full
+  io.ctrl_pre_ready := !io.ctrl_ibh_full & !io.ctrl_ibv_full & isIdle
   io.ctrl_post_valid := !io.ctrl_ob_empty
 
   // generate ctrl_ib_data_in, meaning that data start to input input buffer

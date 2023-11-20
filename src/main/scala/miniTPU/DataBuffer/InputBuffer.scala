@@ -22,10 +22,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(IN_WIDTH, QUEUE_LEN)))
 
   // when delay_count count to 0, queue start to output data
-  // deq_count count deq element number
-  // only delay_count count to 0, deq_count start to decrease
   val delay_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_NUM).W)))
-  val deq_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_LEN + 1).W)))
 
   val idle :: data_in :: data_out :: Nil = Enum(3)
   val state = RegInit(idle)
@@ -42,10 +39,9 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   io.data_in_done := data_in_done
   io.data_out_done := data_out_done
 
-
   for (i <- 0 until QUEUE_NUM) {
     data_queue(i).io.enq := ((state === idle && io.ctrl_data_in) || state === data_in) & io.ctrl_data_valid
-    data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && deq_count(i) =/= 0.U
+    data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && !data_queue(i).io.empty
     data_queue(i).io.enqData := io.data_in(i)
     io.data_out(i) := data_queue(i).io.deqData
   }
@@ -66,7 +62,6 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
 
     for (i <- 0 until QUEUE_NUM) {
       delay_count(i) := i.U
-      deq_count(i) := QUEUE_LEN.U
     }
 
   }.elsewhen(state === data_in) {
@@ -84,11 +79,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     }
 
     for (i <- 0 until QUEUE_NUM) {
-      when(delay_count(i) =/= 0.U) {
-        delay_count(i) := delay_count(i) - 1.U
-      }.elsewhen(deq_count(i) =/= 0.U) {
-        deq_count(i) := deq_count(i) - 1.U
-      }
+      delay_count(i) := Mux(delay_count(i) =/= 0.U, delay_count(i) - 1.U, 0.U)
     }
 
   }

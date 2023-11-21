@@ -138,6 +138,36 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
     }
   }
 
+  "test_xs_miniTPU" in {
+    (new ChiselStage).emitVerilog(new top(4, 16, 2, 2), Array("--target-dir", "./genVerilog/xs_miniTPU"))
+
+    test(new XS_miniTPU()).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+      dut.io.xsIO.in.valid.poke(false.B)
+      dut.io.xsIO.out.ready.poke(false.B)
+      dut.io.xsIO.in.bits.src(0).poke(0.S)
+      dut.io.xsIO.in.bits.src(1).poke(0.S)
+
+      dut.clock.step()
+      dut.io.xsIO.in.valid.poke(true.B)
+      dut.io.xsIO.in.bits.src(0).poke(17185.S)
+      dut.io.xsIO.in.bits.src(1).poke(4097.S)
+
+      dut.clock.step()
+      dut.clock.step()
+
+      dut.io.xsIO.in.valid.poke(false.B)
+      dut.io.xsIO.in.bits.src(0).poke(0.S)
+      dut.io.xsIO.in.bits.src(1).poke(0.S)
+
+      dut.clock.step(20)
+
+      dut.io.xsIO.out.ready.poke(true.B)
+
+      dut.clock.step(20)
+
+      println("test pass")
+    }
+  }
   "test_top_wrapper_2X2" in {
     (new ChiselStage).emitVerilog(new top(4, 16, 2, 2), Array("--target-dir", "./genVerilog/top"))
 
@@ -162,6 +192,8 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
       dut.io.tpuIO.in.bits.in_c(1).poke(0.S)
 
       dut.clock.step()
+
+
 
       // test invalid
       //      dut.io.in.valid.poke(false.B)

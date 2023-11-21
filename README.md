@@ -33,5 +33,7 @@ enter "pySim" directory and find your sim project
 
 `make`
 
+`gtkwave your_design.fst`
+
 
 

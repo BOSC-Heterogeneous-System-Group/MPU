@@ -67,12 +67,3 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   }
 
 }
-
-
-
-
-
-
-
-
-

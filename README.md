@@ -22,6 +22,16 @@ the verilog code is in genVerilog directory
 `make run`     to start run sim
 
 `make sim`     to run the above program and open waveform
+## simulation with cocotb
+for WSL2:
+
+`pip install cocotb`
+
+`pip install cocotb-axi`
+
+enter "pySim" directory and find your sim project
+
+`make`
 
 
 

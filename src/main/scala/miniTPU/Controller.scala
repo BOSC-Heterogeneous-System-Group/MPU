@@ -79,7 +79,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   io.ctrl_post_valid := !io.ctrl_ob_empty
 
   // generate ctrl_ib_data_in, meaning that data start to input input buffer
-  ctrl_ib_data_in_w := io.ctrl_ibh_empty & io.ctrl_ibv_empty & io.ctrl_pre_valid
+  ctrl_ib_data_in_w := io.ctrl_ibh_empty & io.ctrl_ibv_empty & io.ctrl_pre_valid & io.ctrl_pre_ready
   delay_ctrl_ib_data_in := ctrl_ib_data_in_w
   ctrl_ib_data_in_edge := !delay_ctrl_ib_data_in & ctrl_ib_data_in_w
   io.ctrl_ib_data_in := ctrl_ib_data_in_edge

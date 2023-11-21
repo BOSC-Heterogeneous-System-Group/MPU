@@ -33,106 +33,87 @@ class GlobalCounter(val maxCount:Int) extends Module {
 
 class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val ctrl_cal_start   = Input(Bool())
-    val ctrl_in_done     = Input(Bool())  // from InputBuffer: data_in_done
-    val ctrl_ibh_full    = Input(Bool())  // from InputBuffer: all full
-    val ctrl_ibv_full    = Input(Bool())  // from InputBuffer: all full
-    val ctrl_ibh_empty   = Input(Bool())  // from InputBuffer: all empty
-    val ctrl_ibv_empty   = Input(Bool())  // from InputBuffer: all empty
-    val ctrl_pre_valid   = Input(Bool())  // from top: last stage valid
-    val ctrl_post_ready  = Input(Bool())  // from top: next stage ready
-    val ctrl_ob_empty    = Input(Bool())  // from OutputBuffer: all empty
+    val start   = Input(Bool())
+    val ibh_data_in_done   = Input(Bool())
+    val ibh_empty = Input(Bool())
+    val ibv_data_in_done     = Input(Bool())
+    val ibv_empty   = Input(Bool())
+    val ob_empty    = Input(Bool())
 
-    val ctrl_pre_ready   = Output(Bool())
-    val ctrl_post_valid  = Output(Bool())
-    val ctrl_ib_data_in  = Output(Bool()) // to InputBuffer: ctrl_data_in
-    val ctrl_ib_data_out = Output(Bool()) // to InputBuffer: ctrl_data_out
-    val ctrl_cal_done    = Output(Bool())
-    val ctrl_out_done    = Output(Bool())
-    val ctrl_ob_ready    = Output(Bool())
+    val ctrl_ib_data_in  = Output(Bool())
+    val ctrl_ib_data_out = Output(Bool())
+    val ctrl_ob_data_in    = Output(Bool())
+    val ctrl_sa_send_data= Output(Bool())
   })
 
-  // idle：wait for instruction
-  // compute：execute matrix multiplication
-  // completed：calculation done, output the results from every PE
-  val idle :: compute :: completed :: Nil = Enum(3)
-  val state = RegInit(idle)
-
-  // initialize ctrl registers
-  val in_done_r    = RegInit(false.B)
-  val isIdle       = RegInit(true.B)
-
-  val ctrl_ib_data_in_w = WireDefault(false.B)
+  val ctrl_ib_data_in = WireInit(false.B)
   val delay_ctrl_ib_data_in = RegInit(false.B)
-  val ctrl_ib_data_in_edge = WireDefault(false.B)
+  val ctrl_ib_data_in_edge = WireInit(false.B)
 
-  val ctrl_ib_data_out_w = WireDefault(false.B)
+  val ctrl_ib_data_out = WireInit(false.B)
   val delay_ctrl_ib_data_out = RegInit(false.B)
-  val ctrl_ib_data_out_edge = WireDefault(false.B)
+  val ctrl_ib_data_out_edge = WireInit(false.B)
 
-  val cal_done_r   = RegInit(false.B)
-  val out_done_r   = RegInit(false.B)
+  val ctrl_ob_data_in = WireInit(false.B)
+  val ctrl_sa_send_data = WireInit(false.B)
 
-
-  // when input buffer is full, not ready
-  io.ctrl_pre_ready := !io.ctrl_ibh_full & !io.ctrl_ibv_full & isIdle
-  io.ctrl_post_valid := !io.ctrl_ob_empty
-
-  // generate ctrl_ib_data_in, meaning that data start to input input buffer
-  ctrl_ib_data_in_w := io.ctrl_ibh_empty & io.ctrl_ibv_empty & io.ctrl_pre_valid
-  delay_ctrl_ib_data_in := ctrl_ib_data_in_w
-  ctrl_ib_data_in_edge := !delay_ctrl_ib_data_in & ctrl_ib_data_in_w
+  // generate a pulse
+  delay_ctrl_ib_data_in := ctrl_ib_data_in
+  ctrl_ib_data_in_edge := !delay_ctrl_ib_data_in & ctrl_ib_data_in
   io.ctrl_ib_data_in := ctrl_ib_data_in_edge
 
-  // generate ctrl_ib_data_out, meaning that data start to input SA
-  // when data finish filling in input buffer and SA is idle, data can output to SA from input buffer
-  when(io.ctrl_in_done) {
-    in_done_r := true.B
-  }.elsewhen(io.ctrl_ib_data_out) {
-    in_done_r := false.B
-  }
-  ctrl_ib_data_out_w := in_done_r & isIdle & io.ctrl_ob_empty
-  delay_ctrl_ib_data_out := ctrl_ib_data_out_w
-  ctrl_ib_data_out_edge := !delay_ctrl_ib_data_out & ctrl_ib_data_out_w
+  delay_ctrl_ib_data_out := ctrl_ib_data_out
+  ctrl_ib_data_out_edge := !delay_ctrl_ib_data_out & ctrl_ib_data_out
   io.ctrl_ib_data_out := ctrl_ib_data_out_edge
+
+  io.ctrl_ob_data_in := ctrl_ob_data_in
+  io.ctrl_sa_send_data := ctrl_sa_send_data
+
+  val cal_done = RegInit(false.B)
+  val fall_done = RegInit(false.B)
+  val cal_gc_start = WireInit(false.B)
 
   // generate cal_done, meaning that calculation is done
   val cal_gc       = Module(new GlobalCounter(3*SA_ROWS-2)) // todo ROWs和COLs取最大值
-  cal_gc.io.start := io.ctrl_cal_start
-  when(cal_gc.io.tick) {
-    cal_done_r     := true.B
-  }
-  io.ctrl_cal_done     := cal_done_r
+  cal_gc.io.start := cal_gc_start
+  cal_done     := Mux(cal_gc.io.tick, true.B, false.B)
 
-  // generate out_done, meaning that output is done
-  val out_gc       = Module(new GlobalCounter(SA_COLS-1))
-  out_gc.io.start := cal_gc.io.tick
-  when(out_gc.io.tick) {
-    out_done_r     := true.B
-  }
-  io.ctrl_out_done     := out_done_r
+  // generate fall_done, meaning that data enter to output buffer done
+  val fall_gc       = Module(new GlobalCounter(SA_COLS-1))
+  fall_gc.io.start := cal_gc.io.tick
+  fall_done     := Mux(fall_gc.io.tick, true.B, false.B)
 
-  // generate ob_ready, meaning that enq is set
-  io.ctrl_ob_ready := cal_done_r & !out_done_r
+  // idle：wait for instruction
+  // prepare: data enter to input buffer
+  // compute：execute matrix multiplication
+  // fall: data enter to output buffer
+  // To distinguish it from the OutputBuffer's output,
+  // I use the term "fall" to represent the data output from the systolic array to the OutputBuffer,
+  // because it looks like data falling out of the systolic array
+  val idle :: prepare :: compute :: fall :: Nil = Enum(4)
+  val state = RegInit(idle)
 
-  // FSM
   when(state === idle) {
-    when(io.ctrl_cal_start) {
+    when(io.start && io.ibh_empty && io.ibv_empty) {
+      state := prepare
+      ctrl_ib_data_in := true.B
+    }
+  }.elsewhen(state === prepare) {
+    when(io.ibh_data_in_done && io.ibv_data_in_done && io.ob_empty) {
       state := compute
-      isIdle := false.B
+      ctrl_ib_data_out := true.B
+      cal_gc_start := true.B
     }
   }.elsewhen(state === compute) {
-    when(cal_done_r) {
-      state := completed
+    when(cal_done && io.ob_empty) {
+      state := fall
+      ctrl_sa_send_data := true.B
+      ctrl_ob_data_in := true.B
     }
-  }.elsewhen(state === completed) {
-    when(out_done_r) {
-      when(io.ctrl_post_ready) {
-        state := idle
-        isIdle := true.B
-        cal_done_r := false.B
-        out_done_r := false.B
-      }
+  }.elsewhen(state === fall) {
+    when(fall_done) {
+      state := idle
     }
   }
+
 }

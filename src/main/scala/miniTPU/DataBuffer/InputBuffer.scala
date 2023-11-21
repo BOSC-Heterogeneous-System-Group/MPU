@@ -6,17 +6,13 @@ import chisel3.util._
 
 class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) extends Module {
   val io = IO(new Bundle {
-    val ctrl_data_in = Input(Bool())
-    val ctrl_data_out = Input(Bool())
-    val ctrl_data_valid = Input(Bool())
-    val data_in = Input(Vec(QUEUE_NUM, SInt(IN_WIDTH.W)))
+    val ctrl_ib_data_in = Input(Bool())
+    val ctrl_ib_data_out = Input(Bool())
+    val data_in = Flipped(DecoupledIO(Vec(QUEUE_NUM, SInt(IN_WIDTH.W))))
 
     val data_out = Output(Vec(QUEUE_NUM, SInt(IN_WIDTH.W)))
-    val all_full     = Output(Bool())
-    val all_empty    = Output(Bool())
-    val data_in_done = Output(Bool())
-    val cal_start    = Output(Bool())  // to controller: start calculating
-    val data_out_done = Output(Bool())
+    val ib_empty    = Output(Bool())
+    val ib_data_in_done = Output(Bool())
   })
 
   val data_queue = Seq.fill(QUEUE_NUM)(Module(new SyncFIFO(IN_WIDTH, QUEUE_LEN)))
@@ -24,64 +20,50 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   // when delay_count count to 0, queue start to output data
   val delay_count = Reg(Vec(QUEUE_NUM, UInt(log2Ceil(QUEUE_NUM).W)))
 
+  val ib_data_in_done = WireInit(false.B)
+  val ib_data_out_done = WireInit(false.B)
+  io.ib_data_in_done := ib_data_in_done
+
+  val allFull = WireInit(false.B)
+  val allEmpty = WireInit(false.B)
+  allFull := data_queue.map(_.io.full).reduce(_ & _)
+  allEmpty := data_queue.map(_.io.empty).reduce(_ & _)
+  io.ib_empty := allEmpty
+
   val idle :: data_in :: data_out :: Nil = Enum(3)
   val state = RegInit(idle)
 
-  val cal_start_r = RegInit(false.B)
-  cal_start_r := io.ctrl_data_out
-  io.cal_start := cal_start_r
-
-  val data_in_done = WireInit(false.B)
-  val data_out_done = WireInit(false.B)
-  val allFull       = WireInit(false.B)
-  val allEmpty      = WireInit(false.B)
-
-  io.data_in_done := data_in_done
-  io.data_out_done := data_out_done
-
   for (i <- 0 until QUEUE_NUM) {
-    data_queue(i).io.enq := ((state === idle && io.ctrl_data_in) || state === data_in) & io.ctrl_data_valid
+    data_queue(i).io.enq := ((state === idle && io.ctrl_ib_data_in) || state === data_in) && io.data_in.valid
     data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && !data_queue(i).io.empty
-    data_queue(i).io.enqData := io.data_in(i)
+    data_queue(i).io.enqData := io.data_in.bits(i)
     io.data_out(i) := data_queue(i).io.deqData
   }
-
-  allFull := data_queue.map(_.io.full).reduce(_ & _)
-  allEmpty := data_queue.map(_.io.empty).reduce(_ & _)
-  io.all_full := allFull
-  io.all_empty := allEmpty
+  io.data_in.ready := !allFull && state === data_in
 
   // FSM
   when(state === idle) {
-
-    when(io.ctrl_data_in) {
+    when(io.ctrl_ib_data_in) {
       state := data_in
-    }.elsewhen(io.ctrl_data_out) {
+    }.elsewhen(io.ctrl_ib_data_out) {
       state := data_out
     }
-
     for (i <- 0 until QUEUE_NUM) {
       delay_count(i) := i.U
     }
-
   }.elsewhen(state === data_in) {
-
     when (allFull) {
-      data_in_done := true.B
-      state := Mux(io.ctrl_data_out, data_out, idle)
+      ib_data_in_done := true.B
+      state := Mux(io.ctrl_ib_data_out, data_out, idle)
     }
-
-  }.otherwise { // state === data_out
-
+  }.elsewhen(state === data_out) {
     when(allEmpty) {
-      data_out_done := true.B
+      ib_data_out_done := true.B
       state := idle
     }
-
     for (i <- 0 until QUEUE_NUM) {
       delay_count(i) := Mux(delay_count(i) =/= 0.U, delay_count(i) - 1.U, 0.U)
     }
-
   }
 
 }

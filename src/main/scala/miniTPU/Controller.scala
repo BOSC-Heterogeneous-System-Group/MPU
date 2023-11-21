@@ -39,6 +39,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
 
     val ctrl_ib_data_out = Output(Bool())
     val ctrl_ob_data_in    = Output(Bool())
+    val ctrl_sa_isIdle = Output(Bool())
     val ctrl_sa_send_data= Output(Bool())
   })
 
@@ -80,9 +81,13 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val idle :: compute :: fall :: Nil = Enum(3)
   val state = RegInit(idle)
 
+  val isIdle       = RegInit(true.B)
+  io.ctrl_sa_isIdle := isIdle
+
   when(state === idle) {
     when(io.ibh_data_in_done && io.ibv_data_in_done && io.ob_empty) {
       state := compute
+      isIdle := false.B
       ctrl_ib_data_out := true.B
       cal_gc_start := true.B
     }
@@ -93,6 +98,9 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   }.elsewhen(state === fall) {
     when(fall_done) {
       state := idle
+      isIdle := true.B
+      cal_done := false.B
+      fall_done := false.B
     }
   }
 

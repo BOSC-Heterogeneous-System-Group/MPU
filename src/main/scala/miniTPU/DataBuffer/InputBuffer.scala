@@ -7,6 +7,7 @@ import chisel3.util._
 class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) extends Module {
   val io = IO(new Bundle {
     val ctrl_ib_data_out = Input(Bool())
+    val ctrl_sa_isIdle = Input(Bool())
     val data_in = Flipped(DecoupledIO(Vec(QUEUE_NUM, SInt(IN_WIDTH.W))))
 
     val data_out = Output(Vec(QUEUE_NUM, SInt(IN_WIDTH.W)))
@@ -31,16 +32,16 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
   val state = RegInit(idle)
 
   for (i <- 0 until QUEUE_NUM) {
-    data_queue(i).io.enq := (state === data_in || (state === idle && allEmpty)) && io.data_in.valid
+    data_queue(i).io.enq := (state === data_in || (state === idle && allEmpty)) && io.data_in.valid && io.data_in.ready
     data_queue(i).io.deq := state === data_out && delay_count(i) === 0.U && !data_queue(i).io.empty
     data_queue(i).io.enqData := io.data_in.bits(i)
     io.data_out(i) := data_queue(i).io.deqData
   }
-  io.data_in.ready := !allFull
+  io.data_in.ready := !allFull & io.ctrl_sa_isIdle
 
   // FSM
   when(state === idle) {
-    when(io.data_in.valid && allEmpty) {
+    when(io.data_in.valid && io.data_in.ready && allEmpty) {
       state := data_in
     }.elsewhen(io.ctrl_ib_data_out) {
       state := data_out

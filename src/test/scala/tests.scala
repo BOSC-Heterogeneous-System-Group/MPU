@@ -147,6 +147,8 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
 
       dut.clock.step()
 
+
+
       dut.io.tpuIO.in.bits.in_a(0).poke(0.S)
       dut.io.tpuIO.in.bits.in_a(1).poke(0.S)
       dut.io.tpuIO.in.bits.in_b(0).poke(0.S)
@@ -154,7 +156,39 @@ class tests extends AnyFreeSpec with ChiselScalatestTester {
       dut.io.tpuIO.in.bits.in_c(0).poke(0.S)
       dut.io.tpuIO.in.bits.in_c(1).poke(0.S)
 
-      dut.clock.step(19)
+      dut.clock.step(18)
+      dut.clock.step()
+
+
+      dut.io.tpuIO.in.valid.poke(true.B)
+      dut.io.tpuIO.in.bits.in_a(0).poke(-1.S)
+      dut.io.tpuIO.in.bits.in_a(1).poke(-3.S)
+      dut.io.tpuIO.in.bits.in_b(0).poke(1.S)
+      dut.io.tpuIO.in.bits.in_b(1).poke(0.S)
+      dut.io.tpuIO.in.bits.in_c(0).poke(0.S)
+      dut.io.tpuIO.in.bits.in_c(1).poke(0.S)
+
+      dut.clock.step()
+
+      dut.io.tpuIO.in.valid.poke(true.B)
+      dut.io.tpuIO.in.bits.in_a(0).poke(-2.S)
+      dut.io.tpuIO.in.bits.in_a(1).poke(-4.S)
+      dut.io.tpuIO.in.bits.in_b(0).poke(0.S)
+      dut.io.tpuIO.in.bits.in_b(1).poke(1.S)
+      dut.io.tpuIO.in.bits.in_c(0).poke(0.S)
+      dut.io.tpuIO.in.bits.in_c(1).poke(0.S)
+
+      dut.clock.step()
+
+      dut.io.tpuIO.in.valid.poke(false.B)
+      dut.io.tpuIO.in.bits.in_a(0).poke(0.S)
+      dut.io.tpuIO.in.bits.in_a(1).poke(0.S)
+      dut.io.tpuIO.in.bits.in_b(0).poke(0.S)
+      dut.io.tpuIO.in.bits.in_b(1).poke(0.S)
+      dut.io.tpuIO.in.bits.in_c(0).poke(0.S)
+      dut.io.tpuIO.in.bits.in_c(1).poke(0.S)
+
+      dut.clock.step(10)
 
       dut.io.tpuIO.out.ready.poke(true.B)
 

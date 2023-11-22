@@ -40,6 +40,7 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
     val ctrl_ib_data_out = Output(Bool())
     val ctrl_ob_data_in    = Output(Bool())
     val ctrl_sa_isIdle = Output(Bool())
+    val ctrl_sa_isStall = Output(Bool())
     val ctrl_sa_send_data= Output(Bool())
   })
 
@@ -55,6 +56,12 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val fall_done = RegInit(false.B)
   val cal_gc_start = WireInit(false.B)
 
+  val isIdle = RegInit(true.B)
+  io.ctrl_sa_isIdle := isIdle
+
+  val isStall = RegInit(false.B)
+  io.ctrl_sa_isStall := isStall
+
   // generate cal_done, meaning that calculation is done
   val cal_gc       = Module(new GlobalCounter(3*SA_ROWS-2)) // todo ROWs和COLs取最大值
   cal_gc.io.start := cal_gc_start
@@ -64,12 +71,12 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
 
   // generate fall_done, meaning that data enter to output buffer done
   val fall_gc       = Module(new GlobalCounter(SA_COLS-1))
-  fall_gc.io.start := cal_gc.io.tick
+  fall_gc.io.start := cal_gc.io.tick & io.ob_empty | isStall & io.ob_empty
   when(fall_gc.io.tick) {
     fall_done := true.B
   }
 
-  io.ctrl_ob_data_in := cal_done & !fall_done
+  io.ctrl_ob_data_in := cal_done & !fall_done & !isStall
   io.ctrl_sa_send_data := cal_done & !fall_done
 
   // idle：wait for instruction and prepare data
@@ -78,22 +85,29 @@ class Controller(val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   // To distinguish it from the OutputBuffer's output,
   // I use the term "fall" to represent the data output from the systolic array to the OutputBuffer,
   // because it looks like data falling out of the systolic array
-  val idle :: compute :: fall :: Nil = Enum(3)
+  val idle :: compute :: stall :: fall :: Nil = Enum(4)
   val state = RegInit(idle)
 
-  val isIdle       = RegInit(true.B)
-  io.ctrl_sa_isIdle := isIdle
 
   when(state === idle) {
-    when(io.ibh_data_in_done && io.ibv_data_in_done && io.ob_empty) {
+    when(io.ibh_data_in_done && io.ibv_data_in_done && !isStall) {
       state := compute
       isIdle := false.B
+      isStall := false.B
       ctrl_ib_data_out := true.B
       cal_gc_start := true.B
     }
   }.elsewhen(state === compute) {
     when(cal_done && io.ob_empty) {
       state := fall
+    }.elsewhen(cal_gc.io.tick && !io.ob_empty) {
+      state := stall
+      isStall := true.B
+    }
+  }.elsewhen(state === stall) {
+    when(io.ob_empty) {
+      state := fall
+      isStall := false.B
     }
   }.elsewhen(state === fall) {
     when(fall_done) {

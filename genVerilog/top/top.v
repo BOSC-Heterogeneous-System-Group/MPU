@@ -405,10 +405,12 @@ module PE(
   input         clock,
   input         reset,
   input         io_in_control_ctrl_send_data,
+  input         io_in_control_ctrl_stall_data,
   input  [3:0]  io_in_a,
   input  [3:0]  io_in_b,
   input  [15:0] io_in_c,
   output        io_out_control_ctrl_send_data,
+  output        io_out_control_ctrl_stall_data,
   output [3:0]  io_out_a,
   output [3:0]  io_out_b,
   output [15:0] io_out_c
@@ -418,16 +420,16 @@ module PE(
   reg [31:0] _RAND_1;
   reg [31:0] _RAND_2;
 `endif // RANDOMIZE_REG_INIT
-  wire  mac_clock; // @[PE.scala 28:19]
-  wire  mac_reset; // @[PE.scala 28:19]
-  wire [3:0] mac_io_in_a; // @[PE.scala 28:19]
-  wire [3:0] mac_io_in_b; // @[PE.scala 28:19]
-  wire [15:0] mac_io_in_c; // @[PE.scala 28:19]
-  wire [15:0] mac_io_out_c; // @[PE.scala 28:19]
-  reg [3:0] a_reg; // @[PE.scala 24:22]
-  reg [3:0] b_reg; // @[PE.scala 25:22]
-  reg [15:0] c_reg; // @[PE.scala 26:22]
-  MacUnit mac ( // @[PE.scala 28:19]
+  wire  mac_clock; // @[PE.scala 29:19]
+  wire  mac_reset; // @[PE.scala 29:19]
+  wire [3:0] mac_io_in_a; // @[PE.scala 29:19]
+  wire [3:0] mac_io_in_b; // @[PE.scala 29:19]
+  wire [15:0] mac_io_in_c; // @[PE.scala 29:19]
+  wire [15:0] mac_io_out_c; // @[PE.scala 29:19]
+  reg [3:0] a_reg; // @[PE.scala 25:22]
+  reg [3:0] b_reg; // @[PE.scala 26:22]
+  reg [15:0] c_reg; // @[PE.scala 27:22]
+  MacUnit mac ( // @[PE.scala 29:19]
     .clock(mac_clock),
     .reset(mac_reset),
     .io_in_a(mac_io_in_a),
@@ -435,32 +437,35 @@ module PE(
     .io_in_c(mac_io_in_c),
     .io_out_c(mac_io_out_c)
   );
-  assign io_out_control_ctrl_send_data = io_in_control_ctrl_send_data; // @[PE.scala 42:18]
-  assign io_out_a = a_reg; // @[PE.scala 38:12]
-  assign io_out_b = b_reg; // @[PE.scala 39:12]
-  assign io_out_c = c_reg; // @[PE.scala 40:12]
+  assign io_out_control_ctrl_send_data = io_in_control_ctrl_send_data; // @[PE.scala 43:18]
+  assign io_out_control_ctrl_stall_data = io_in_control_ctrl_stall_data; // @[PE.scala 43:18]
+  assign io_out_a = a_reg; // @[PE.scala 39:12]
+  assign io_out_b = b_reg; // @[PE.scala 40:12]
+  assign io_out_c = c_reg; // @[PE.scala 41:12]
   assign mac_clock = clock;
   assign mac_reset = reset;
-  assign mac_io_in_a = io_in_a; // @[PE.scala 29:15]
-  assign mac_io_in_b = io_in_b; // @[PE.scala 30:15]
-  assign mac_io_in_c = c_reg; // @[PE.scala 31:15]
+  assign mac_io_in_a = io_in_a; // @[PE.scala 30:15]
+  assign mac_io_in_b = io_in_b; // @[PE.scala 31:15]
+  assign mac_io_in_c = c_reg; // @[PE.scala 32:15]
   always @(posedge clock) begin
-    if (reset) begin // @[PE.scala 24:22]
-      a_reg <= 4'sh0; // @[PE.scala 24:22]
-    end else begin
-      a_reg <= io_in_a; // @[PE.scala 33:9]
-    end
     if (reset) begin // @[PE.scala 25:22]
-      b_reg <= 4'sh0; // @[PE.scala 25:22]
+      a_reg <= 4'sh0; // @[PE.scala 25:22]
     end else begin
-      b_reg <= io_in_b; // @[PE.scala 34:9]
+      a_reg <= io_in_a; // @[PE.scala 34:9]
     end
     if (reset) begin // @[PE.scala 26:22]
-      c_reg <= 16'sh0; // @[PE.scala 26:22]
-    end else if (io_in_control_ctrl_send_data) begin // @[PE.scala 36:15]
-      c_reg <= io_in_c;
+      b_reg <= 4'sh0; // @[PE.scala 26:22]
     end else begin
-      c_reg <= mac_io_out_c;
+      b_reg <= io_in_b; // @[PE.scala 35:9]
+    end
+    if (reset) begin // @[PE.scala 27:22]
+      c_reg <= 16'sh0; // @[PE.scala 27:22]
+    end else if (!(io_in_control_ctrl_stall_data)) begin // @[PE.scala 37:15]
+      if (io_in_control_ctrl_send_data) begin // @[PE.scala 37:68]
+        c_reg <= io_in_c;
+      end else begin
+        c_reg <= mac_io_out_c;
+      end
     end
   end
 // Register and memory initialization
@@ -517,6 +522,7 @@ module PE_2(
   input         clock,
   input         reset,
   input         io_in_control_ctrl_send_data,
+  input         io_in_control_ctrl_stall_data,
   input  [3:0]  io_in_a,
   input  [3:0]  io_in_b,
   input  [15:0] io_in_c,
@@ -527,15 +533,15 @@ module PE_2(
   reg [31:0] _RAND_0;
   reg [31:0] _RAND_1;
 `endif // RANDOMIZE_REG_INIT
-  wire  mac_clock; // @[PE.scala 28:19]
-  wire  mac_reset; // @[PE.scala 28:19]
-  wire [3:0] mac_io_in_a; // @[PE.scala 28:19]
-  wire [3:0] mac_io_in_b; // @[PE.scala 28:19]
-  wire [15:0] mac_io_in_c; // @[PE.scala 28:19]
-  wire [15:0] mac_io_out_c; // @[PE.scala 28:19]
-  reg [3:0] a_reg; // @[PE.scala 24:22]
-  reg [15:0] c_reg; // @[PE.scala 26:22]
-  MacUnit mac ( // @[PE.scala 28:19]
+  wire  mac_clock; // @[PE.scala 29:19]
+  wire  mac_reset; // @[PE.scala 29:19]
+  wire [3:0] mac_io_in_a; // @[PE.scala 29:19]
+  wire [3:0] mac_io_in_b; // @[PE.scala 29:19]
+  wire [15:0] mac_io_in_c; // @[PE.scala 29:19]
+  wire [15:0] mac_io_out_c; // @[PE.scala 29:19]
+  reg [3:0] a_reg; // @[PE.scala 25:22]
+  reg [15:0] c_reg; // @[PE.scala 27:22]
+  MacUnit mac ( // @[PE.scala 29:19]
     .clock(mac_clock),
     .reset(mac_reset),
     .io_in_a(mac_io_in_a),
@@ -543,25 +549,27 @@ module PE_2(
     .io_in_c(mac_io_in_c),
     .io_out_c(mac_io_out_c)
   );
-  assign io_out_a = a_reg; // @[PE.scala 38:12]
-  assign io_out_c = c_reg; // @[PE.scala 40:12]
+  assign io_out_a = a_reg; // @[PE.scala 39:12]
+  assign io_out_c = c_reg; // @[PE.scala 41:12]
   assign mac_clock = clock;
   assign mac_reset = reset;
-  assign mac_io_in_a = io_in_a; // @[PE.scala 29:15]
-  assign mac_io_in_b = io_in_b; // @[PE.scala 30:15]
-  assign mac_io_in_c = c_reg; // @[PE.scala 31:15]
+  assign mac_io_in_a = io_in_a; // @[PE.scala 30:15]
+  assign mac_io_in_b = io_in_b; // @[PE.scala 31:15]
+  assign mac_io_in_c = c_reg; // @[PE.scala 32:15]
   always @(posedge clock) begin
-    if (reset) begin // @[PE.scala 24:22]
-      a_reg <= 4'sh0; // @[PE.scala 24:22]
+    if (reset) begin // @[PE.scala 25:22]
+      a_reg <= 4'sh0; // @[PE.scala 25:22]
     end else begin
-      a_reg <= io_in_a; // @[PE.scala 33:9]
+      a_reg <= io_in_a; // @[PE.scala 34:9]
     end
-    if (reset) begin // @[PE.scala 26:22]
-      c_reg <= 16'sh0; // @[PE.scala 26:22]
-    end else if (io_in_control_ctrl_send_data) begin // @[PE.scala 36:15]
-      c_reg <= io_in_c;
-    end else begin
-      c_reg <= mac_io_out_c;
+    if (reset) begin // @[PE.scala 27:22]
+      c_reg <= 16'sh0; // @[PE.scala 27:22]
+    end else if (!(io_in_control_ctrl_stall_data)) begin // @[PE.scala 37:15]
+      if (io_in_control_ctrl_send_data) begin // @[PE.scala 37:68]
+        c_reg <= io_in_c;
+      end else begin
+        c_reg <= mac_io_out_c;
+      end
     end
   end
 // Register and memory initialization
@@ -616,7 +624,9 @@ module SystolicArray(
   input         clock,
   input         reset,
   input         io_in_control_0_ctrl_send_data,
+  input         io_in_control_0_ctrl_stall_data,
   input         io_in_control_1_ctrl_send_data,
+  input         io_in_control_1_ctrl_stall_data,
   input  [3:0]  io_in_a_0,
   input  [3:0]  io_in_a_1,
   input  [3:0]  io_in_b_0,
@@ -629,26 +639,31 @@ module SystolicArray(
   wire  sa_0_0_clock; // @[SystolicArray.scala 22:45]
   wire  sa_0_0_reset; // @[SystolicArray.scala 22:45]
   wire  sa_0_0_io_in_control_ctrl_send_data; // @[SystolicArray.scala 22:45]
+  wire  sa_0_0_io_in_control_ctrl_stall_data; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_0_io_in_a; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_0_io_in_b; // @[SystolicArray.scala 22:45]
   wire [15:0] sa_0_0_io_in_c; // @[SystolicArray.scala 22:45]
   wire  sa_0_0_io_out_control_ctrl_send_data; // @[SystolicArray.scala 22:45]
+  wire  sa_0_0_io_out_control_ctrl_stall_data; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_0_io_out_a; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_0_io_out_b; // @[SystolicArray.scala 22:45]
   wire [15:0] sa_0_0_io_out_c; // @[SystolicArray.scala 22:45]
   wire  sa_0_1_clock; // @[SystolicArray.scala 22:45]
   wire  sa_0_1_reset; // @[SystolicArray.scala 22:45]
   wire  sa_0_1_io_in_control_ctrl_send_data; // @[SystolicArray.scala 22:45]
+  wire  sa_0_1_io_in_control_ctrl_stall_data; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_1_io_in_a; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_1_io_in_b; // @[SystolicArray.scala 22:45]
   wire [15:0] sa_0_1_io_in_c; // @[SystolicArray.scala 22:45]
   wire  sa_0_1_io_out_control_ctrl_send_data; // @[SystolicArray.scala 22:45]
+  wire  sa_0_1_io_out_control_ctrl_stall_data; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_1_io_out_a; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_0_1_io_out_b; // @[SystolicArray.scala 22:45]
   wire [15:0] sa_0_1_io_out_c; // @[SystolicArray.scala 22:45]
   wire  sa_1_0_clock; // @[SystolicArray.scala 22:45]
   wire  sa_1_0_reset; // @[SystolicArray.scala 22:45]
   wire  sa_1_0_io_in_control_ctrl_send_data; // @[SystolicArray.scala 22:45]
+  wire  sa_1_0_io_in_control_ctrl_stall_data; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_1_0_io_in_a; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_1_0_io_in_b; // @[SystolicArray.scala 22:45]
   wire [15:0] sa_1_0_io_in_c; // @[SystolicArray.scala 22:45]
@@ -657,6 +672,7 @@ module SystolicArray(
   wire  sa_1_1_clock; // @[SystolicArray.scala 22:45]
   wire  sa_1_1_reset; // @[SystolicArray.scala 22:45]
   wire  sa_1_1_io_in_control_ctrl_send_data; // @[SystolicArray.scala 22:45]
+  wire  sa_1_1_io_in_control_ctrl_stall_data; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_1_1_io_in_a; // @[SystolicArray.scala 22:45]
   wire [3:0] sa_1_1_io_in_b; // @[SystolicArray.scala 22:45]
   wire [15:0] sa_1_1_io_in_c; // @[SystolicArray.scala 22:45]
@@ -666,10 +682,12 @@ module SystolicArray(
     .clock(sa_0_0_clock),
     .reset(sa_0_0_reset),
     .io_in_control_ctrl_send_data(sa_0_0_io_in_control_ctrl_send_data),
+    .io_in_control_ctrl_stall_data(sa_0_0_io_in_control_ctrl_stall_data),
     .io_in_a(sa_0_0_io_in_a),
     .io_in_b(sa_0_0_io_in_b),
     .io_in_c(sa_0_0_io_in_c),
     .io_out_control_ctrl_send_data(sa_0_0_io_out_control_ctrl_send_data),
+    .io_out_control_ctrl_stall_data(sa_0_0_io_out_control_ctrl_stall_data),
     .io_out_a(sa_0_0_io_out_a),
     .io_out_b(sa_0_0_io_out_b),
     .io_out_c(sa_0_0_io_out_c)
@@ -678,10 +696,12 @@ module SystolicArray(
     .clock(sa_0_1_clock),
     .reset(sa_0_1_reset),
     .io_in_control_ctrl_send_data(sa_0_1_io_in_control_ctrl_send_data),
+    .io_in_control_ctrl_stall_data(sa_0_1_io_in_control_ctrl_stall_data),
     .io_in_a(sa_0_1_io_in_a),
     .io_in_b(sa_0_1_io_in_b),
     .io_in_c(sa_0_1_io_in_c),
     .io_out_control_ctrl_send_data(sa_0_1_io_out_control_ctrl_send_data),
+    .io_out_control_ctrl_stall_data(sa_0_1_io_out_control_ctrl_stall_data),
     .io_out_a(sa_0_1_io_out_a),
     .io_out_b(sa_0_1_io_out_b),
     .io_out_c(sa_0_1_io_out_c)
@@ -690,6 +710,7 @@ module SystolicArray(
     .clock(sa_1_0_clock),
     .reset(sa_1_0_reset),
     .io_in_control_ctrl_send_data(sa_1_0_io_in_control_ctrl_send_data),
+    .io_in_control_ctrl_stall_data(sa_1_0_io_in_control_ctrl_stall_data),
     .io_in_a(sa_1_0_io_in_a),
     .io_in_b(sa_1_0_io_in_b),
     .io_in_c(sa_1_0_io_in_c),
@@ -700,6 +721,7 @@ module SystolicArray(
     .clock(sa_1_1_clock),
     .reset(sa_1_1_reset),
     .io_in_control_ctrl_send_data(sa_1_1_io_in_control_ctrl_send_data),
+    .io_in_control_ctrl_stall_data(sa_1_1_io_in_control_ctrl_stall_data),
     .io_in_a(sa_1_1_io_in_a),
     .io_in_b(sa_1_1_io_in_b),
     .io_in_c(sa_1_1_io_in_c),
@@ -711,24 +733,28 @@ module SystolicArray(
   assign sa_0_0_clock = clock;
   assign sa_0_0_reset = reset;
   assign sa_0_0_io_in_control_ctrl_send_data = io_in_control_0_ctrl_send_data; // @[SystolicArray.scala 53:26]
+  assign sa_0_0_io_in_control_ctrl_stall_data = io_in_control_0_ctrl_stall_data; // @[SystolicArray.scala 53:26]
   assign sa_0_0_io_in_a = io_in_a_0; // @[SystolicArray.scala 28:20]
   assign sa_0_0_io_in_b = io_in_b_0; // @[SystolicArray.scala 36:20]
   assign sa_0_0_io_in_c = io_in_c_0; // @[SystolicArray.scala 44:20]
   assign sa_0_1_clock = clock;
   assign sa_0_1_reset = reset;
   assign sa_0_1_io_in_control_ctrl_send_data = io_in_control_1_ctrl_send_data; // @[SystolicArray.scala 53:26]
+  assign sa_0_1_io_in_control_ctrl_stall_data = io_in_control_1_ctrl_stall_data; // @[SystolicArray.scala 53:26]
   assign sa_0_1_io_in_a = sa_0_0_io_out_a; // @[SystolicArray.scala 28:20]
   assign sa_0_1_io_in_b = io_in_b_1; // @[SystolicArray.scala 36:20]
   assign sa_0_1_io_in_c = io_in_c_1; // @[SystolicArray.scala 44:20]
   assign sa_1_0_clock = clock;
   assign sa_1_0_reset = reset;
   assign sa_1_0_io_in_control_ctrl_send_data = sa_0_0_io_out_control_ctrl_send_data; // @[SystolicArray.scala 53:26]
+  assign sa_1_0_io_in_control_ctrl_stall_data = sa_0_0_io_out_control_ctrl_stall_data; // @[SystolicArray.scala 53:26]
   assign sa_1_0_io_in_a = io_in_a_1; // @[SystolicArray.scala 28:20]
   assign sa_1_0_io_in_b = sa_0_0_io_out_b; // @[SystolicArray.scala 36:20]
   assign sa_1_0_io_in_c = sa_0_0_io_out_c; // @[SystolicArray.scala 44:20]
   assign sa_1_1_clock = clock;
   assign sa_1_1_reset = reset;
   assign sa_1_1_io_in_control_ctrl_send_data = sa_0_1_io_out_control_ctrl_send_data; // @[SystolicArray.scala 53:26]
+  assign sa_1_1_io_in_control_ctrl_stall_data = sa_0_1_io_out_control_ctrl_stall_data; // @[SystolicArray.scala 53:26]
   assign sa_1_1_io_in_a = sa_1_0_io_out_a; // @[SystolicArray.scala 28:20]
   assign sa_1_1_io_in_b = sa_0_1_io_out_b; // @[SystolicArray.scala 36:20]
   assign sa_1_1_io_in_c = sa_0_1_io_out_c; // @[SystolicArray.scala 44:20]
@@ -899,6 +925,7 @@ module Controller(
   output  io_ctrl_ib_data_out,
   output  io_ctrl_ob_data_in,
   output  io_ctrl_sa_isIdle,
+  output  io_ctrl_sa_isStall,
   output  io_ctrl_sa_send_data
 );
 `ifdef RANDOMIZE_REG_INIT
@@ -907,97 +934,126 @@ module Controller(
   reg [31:0] _RAND_2;
   reg [31:0] _RAND_3;
   reg [31:0] _RAND_4;
+  reg [31:0] _RAND_5;
 `endif // RANDOMIZE_REG_INIT
-  wire  cal_gc_clock; // @[Controller.scala 59:28]
-  wire  cal_gc_reset; // @[Controller.scala 59:28]
-  wire  cal_gc_io_start; // @[Controller.scala 59:28]
-  wire  cal_gc_io_tick; // @[Controller.scala 59:28]
-  wire  fall_gc_clock; // @[Controller.scala 66:29]
-  wire  fall_gc_reset; // @[Controller.scala 66:29]
-  wire  fall_gc_io_start; // @[Controller.scala 66:29]
-  wire  fall_gc_io_tick; // @[Controller.scala 66:29]
-  reg  delay_ctrl_ib_data_out; // @[Controller.scala 47:39]
-  reg [1:0] state; // @[Controller.scala 82:22]
-  wire  _T_2 = io_ibh_data_in_done & io_ibv_data_in_done & io_ob_empty; // @[Controller.scala 88:53]
-  wire  ctrl_ib_data_out = state == 2'h0 & _T_2; // @[Controller.scala 87:24]
-  reg  cal_done; // @[Controller.scala 54:25]
-  reg  fall_done; // @[Controller.scala 55:26]
-  wire  _GEN_0 = cal_gc_io_tick | cal_done; // @[Controller.scala 61:24 62:14 54:25]
-  wire  _GEN_1 = fall_gc_io_tick | fall_done; // @[Controller.scala 68:25 69:15 55:26]
-  wire  _io_ctrl_ob_data_in_T = ~fall_done; // @[Controller.scala 72:36]
-  reg  isIdle; // @[Controller.scala 84:29]
-  wire  _GEN_3 = io_ibh_data_in_done & io_ibv_data_in_done & io_ob_empty ? 1'h0 : isIdle; // @[Controller.scala 88:69 90:14 84:29]
-  wire [1:0] _GEN_6 = fall_done ? 2'h0 : state; // @[Controller.scala 100:13 99:21 82:22]
-  wire  _GEN_7 = fall_done | isIdle; // @[Controller.scala 101:14 99:21 84:29]
-  wire  _GEN_8 = fall_done ? 1'h0 : _GEN_0; // @[Controller.scala 102:16 99:21]
-  wire  _GEN_9 = fall_done ? 1'h0 : _GEN_1; // @[Controller.scala 103:17 99:21]
-  wire  _GEN_11 = state == 2'h2 ? _GEN_7 : isIdle; // @[Controller.scala 84:29 98:30]
-  wire  _GEN_15 = state == 2'h1 ? isIdle : _GEN_11; // @[Controller.scala 84:29 94:33]
-  wire  _GEN_19 = state == 2'h0 ? _GEN_3 : _GEN_15; // @[Controller.scala 87:24]
-  GlobalCounter cal_gc ( // @[Controller.scala 59:28]
+  wire  cal_gc_clock; // @[Controller.scala 66:28]
+  wire  cal_gc_reset; // @[Controller.scala 66:28]
+  wire  cal_gc_io_start; // @[Controller.scala 66:28]
+  wire  cal_gc_io_tick; // @[Controller.scala 66:28]
+  wire  fall_gc_clock; // @[Controller.scala 73:29]
+  wire  fall_gc_reset; // @[Controller.scala 73:29]
+  wire  fall_gc_io_start; // @[Controller.scala 73:29]
+  wire  fall_gc_io_tick; // @[Controller.scala 73:29]
+  reg  delay_ctrl_ib_data_out; // @[Controller.scala 48:39]
+  reg [1:0] state; // @[Controller.scala 89:22]
+  reg  isStall; // @[Controller.scala 62:24]
+  wire  _T_2 = ~isStall; // @[Controller.scala 93:56]
+  wire  _T_3 = io_ibh_data_in_done & io_ibv_data_in_done & ~isStall; // @[Controller.scala 93:53]
+  wire  ctrl_ib_data_out = state == 2'h0 & _T_3; // @[Controller.scala 92:24]
+  reg  cal_done; // @[Controller.scala 55:25]
+  reg  fall_done; // @[Controller.scala 56:26]
+  reg  isIdle; // @[Controller.scala 59:23]
+  wire  _GEN_0 = cal_gc_io_tick | cal_done; // @[Controller.scala 68:24 69:14 55:25]
+  wire  _GEN_1 = fall_gc_io_tick | fall_done; // @[Controller.scala 75:25 76:15 56:26]
+  wire  _io_ctrl_ob_data_in_T = ~fall_done; // @[Controller.scala 79:36]
+  wire  _GEN_3 = io_ibh_data_in_done & io_ibv_data_in_done & ~isStall ? 1'h0 : isIdle; // @[Controller.scala 93:66 95:14 59:23]
+  wire [1:0] _GEN_6 = cal_gc_io_tick & ~io_ob_empty ? 2'h2 : state; // @[Controller.scala 103:48 104:13 89:22]
+  wire  _GEN_7 = cal_gc_io_tick & ~io_ob_empty | isStall; // @[Controller.scala 103:48 105:15 62:24]
+  wire [1:0] _GEN_10 = io_ob_empty ? 2'h3 : state; // @[Controller.scala 108:23 109:13 89:22]
+  wire  _GEN_11 = io_ob_empty ? 1'h0 : isStall; // @[Controller.scala 108:23 110:15 62:24]
+  wire [1:0] _GEN_12 = fall_done ? 2'h0 : state; // @[Controller.scala 113:21 114:13 89:22]
+  wire  _GEN_13 = fall_done | isIdle; // @[Controller.scala 113:21 115:14 59:23]
+  wire  _GEN_14 = fall_done ? 1'h0 : _GEN_0; // @[Controller.scala 113:21 116:16]
+  wire  _GEN_15 = fall_done ? 1'h0 : _GEN_1; // @[Controller.scala 113:21 117:17]
+  wire [1:0] _GEN_16 = state == 2'h3 ? _GEN_12 : state; // @[Controller.scala 112:30 89:22]
+  wire  _GEN_17 = state == 2'h3 ? _GEN_13 : isIdle; // @[Controller.scala 112:30 59:23]
+  wire  _GEN_18 = state == 2'h3 ? _GEN_14 : _GEN_0; // @[Controller.scala 112:30]
+  wire  _GEN_19 = state == 2'h3 ? _GEN_15 : _GEN_1; // @[Controller.scala 112:30]
+  wire  _GEN_22 = state == 2'h2 ? isIdle : _GEN_17; // @[Controller.scala 107:31 59:23]
+  wire  _GEN_27 = state == 2'h1 ? isIdle : _GEN_22; // @[Controller.scala 100:33 59:23]
+  wire  _GEN_31 = state == 2'h0 ? _GEN_3 : _GEN_27; // @[Controller.scala 92:24]
+  GlobalCounter cal_gc ( // @[Controller.scala 66:28]
     .clock(cal_gc_clock),
     .reset(cal_gc_reset),
     .io_start(cal_gc_io_start),
     .io_tick(cal_gc_io_tick)
   );
-  GlobalCounter_1 fall_gc ( // @[Controller.scala 66:29]
+  GlobalCounter_1 fall_gc ( // @[Controller.scala 73:29]
     .clock(fall_gc_clock),
     .reset(fall_gc_reset),
     .io_start(fall_gc_io_start),
     .io_tick(fall_gc_io_tick)
   );
-  assign io_ctrl_ib_data_out = ~delay_ctrl_ib_data_out & ctrl_ib_data_out; // @[Controller.scala 51:52]
-  assign io_ctrl_ob_data_in = cal_done & ~fall_done; // @[Controller.scala 72:34]
-  assign io_ctrl_sa_isIdle = isIdle; // @[Controller.scala 85:21]
-  assign io_ctrl_sa_send_data = cal_done & _io_ctrl_ob_data_in_T; // @[Controller.scala 73:36]
+  assign io_ctrl_ib_data_out = ~delay_ctrl_ib_data_out & ctrl_ib_data_out; // @[Controller.scala 52:52]
+  assign io_ctrl_ob_data_in = cal_done & ~fall_done & _T_2; // @[Controller.scala 79:47]
+  assign io_ctrl_sa_isIdle = isIdle; // @[Controller.scala 60:21]
+  assign io_ctrl_sa_isStall = isStall; // @[Controller.scala 63:22]
+  assign io_ctrl_sa_send_data = cal_done & _io_ctrl_ob_data_in_T; // @[Controller.scala 80:36]
   assign cal_gc_clock = clock;
   assign cal_gc_reset = reset;
-  assign cal_gc_io_start = state == 2'h0 & _T_2; // @[Controller.scala 87:24]
+  assign cal_gc_io_start = state == 2'h0 & _T_3; // @[Controller.scala 92:24]
   assign fall_gc_clock = clock;
   assign fall_gc_reset = reset;
-  assign fall_gc_io_start = cal_gc_io_tick; // @[Controller.scala 67:20]
+  assign fall_gc_io_start = cal_gc_io_tick & io_ob_empty | isStall & io_ob_empty; // @[Controller.scala 74:52]
   always @(posedge clock) begin
-    if (reset) begin // @[Controller.scala 47:39]
-      delay_ctrl_ib_data_out <= 1'h0; // @[Controller.scala 47:39]
+    if (reset) begin // @[Controller.scala 48:39]
+      delay_ctrl_ib_data_out <= 1'h0; // @[Controller.scala 48:39]
     end else begin
-      delay_ctrl_ib_data_out <= ctrl_ib_data_out; // @[Controller.scala 50:26]
+      delay_ctrl_ib_data_out <= ctrl_ib_data_out; // @[Controller.scala 51:26]
     end
-    if (reset) begin // @[Controller.scala 82:22]
-      state <= 2'h0; // @[Controller.scala 82:22]
-    end else if (state == 2'h0) begin // @[Controller.scala 87:24]
-      if (io_ibh_data_in_done & io_ibv_data_in_done & io_ob_empty) begin // @[Controller.scala 88:69]
-        state <= 2'h1; // @[Controller.scala 89:13]
+    if (reset) begin // @[Controller.scala 89:22]
+      state <= 2'h0; // @[Controller.scala 89:22]
+    end else if (state == 2'h0) begin // @[Controller.scala 92:24]
+      if (io_ibh_data_in_done & io_ibv_data_in_done & ~isStall) begin // @[Controller.scala 93:66]
+        state <= 2'h1; // @[Controller.scala 94:13]
       end
-    end else if (state == 2'h1) begin // @[Controller.scala 94:33]
-      if (cal_done & io_ob_empty) begin // @[Controller.scala 95:35]
-        state <= 2'h2; // @[Controller.scala 96:13]
+    end else if (state == 2'h1) begin // @[Controller.scala 100:33]
+      if (cal_done & io_ob_empty) begin // @[Controller.scala 101:35]
+        state <= 2'h3; // @[Controller.scala 102:13]
+      end else begin
+        state <= _GEN_6;
       end
-    end else if (state == 2'h2) begin // @[Controller.scala 98:30]
-      state <= _GEN_6;
-    end
-    if (reset) begin // @[Controller.scala 54:25]
-      cal_done <= 1'h0; // @[Controller.scala 54:25]
-    end else if (state == 2'h0) begin // @[Controller.scala 87:24]
-      cal_done <= _GEN_0;
-    end else if (state == 2'h1) begin // @[Controller.scala 94:33]
-      cal_done <= _GEN_0;
-    end else if (state == 2'h2) begin // @[Controller.scala 98:30]
-      cal_done <= _GEN_8;
+    end else if (state == 2'h2) begin // @[Controller.scala 107:31]
+      state <= _GEN_10;
     end else begin
+      state <= _GEN_16;
+    end
+    if (reset) begin // @[Controller.scala 62:24]
+      isStall <= 1'h0; // @[Controller.scala 62:24]
+    end else if (state == 2'h0) begin // @[Controller.scala 92:24]
+      if (io_ibh_data_in_done & io_ibv_data_in_done & ~isStall) begin // @[Controller.scala 93:66]
+        isStall <= 1'h0; // @[Controller.scala 96:15]
+      end
+    end else if (state == 2'h1) begin // @[Controller.scala 100:33]
+      if (!(cal_done & io_ob_empty)) begin // @[Controller.scala 101:35]
+        isStall <= _GEN_7;
+      end
+    end else if (state == 2'h2) begin // @[Controller.scala 107:31]
+      isStall <= _GEN_11;
+    end
+    if (reset) begin // @[Controller.scala 55:25]
+      cal_done <= 1'h0; // @[Controller.scala 55:25]
+    end else if (state == 2'h0) begin // @[Controller.scala 92:24]
       cal_done <= _GEN_0;
-    end
-    if (reset) begin // @[Controller.scala 55:26]
-      fall_done <= 1'h0; // @[Controller.scala 55:26]
-    end else if (state == 2'h0) begin // @[Controller.scala 87:24]
-      fall_done <= _GEN_1;
-    end else if (state == 2'h1) begin // @[Controller.scala 94:33]
-      fall_done <= _GEN_1;
-    end else if (state == 2'h2) begin // @[Controller.scala 98:30]
-      fall_done <= _GEN_9;
+    end else if (state == 2'h1) begin // @[Controller.scala 100:33]
+      cal_done <= _GEN_0;
+    end else if (state == 2'h2) begin // @[Controller.scala 107:31]
+      cal_done <= _GEN_0;
     end else begin
-      fall_done <= _GEN_1;
+      cal_done <= _GEN_18;
     end
-    isIdle <= reset | _GEN_19; // @[Controller.scala 84:{29,29}]
+    if (reset) begin // @[Controller.scala 56:26]
+      fall_done <= 1'h0; // @[Controller.scala 56:26]
+    end else if (state == 2'h0) begin // @[Controller.scala 92:24]
+      fall_done <= _GEN_1;
+    end else if (state == 2'h1) begin // @[Controller.scala 100:33]
+      fall_done <= _GEN_1;
+    end else if (state == 2'h2) begin // @[Controller.scala 107:31]
+      fall_done <= _GEN_1;
+    end else begin
+      fall_done <= _GEN_19;
+    end
+    isIdle <= reset | _GEN_31; // @[Controller.scala 59:{23,23}]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -1040,11 +1096,13 @@ initial begin
   _RAND_1 = {1{`RANDOM}};
   state = _RAND_1[1:0];
   _RAND_2 = {1{`RANDOM}};
-  cal_done = _RAND_2[0:0];
+  isStall = _RAND_2[0:0];
   _RAND_3 = {1{`RANDOM}};
-  fall_done = _RAND_3[0:0];
+  cal_done = _RAND_3[0:0];
   _RAND_4 = {1{`RANDOM}};
-  isIdle = _RAND_4[0:0];
+  fall_done = _RAND_4[0:0];
+  _RAND_5 = {1{`RANDOM}};
+  isIdle = _RAND_5[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
@@ -1491,7 +1549,9 @@ module top(
   wire  sa_clock; // @[top.scala 154:18]
   wire  sa_reset; // @[top.scala 154:18]
   wire  sa_io_in_control_0_ctrl_send_data; // @[top.scala 154:18]
+  wire  sa_io_in_control_0_ctrl_stall_data; // @[top.scala 154:18]
   wire  sa_io_in_control_1_ctrl_send_data; // @[top.scala 154:18]
+  wire  sa_io_in_control_1_ctrl_stall_data; // @[top.scala 154:18]
   wire [3:0] sa_io_in_a_0; // @[top.scala 154:18]
   wire [3:0] sa_io_in_a_1; // @[top.scala 154:18]
   wire [3:0] sa_io_in_b_0; // @[top.scala 154:18]
@@ -1508,6 +1568,7 @@ module top(
   wire  controller_io_ctrl_ib_data_out; // @[top.scala 155:26]
   wire  controller_io_ctrl_ob_data_in; // @[top.scala 155:26]
   wire  controller_io_ctrl_sa_isIdle; // @[top.scala 155:26]
+  wire  controller_io_ctrl_sa_isStall; // @[top.scala 155:26]
   wire  controller_io_ctrl_sa_send_data; // @[top.scala 155:26]
   wire  inBuffer_h_clock; // @[top.scala 156:28]
   wire  inBuffer_h_reset; // @[top.scala 156:28]
@@ -1545,7 +1606,9 @@ module top(
     .clock(sa_clock),
     .reset(sa_reset),
     .io_in_control_0_ctrl_send_data(sa_io_in_control_0_ctrl_send_data),
+    .io_in_control_0_ctrl_stall_data(sa_io_in_control_0_ctrl_stall_data),
     .io_in_control_1_ctrl_send_data(sa_io_in_control_1_ctrl_send_data),
+    .io_in_control_1_ctrl_stall_data(sa_io_in_control_1_ctrl_stall_data),
     .io_in_a_0(sa_io_in_a_0),
     .io_in_a_1(sa_io_in_a_1),
     .io_in_b_0(sa_io_in_b_0),
@@ -1564,6 +1627,7 @@ module top(
     .io_ctrl_ib_data_out(controller_io_ctrl_ib_data_out),
     .io_ctrl_ob_data_in(controller_io_ctrl_ob_data_in),
     .io_ctrl_sa_isIdle(controller_io_ctrl_sa_isIdle),
+    .io_ctrl_sa_isStall(controller_io_ctrl_sa_isStall),
     .io_ctrl_sa_send_data(controller_io_ctrl_sa_send_data)
   );
   InputBuffer inBuffer_h ( // @[top.scala 156:28]
@@ -1611,7 +1675,9 @@ module top(
   assign sa_clock = clock;
   assign sa_reset = reset;
   assign sa_io_in_control_0_ctrl_send_data = controller_io_ctrl_sa_send_data; // @[top.scala 180:45]
+  assign sa_io_in_control_0_ctrl_stall_data = controller_io_ctrl_sa_isStall; // @[top.scala 181:46]
   assign sa_io_in_control_1_ctrl_send_data = controller_io_ctrl_sa_send_data; // @[top.scala 180:45]
+  assign sa_io_in_control_1_ctrl_stall_data = controller_io_ctrl_sa_isStall; // @[top.scala 181:46]
   assign sa_io_in_a_0 = inBuffer_h_io_data_out_0; // @[top.scala 176:14]
   assign sa_io_in_a_1 = inBuffer_h_io_data_out_1; // @[top.scala 176:14]
   assign sa_io_in_b_0 = inBuffer_v_io_data_out_0; // @[top.scala 177:14]
@@ -1620,9 +1686,9 @@ module top(
   assign sa_io_in_c_1 = io_tpuIO_in_bits_in_c_1; // @[top.scala 178:14]
   assign controller_clock = clock;
   assign controller_reset = reset;
-  assign controller_io_ibh_data_in_done = inBuffer_h_io_ib_data_in_done; // @[top.scala 182:34]
-  assign controller_io_ibv_data_in_done = inBuffer_v_io_ib_data_in_done; // @[top.scala 183:34]
-  assign controller_io_ob_empty = outBuffer_io_ob_empty; // @[top.scala 184:26]
+  assign controller_io_ibh_data_in_done = inBuffer_h_io_ib_data_in_done; // @[top.scala 183:34]
+  assign controller_io_ibv_data_in_done = inBuffer_v_io_ib_data_in_done; // @[top.scala 184:34]
+  assign controller_io_ob_empty = outBuffer_io_ob_empty; // @[top.scala 185:26]
   assign inBuffer_h_clock = clock;
   assign inBuffer_h_reset = reset;
   assign inBuffer_h_io_ctrl_ib_data_out = controller_io_ctrl_ib_data_out; // @[top.scala 162:34]

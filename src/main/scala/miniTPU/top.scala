@@ -178,6 +178,7 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   sa.io.in_c := io.tpuIO.in.bits.in_c  // TODO: preload in_c as bias
   outBuffer.io.data_in := sa.io.out_c
   sa.io.in_control.foreach(_.ctrl_send_data := controller.io.ctrl_sa_send_data)
+  sa.io.in_control.foreach(_.ctrl_stall_data := controller.io.ctrl_sa_isStall)
 
   controller.io.ibh_data_in_done := inBuffer_h.io.ib_data_in_done
   controller.io.ibv_data_in_done := inBuffer_v.io.ib_data_in_done

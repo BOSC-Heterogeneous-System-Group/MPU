@@ -6,11 +6,13 @@ import miniTPU.DataBuffer._
 import miniTPU.SystolicArray._
 
 class xsFUInput() extends Bundle {
-  val src = Input(Vec(2, SInt(64.W)))
+  val src = Input(Vec(2, UInt(64.W)))
+  val uop = Input(Bool())
 }
 
 class xsFUOutput() extends Bundle {
-  val data = Output(SInt(64.W))
+  val data = Output(UInt(64.W))
+  val uop  = Output(Bool())
 }
 
 class xsFUIO () extends Bundle {
@@ -26,13 +28,24 @@ class XS_miniTPU() extends Module{
   })
 
   val inBridge  = Module(new InputBridge())
-  val mini_tpu  = Module(new top(4,16,2,2))
+  val mini_tpu  = Module(new top(0,4,16,2,2))
   val outBridge = Module(new OutputBridge())
 
-  inBridge.io.in_valid  := io.xsIO.in.valid
+  val uop    = io.xsIO.in.bits.uop
+  val newReq = io.xsIO.in.fire()
+
+  val uopReg = RegEnable(uop, newReq)
+
+  val validReg = RegInit(false.B)
+  val srcReg   = Reg(Vec(2, UInt(64.W)))
+
+  validReg := io.xsIO.in.valid
+  srcReg   := io.xsIO.in.bits.src
+
+  inBridge.io.in_valid  := validReg
   io.xsIO.in.ready      := inBridge.io.out_ready
-  inBridge.io.src(0) := io.xsIO.in.bits.src(0)
-  inBridge.io.src(1) := io.xsIO.in.bits.src(1)
+  inBridge.io.src(0) := srcReg(0).asSInt
+  inBridge.io.src(1) := srcReg(1).asSInt
 
   inBridge.io.in_ready  := mini_tpu.io.tpuIO.in.ready
   mini_tpu.io.tpuIO.in.valid := inBridge.io.out_valid
@@ -46,7 +59,8 @@ class XS_miniTPU() extends Module{
 
   outBridge.io.in_ready := io.xsIO.out.ready
   io.xsIO.out.valid     := outBridge.io.out_valid
-  io.xsIO.out.bits.data := outBridge.io.result
+  io.xsIO.out.bits.data := outBridge.io.result.asUInt
+  io.xsIO.out.bits.uop  := uopReg
 
 }
 
@@ -61,29 +75,30 @@ class OutputBridge() extends Module {
   })
 
   val out_ptr      = RegInit(false.B)
-  val out_valid_w  = WireInit(false.B)
-  val result_0_0   = WireInit(0.S(16.W))
-  val result_0_1   = WireInit(0.S(16.W))
-  val result_1_0   = RegInit(0.S(16.W))
-  val result_1_1   = RegInit(0.S(16.W))
+  val out_valid_r  = RegInit(false.B)
+  val result       = Seq.fill(2, 2)(RegInit(0.S(16.W)))
 
-  when (out_ptr === false.B && (io.in_valid && io.out_ready)) {
+  val indices = Seq((0, 0), (0, 1), (1, 0), (1, 1))
+
+  when (out_ptr === false.B && io.in_valid) {
     out_ptr         := true.B
-    result_1_0      := io.out_c(0)
-    result_1_1      := io.out_c(1)
-    out_valid_w     := false.B
+    out_valid_r     := false.B
+    Seq(indices(2), indices(3)).zip(io.out_c).foreach {case ((i, j), out) => result(i)(j) := out}
 
-  }.elsewhen (out_ptr === true.B && (io.in_valid && io.out_ready)){
+  }.elsewhen (out_ptr === true.B && io.in_valid){
     out_ptr         := false.B
-    result_1_0      := 0.S
-    result_1_1      := 0.S
-    result_0_0      := io.out_c(0)
-    result_0_1      := io.out_c(1)
-    out_valid_w     := io.in_valid
+    out_valid_r     := io.in_valid
+    Seq(indices(0), indices(1)).zip(io.out_c).foreach {case ((i, j), out) => result(i)(j) := out}
+  }.elsewhen (io.in_ready) {
+    out_ptr         := false.B
+    out_valid_r     := io.in_valid
+    Seq(indices(0), indices(1), indices(2), indices(3)).foreach {case (i, j) => result(i)(j) := io.out_c(j)}
   }
-  io.out_valid    := out_valid_w
-  io.out_ready    := io.in_ready
-  io.result       := Cat(result_1_1, result_1_0, result_0_1, result_0_0).asSInt
+
+  io.out_valid := out_valid_r
+  io.out_ready := io.in_ready
+  io.result    := Cat(indices.map {case (i, j) => result(i)(j)}.reverse).asSInt
+
 }
 
 class InputBridge() extends Module {
@@ -97,38 +112,41 @@ class InputBridge() extends Module {
     val in_b      = Output(Vec(2, SInt(4.W)))
   })
 
-  val in_ptr  = RegInit(false.B)
-  val valid_r = RegInit(false.B)
-  val in_a_r  = Reg(Vec(2, SInt(4.W)))
-  val in_b_r  = Reg(Vec(2, SInt(4.W)))
+  val in_ptr      = RegInit(false.B)
+  val valid_r     = RegInit(false.B)
+  val srcChunks   = Wire(Vec(2, SInt(16.W)))
+  val in_a_r      = Seq.fill(2, 2)(Reg(SInt(4.W)))
+  val in_b_r      = Seq.fill(2, 2)(Reg(SInt(4.W)))
 
-  when (in_ptr === false.B && io.out_ready && io.in_valid) {
+  srcChunks := io.src.map {src => src(15 ,0).asSInt}
+
+  val indices = Seq((0, 0), (0, 1), (1, 0), (1, 1))
+
+  when (in_ptr === false.B && io.in_ready && io.in_valid) {
     in_ptr     := true.B
     valid_r    := io.in_valid
-    in_a_r(0)  := io.src(0)( 3, 0).asSInt
-    in_a_r(1)  := io.src(0)(11, 8).asSInt
-    in_b_r(0)  := io.src(1)( 3, 0).asSInt
-    in_b_r(1)  := io.src(1)( 7, 4).asSInt
-  }.elsewhen (in_ptr(0) === true.B && io.out_ready && io.in_valid) {
+
+    indices.foreach {case (i, j) => in_a_r(i)(j) := srcChunks(0)(i * 8 + j * 4 + 3, i * 8 + j * 4).asSInt}
+    indices.foreach {case (i, j) => in_b_r(i)(j) := srcChunks(1)(i * 8 + j * 4 + 3, i * 8 + j * 4).asSInt}
+    Seq(indices(0), indices(2)).zip(io.in_a).foreach {case ((i, j), in_a) => in_a := in_a_r(i)(j)}
+    Seq(indices(0), indices(1)).zip(io.in_b).foreach {case ((i, j), in_b) => in_b := in_a_r(i)(j)}
+
+  }.elsewhen (in_ptr === true.B && io.in_ready && valid_r) {
     in_ptr     := false.B
-    valid_r    := io.in_valid
-    in_a_r(0)  := io.src(0)( 7,  4).asSInt
-    in_a_r(1)  := io.src(0)(15, 12).asSInt
-    in_b_r(0)  := io.src(1)(11,  8).asSInt
-    in_b_r(1)  := io.src(1)(15, 12).asSInt
+    Seq(indices(0), indices(2)).zip(io.in_a).foreach {case ((i, j), in_a) => in_a := in_a_r(i)(j)}
+    Seq(indices(0), indices(1)).zip(io.in_b).foreach {case ((i, j), in_b) => in_b := in_b_r(i)(j)}
+
   }.otherwise {
     in_ptr     := false.B
     valid_r    := io.in_valid
-    in_a_r(0) := io.src(0)(7, 4).asSInt
-    in_a_r(1) := io.src(0)(15, 12).asSInt
-    in_b_r(0) := io.src(1)(11, 8).asSInt
-    in_b_r(1) := io.src(1)(15, 12).asSInt
+    indices.foreach {case (i, j) => in_a_r(i)(j) := srcChunks(0)(i * 8 + j * 4 + 3, i * 8 + j * 4).asSInt}
+    indices.foreach {case (i, j) => in_b_r(i)(j) := srcChunks(1)(i * 8 + j * 4 + 3, i * 8 + j * 4).asSInt}
+    Seq(indices(1), indices(3)).zip(io.in_a).foreach {case ((i, j), in_a) => in_a := in_a_r(i)(j)}
+    Seq(indices(2), indices(3)).zip(io.in_b).foreach {case ((i, j), in_b) => in_b := in_b_r(i)(j)}
   }
 
   io.out_ready := io.in_ready
   io.out_valid := valid_r
-  io.in_a := in_a_r
-  io.in_b := in_b_r
 }
 
 class miniTPUInput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
@@ -146,7 +164,13 @@ class miniTPUIO (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_C
   val out = DecoupledIO(new miniTPUOutput(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS))
 }
 
-class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
+
+/*
+   type-0 : pipeline systolic array
+   type-1 : algorithm accelerator
+   ...
+*/
+class top (val TYPE: Int, val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
     val tpuIO = new miniTPUIO(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS)
   })
@@ -155,7 +179,7 @@ class top (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: I
   val controller = Module(new Controller(SA_ROWS, SA_COLS))
   val inBuffer_h   = Module(new InputBuffer(IN_WIDTH, SA_ROWS, SA_COLS))  // horizontal and vertical data buffer
   val inBuffer_v  = Module(new InputBuffer(IN_WIDTH, SA_COLS, SA_ROWS)) // TODO: add control logic to select data( B or D)
-  val outBuffer  = Module(new OutputBuffer(C_WIDTH, SA_COLS, SA_ROWS))
+  val outBuffer  = Module(new OutputBuffer(TYPE, C_WIDTH, SA_COLS, SA_ROWS))
 
   inBuffer_h.io.data_in.valid := io.tpuIO.in.valid
   inBuffer_h.io.data_in.bits := io.tpuIO.in.bits.in_a

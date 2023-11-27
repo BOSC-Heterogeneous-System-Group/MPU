@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 import logging
 import cocotb
+import itertools
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 from cocotb.regression import TestFactory
@@ -42,8 +43,8 @@ def toByteList(x, length=4):
 
 def axisFrame2np(frame):
     frame_btye = frame.tdata
-    frame_btye_num = int(len(frame_btye)/2)
-    np_data = np.frombuffer(frame_btye,count = frame_btye_num, dtype = np.int16)
+    frame_btye_num = int(len(frame_btye)/2) #有多少个16bit数
+    np_data = np.frombuffer(frame_btye,count = frame_btye_num, dtype = np.int16) #将字节数据解析为16位16位的numpy数组
 
     return np_data
 
@@ -68,6 +69,14 @@ class TB(object):
         self.input_source = AxiStreamSource(AxiStreamBus.from_prefix(dut, "s_axis"), dut.clk, dut.rst)
         self.output_sink  = AxiStreamSink(AxiStreamBus.from_prefix(dut, "m_axis"), dut.clk, dut.rst)
 
+    def set_idle_generator(self, generator=None):
+        if generator:
+            self.input_source.set_pause_generator(generator())
+
+    def set_backpressure_generator(self, generator=None):
+        if generator:
+            self.output_sink.set_pause_generator(generator())
+
     async def cycle_reset(self):
         self.dut.rst.setimmediatevalue(0)
         await RisingEdge(self.dut.clk)
@@ -80,10 +89,13 @@ class TB(object):
         await RisingEdge(self.dut.clk)
 
 
-async def run_test_write(dut):
+async def run_test_write(dut, idle_inserter="cycle_pause", backpressure_inserter="cycle_pause"):
 
     tb = TB(dut)
     await tb.cycle_reset()
+
+    tb.set_idle_generator(idle_inserter)
+    tb.set_backpressure_generator(backpressure_inserter)
 
     ref_c_list = []
     test_num = 10
@@ -104,12 +116,12 @@ async def run_test_write(dut):
         await tb.input_source.send(data_frame)
 
     for i in range(1):
-        pred_frame = await tb.output_sink.recv()
+        pred_frame = await tb.output_sink.recv() ##一拍valid & ready就会接收到，await结束
         # print(axisFrame2np(pred_frame))
         out1 = axisFrame2np(pred_frame)
         assert tb.output_sink.empty()
 
-        pred_frame = await tb.output_sink.recv()
+        pred_frame = await tb.output_sink.recv() ##两拍，得到完整的结果矩阵c的数据
         # print(axisFrame2np(pred_frame))
         out2 = axisFrame2np(pred_frame)
         assert tb.output_sink.empty()
@@ -120,7 +132,12 @@ async def run_test_write(dut):
     for i in range(600):
         await RisingEdge(dut.clk)
 
+def cycle_pause():
+    return itertools.cycle([1, 1, 1, 0])
+
 factory = TestFactory(run_test_write)
+factory.add_option("idle_inserter", [None, cycle_pause])
+factory.add_option("backpressure_inserter", [None, cycle_pause])
 factory.generate_tests()
 
 

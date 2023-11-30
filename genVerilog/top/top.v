@@ -1515,20 +1515,20 @@ module OutputBuffer(
     .io_deqData(data_queue_1_io_deqData),
     .io_empty(data_queue_1_io_empty)
   );
-  assign io_data_out_valid = ~allEmpty; // @[OutputBuffer.scala 29:24]
-  assign io_data_out_bits_0 = data_queue_0_io_deqData; // @[OutputBuffer.scala 26:25]
-  assign io_data_out_bits_1 = data_queue_1_io_deqData; // @[OutputBuffer.scala 26:25]
+  assign io_data_out_valid = ~allEmpty; // @[OutputBuffer.scala 34:24]
+  assign io_data_out_bits_0 = data_queue_0_io_deqData; // @[OutputBuffer.scala 31:25]
+  assign io_data_out_bits_1 = data_queue_1_io_deqData; // @[OutputBuffer.scala 31:25]
   assign io_ob_empty = data_queue_0_io_empty & data_queue_1_io_empty; // @[OutputBuffer.scala 20:51]
   assign data_queue_0_clock = clock;
   assign data_queue_0_reset = reset;
   assign data_queue_0_io_enq = io_ctrl_ob_data_in; // @[OutputBuffer.scala 23:26]
-  assign data_queue_0_io_deq = io_data_out_ready & ~allEmpty; // @[OutputBuffer.scala 24:47]
-  assign data_queue_0_io_enqData = io_data_in_0; // @[OutputBuffer.scala 25:30]
+  assign data_queue_0_io_deq = io_data_out_ready & ~allEmpty; // @[OutputBuffer.scala 28:49]
+  assign data_queue_0_io_enqData = io_data_in_0; // @[OutputBuffer.scala 30:30]
   assign data_queue_1_clock = clock;
   assign data_queue_1_reset = reset;
   assign data_queue_1_io_enq = io_ctrl_ob_data_in; // @[OutputBuffer.scala 23:26]
-  assign data_queue_1_io_deq = io_data_out_ready & ~allEmpty; // @[OutputBuffer.scala 24:47]
-  assign data_queue_1_io_enqData = io_data_in_1; // @[OutputBuffer.scala 25:30]
+  assign data_queue_1_io_deq = io_data_out_ready & ~allEmpty; // @[OutputBuffer.scala 28:49]
+  assign data_queue_1_io_enqData = io_data_in_1; // @[OutputBuffer.scala 30:30]
 endmodule
 module top(
   input         clock,
@@ -1546,63 +1546,63 @@ module top(
   output [15:0] io_tpuIO_out_bits_out_c_0,
   output [15:0] io_tpuIO_out_bits_out_c_1
 );
-  wire  sa_clock; // @[top.scala 154:18]
-  wire  sa_reset; // @[top.scala 154:18]
-  wire  sa_io_in_control_0_ctrl_send_data; // @[top.scala 154:18]
-  wire  sa_io_in_control_0_ctrl_stall_data; // @[top.scala 154:18]
-  wire  sa_io_in_control_1_ctrl_send_data; // @[top.scala 154:18]
-  wire  sa_io_in_control_1_ctrl_stall_data; // @[top.scala 154:18]
-  wire [3:0] sa_io_in_a_0; // @[top.scala 154:18]
-  wire [3:0] sa_io_in_a_1; // @[top.scala 154:18]
-  wire [3:0] sa_io_in_b_0; // @[top.scala 154:18]
-  wire [3:0] sa_io_in_b_1; // @[top.scala 154:18]
-  wire [15:0] sa_io_in_c_0; // @[top.scala 154:18]
-  wire [15:0] sa_io_in_c_1; // @[top.scala 154:18]
-  wire [15:0] sa_io_out_c_0; // @[top.scala 154:18]
-  wire [15:0] sa_io_out_c_1; // @[top.scala 154:18]
-  wire  controller_clock; // @[top.scala 155:26]
-  wire  controller_reset; // @[top.scala 155:26]
-  wire  controller_io_ibh_data_in_done; // @[top.scala 155:26]
-  wire  controller_io_ibv_data_in_done; // @[top.scala 155:26]
-  wire  controller_io_ob_empty; // @[top.scala 155:26]
-  wire  controller_io_ctrl_ib_data_out; // @[top.scala 155:26]
-  wire  controller_io_ctrl_ob_data_in; // @[top.scala 155:26]
-  wire  controller_io_ctrl_sa_isIdle; // @[top.scala 155:26]
-  wire  controller_io_ctrl_sa_isStall; // @[top.scala 155:26]
-  wire  controller_io_ctrl_sa_send_data; // @[top.scala 155:26]
-  wire  inBuffer_h_clock; // @[top.scala 156:28]
-  wire  inBuffer_h_reset; // @[top.scala 156:28]
-  wire  inBuffer_h_io_ctrl_ib_data_out; // @[top.scala 156:28]
-  wire  inBuffer_h_io_ctrl_sa_isIdle; // @[top.scala 156:28]
-  wire  inBuffer_h_io_data_in_ready; // @[top.scala 156:28]
-  wire  inBuffer_h_io_data_in_valid; // @[top.scala 156:28]
-  wire [3:0] inBuffer_h_io_data_in_bits_0; // @[top.scala 156:28]
-  wire [3:0] inBuffer_h_io_data_in_bits_1; // @[top.scala 156:28]
-  wire [3:0] inBuffer_h_io_data_out_0; // @[top.scala 156:28]
-  wire [3:0] inBuffer_h_io_data_out_1; // @[top.scala 156:28]
-  wire  inBuffer_h_io_ib_data_in_done; // @[top.scala 156:28]
-  wire  inBuffer_v_clock; // @[top.scala 157:27]
-  wire  inBuffer_v_reset; // @[top.scala 157:27]
-  wire  inBuffer_v_io_ctrl_ib_data_out; // @[top.scala 157:27]
-  wire  inBuffer_v_io_ctrl_sa_isIdle; // @[top.scala 157:27]
-  wire  inBuffer_v_io_data_in_ready; // @[top.scala 157:27]
-  wire  inBuffer_v_io_data_in_valid; // @[top.scala 157:27]
-  wire [3:0] inBuffer_v_io_data_in_bits_0; // @[top.scala 157:27]
-  wire [3:0] inBuffer_v_io_data_in_bits_1; // @[top.scala 157:27]
-  wire [3:0] inBuffer_v_io_data_out_0; // @[top.scala 157:27]
-  wire [3:0] inBuffer_v_io_data_out_1; // @[top.scala 157:27]
-  wire  inBuffer_v_io_ib_data_in_done; // @[top.scala 157:27]
-  wire  outBuffer_clock; // @[top.scala 158:26]
-  wire  outBuffer_reset; // @[top.scala 158:26]
-  wire  outBuffer_io_ctrl_ob_data_in; // @[top.scala 158:26]
-  wire [15:0] outBuffer_io_data_in_0; // @[top.scala 158:26]
-  wire [15:0] outBuffer_io_data_in_1; // @[top.scala 158:26]
-  wire  outBuffer_io_data_out_ready; // @[top.scala 158:26]
-  wire  outBuffer_io_data_out_valid; // @[top.scala 158:26]
-  wire [15:0] outBuffer_io_data_out_bits_0; // @[top.scala 158:26]
-  wire [15:0] outBuffer_io_data_out_bits_1; // @[top.scala 158:26]
-  wire  outBuffer_io_ob_empty; // @[top.scala 158:26]
-  SystolicArray sa ( // @[top.scala 154:18]
+  wire  sa_clock; // @[top.scala 172:18]
+  wire  sa_reset; // @[top.scala 172:18]
+  wire  sa_io_in_control_0_ctrl_send_data; // @[top.scala 172:18]
+  wire  sa_io_in_control_0_ctrl_stall_data; // @[top.scala 172:18]
+  wire  sa_io_in_control_1_ctrl_send_data; // @[top.scala 172:18]
+  wire  sa_io_in_control_1_ctrl_stall_data; // @[top.scala 172:18]
+  wire [3:0] sa_io_in_a_0; // @[top.scala 172:18]
+  wire [3:0] sa_io_in_a_1; // @[top.scala 172:18]
+  wire [3:0] sa_io_in_b_0; // @[top.scala 172:18]
+  wire [3:0] sa_io_in_b_1; // @[top.scala 172:18]
+  wire [15:0] sa_io_in_c_0; // @[top.scala 172:18]
+  wire [15:0] sa_io_in_c_1; // @[top.scala 172:18]
+  wire [15:0] sa_io_out_c_0; // @[top.scala 172:18]
+  wire [15:0] sa_io_out_c_1; // @[top.scala 172:18]
+  wire  controller_clock; // @[top.scala 173:26]
+  wire  controller_reset; // @[top.scala 173:26]
+  wire  controller_io_ibh_data_in_done; // @[top.scala 173:26]
+  wire  controller_io_ibv_data_in_done; // @[top.scala 173:26]
+  wire  controller_io_ob_empty; // @[top.scala 173:26]
+  wire  controller_io_ctrl_ib_data_out; // @[top.scala 173:26]
+  wire  controller_io_ctrl_ob_data_in; // @[top.scala 173:26]
+  wire  controller_io_ctrl_sa_isIdle; // @[top.scala 173:26]
+  wire  controller_io_ctrl_sa_isStall; // @[top.scala 173:26]
+  wire  controller_io_ctrl_sa_send_data; // @[top.scala 173:26]
+  wire  inBuffer_h_clock; // @[top.scala 174:28]
+  wire  inBuffer_h_reset; // @[top.scala 174:28]
+  wire  inBuffer_h_io_ctrl_ib_data_out; // @[top.scala 174:28]
+  wire  inBuffer_h_io_ctrl_sa_isIdle; // @[top.scala 174:28]
+  wire  inBuffer_h_io_data_in_ready; // @[top.scala 174:28]
+  wire  inBuffer_h_io_data_in_valid; // @[top.scala 174:28]
+  wire [3:0] inBuffer_h_io_data_in_bits_0; // @[top.scala 174:28]
+  wire [3:0] inBuffer_h_io_data_in_bits_1; // @[top.scala 174:28]
+  wire [3:0] inBuffer_h_io_data_out_0; // @[top.scala 174:28]
+  wire [3:0] inBuffer_h_io_data_out_1; // @[top.scala 174:28]
+  wire  inBuffer_h_io_ib_data_in_done; // @[top.scala 174:28]
+  wire  inBuffer_v_clock; // @[top.scala 175:27]
+  wire  inBuffer_v_reset; // @[top.scala 175:27]
+  wire  inBuffer_v_io_ctrl_ib_data_out; // @[top.scala 175:27]
+  wire  inBuffer_v_io_ctrl_sa_isIdle; // @[top.scala 175:27]
+  wire  inBuffer_v_io_data_in_ready; // @[top.scala 175:27]
+  wire  inBuffer_v_io_data_in_valid; // @[top.scala 175:27]
+  wire [3:0] inBuffer_v_io_data_in_bits_0; // @[top.scala 175:27]
+  wire [3:0] inBuffer_v_io_data_in_bits_1; // @[top.scala 175:27]
+  wire [3:0] inBuffer_v_io_data_out_0; // @[top.scala 175:27]
+  wire [3:0] inBuffer_v_io_data_out_1; // @[top.scala 175:27]
+  wire  inBuffer_v_io_ib_data_in_done; // @[top.scala 175:27]
+  wire  outBuffer_clock; // @[top.scala 176:26]
+  wire  outBuffer_reset; // @[top.scala 176:26]
+  wire  outBuffer_io_ctrl_ob_data_in; // @[top.scala 176:26]
+  wire [15:0] outBuffer_io_data_in_0; // @[top.scala 176:26]
+  wire [15:0] outBuffer_io_data_in_1; // @[top.scala 176:26]
+  wire  outBuffer_io_data_out_ready; // @[top.scala 176:26]
+  wire  outBuffer_io_data_out_valid; // @[top.scala 176:26]
+  wire [15:0] outBuffer_io_data_out_bits_0; // @[top.scala 176:26]
+  wire [15:0] outBuffer_io_data_out_bits_1; // @[top.scala 176:26]
+  wire  outBuffer_io_ob_empty; // @[top.scala 176:26]
+  SystolicArray sa ( // @[top.scala 172:18]
     .clock(sa_clock),
     .reset(sa_reset),
     .io_in_control_0_ctrl_send_data(sa_io_in_control_0_ctrl_send_data),
@@ -1618,7 +1618,7 @@ module top(
     .io_out_c_0(sa_io_out_c_0),
     .io_out_c_1(sa_io_out_c_1)
   );
-  Controller controller ( // @[top.scala 155:26]
+  Controller controller ( // @[top.scala 173:26]
     .clock(controller_clock),
     .reset(controller_reset),
     .io_ibh_data_in_done(controller_io_ibh_data_in_done),
@@ -1630,7 +1630,7 @@ module top(
     .io_ctrl_sa_isStall(controller_io_ctrl_sa_isStall),
     .io_ctrl_sa_send_data(controller_io_ctrl_sa_send_data)
   );
-  InputBuffer inBuffer_h ( // @[top.scala 156:28]
+  InputBuffer inBuffer_h ( // @[top.scala 174:28]
     .clock(inBuffer_h_clock),
     .reset(inBuffer_h_reset),
     .io_ctrl_ib_data_out(inBuffer_h_io_ctrl_ib_data_out),
@@ -1643,7 +1643,7 @@ module top(
     .io_data_out_1(inBuffer_h_io_data_out_1),
     .io_ib_data_in_done(inBuffer_h_io_ib_data_in_done)
   );
-  InputBuffer inBuffer_v ( // @[top.scala 157:27]
+  InputBuffer inBuffer_v ( // @[top.scala 175:27]
     .clock(inBuffer_v_clock),
     .reset(inBuffer_v_reset),
     .io_ctrl_ib_data_out(inBuffer_v_io_ctrl_ib_data_out),
@@ -1656,7 +1656,7 @@ module top(
     .io_data_out_1(inBuffer_v_io_data_out_1),
     .io_ib_data_in_done(inBuffer_v_io_ib_data_in_done)
   );
-  OutputBuffer outBuffer ( // @[top.scala 158:26]
+  OutputBuffer outBuffer ( // @[top.scala 176:26]
     .clock(outBuffer_clock),
     .reset(outBuffer_reset),
     .io_ctrl_ob_data_in(outBuffer_io_ctrl_ob_data_in),
@@ -1668,45 +1668,45 @@ module top(
     .io_data_out_bits_1(outBuffer_io_data_out_bits_1),
     .io_ob_empty(outBuffer_io_ob_empty)
   );
-  assign io_tpuIO_in_ready = inBuffer_h_io_data_in_ready & inBuffer_v_io_data_in_ready; // @[top.scala 169:52]
-  assign io_tpuIO_out_valid = outBuffer_io_data_out_valid; // @[top.scala 171:22]
-  assign io_tpuIO_out_bits_out_c_0 = outBuffer_io_data_out_bits_0; // @[top.scala 172:27]
-  assign io_tpuIO_out_bits_out_c_1 = outBuffer_io_data_out_bits_1; // @[top.scala 172:27]
+  assign io_tpuIO_in_ready = inBuffer_h_io_data_in_ready & inBuffer_v_io_data_in_ready; // @[top.scala 187:52]
+  assign io_tpuIO_out_valid = outBuffer_io_data_out_valid; // @[top.scala 189:22]
+  assign io_tpuIO_out_bits_out_c_0 = outBuffer_io_data_out_bits_0; // @[top.scala 190:27]
+  assign io_tpuIO_out_bits_out_c_1 = outBuffer_io_data_out_bits_1; // @[top.scala 190:27]
   assign sa_clock = clock;
   assign sa_reset = reset;
-  assign sa_io_in_control_0_ctrl_send_data = controller_io_ctrl_sa_send_data; // @[top.scala 180:45]
-  assign sa_io_in_control_0_ctrl_stall_data = controller_io_ctrl_sa_isStall; // @[top.scala 181:46]
-  assign sa_io_in_control_1_ctrl_send_data = controller_io_ctrl_sa_send_data; // @[top.scala 180:45]
-  assign sa_io_in_control_1_ctrl_stall_data = controller_io_ctrl_sa_isStall; // @[top.scala 181:46]
-  assign sa_io_in_a_0 = inBuffer_h_io_data_out_0; // @[top.scala 176:14]
-  assign sa_io_in_a_1 = inBuffer_h_io_data_out_1; // @[top.scala 176:14]
-  assign sa_io_in_b_0 = inBuffer_v_io_data_out_0; // @[top.scala 177:14]
-  assign sa_io_in_b_1 = inBuffer_v_io_data_out_1; // @[top.scala 177:14]
-  assign sa_io_in_c_0 = io_tpuIO_in_bits_in_c_0; // @[top.scala 178:14]
-  assign sa_io_in_c_1 = io_tpuIO_in_bits_in_c_1; // @[top.scala 178:14]
+  assign sa_io_in_control_0_ctrl_send_data = controller_io_ctrl_sa_send_data; // @[top.scala 198:45]
+  assign sa_io_in_control_0_ctrl_stall_data = controller_io_ctrl_sa_isStall; // @[top.scala 199:46]
+  assign sa_io_in_control_1_ctrl_send_data = controller_io_ctrl_sa_send_data; // @[top.scala 198:45]
+  assign sa_io_in_control_1_ctrl_stall_data = controller_io_ctrl_sa_isStall; // @[top.scala 199:46]
+  assign sa_io_in_a_0 = inBuffer_h_io_data_out_0; // @[top.scala 194:14]
+  assign sa_io_in_a_1 = inBuffer_h_io_data_out_1; // @[top.scala 194:14]
+  assign sa_io_in_b_0 = inBuffer_v_io_data_out_0; // @[top.scala 195:14]
+  assign sa_io_in_b_1 = inBuffer_v_io_data_out_1; // @[top.scala 195:14]
+  assign sa_io_in_c_0 = io_tpuIO_in_bits_in_c_0; // @[top.scala 196:14]
+  assign sa_io_in_c_1 = io_tpuIO_in_bits_in_c_1; // @[top.scala 196:14]
   assign controller_clock = clock;
   assign controller_reset = reset;
-  assign controller_io_ibh_data_in_done = inBuffer_h_io_ib_data_in_done; // @[top.scala 183:34]
-  assign controller_io_ibv_data_in_done = inBuffer_v_io_ib_data_in_done; // @[top.scala 184:34]
-  assign controller_io_ob_empty = outBuffer_io_ob_empty; // @[top.scala 185:26]
+  assign controller_io_ibh_data_in_done = inBuffer_h_io_ib_data_in_done; // @[top.scala 201:34]
+  assign controller_io_ibv_data_in_done = inBuffer_v_io_ib_data_in_done; // @[top.scala 202:34]
+  assign controller_io_ob_empty = outBuffer_io_ob_empty; // @[top.scala 203:26]
   assign inBuffer_h_clock = clock;
   assign inBuffer_h_reset = reset;
-  assign inBuffer_h_io_ctrl_ib_data_out = controller_io_ctrl_ib_data_out; // @[top.scala 162:34]
-  assign inBuffer_h_io_ctrl_sa_isIdle = controller_io_ctrl_sa_isIdle; // @[top.scala 163:32]
-  assign inBuffer_h_io_data_in_valid = io_tpuIO_in_valid; // @[top.scala 160:31]
-  assign inBuffer_h_io_data_in_bits_0 = io_tpuIO_in_bits_in_a_0; // @[top.scala 161:30]
-  assign inBuffer_h_io_data_in_bits_1 = io_tpuIO_in_bits_in_a_1; // @[top.scala 161:30]
+  assign inBuffer_h_io_ctrl_ib_data_out = controller_io_ctrl_ib_data_out; // @[top.scala 180:34]
+  assign inBuffer_h_io_ctrl_sa_isIdle = controller_io_ctrl_sa_isIdle; // @[top.scala 181:32]
+  assign inBuffer_h_io_data_in_valid = io_tpuIO_in_valid; // @[top.scala 178:31]
+  assign inBuffer_h_io_data_in_bits_0 = io_tpuIO_in_bits_in_a_0; // @[top.scala 179:30]
+  assign inBuffer_h_io_data_in_bits_1 = io_tpuIO_in_bits_in_a_1; // @[top.scala 179:30]
   assign inBuffer_v_clock = clock;
   assign inBuffer_v_reset = reset;
-  assign inBuffer_v_io_ctrl_ib_data_out = controller_io_ctrl_ib_data_out; // @[top.scala 167:34]
-  assign inBuffer_v_io_ctrl_sa_isIdle = controller_io_ctrl_sa_isIdle; // @[top.scala 168:32]
-  assign inBuffer_v_io_data_in_valid = io_tpuIO_in_valid; // @[top.scala 165:31]
-  assign inBuffer_v_io_data_in_bits_0 = io_tpuIO_in_bits_in_b_0; // @[top.scala 166:30]
-  assign inBuffer_v_io_data_in_bits_1 = io_tpuIO_in_bits_in_b_1; // @[top.scala 166:30]
+  assign inBuffer_v_io_ctrl_ib_data_out = controller_io_ctrl_ib_data_out; // @[top.scala 185:34]
+  assign inBuffer_v_io_ctrl_sa_isIdle = controller_io_ctrl_sa_isIdle; // @[top.scala 186:32]
+  assign inBuffer_v_io_data_in_valid = io_tpuIO_in_valid; // @[top.scala 183:31]
+  assign inBuffer_v_io_data_in_bits_0 = io_tpuIO_in_bits_in_b_0; // @[top.scala 184:30]
+  assign inBuffer_v_io_data_in_bits_1 = io_tpuIO_in_bits_in_b_1; // @[top.scala 184:30]
   assign outBuffer_clock = clock;
   assign outBuffer_reset = reset;
-  assign outBuffer_io_ctrl_ob_data_in = controller_io_ctrl_ob_data_in; // @[top.scala 174:32]
-  assign outBuffer_io_data_in_0 = sa_io_out_c_0; // @[top.scala 179:24]
-  assign outBuffer_io_data_in_1 = sa_io_out_c_1; // @[top.scala 179:24]
-  assign outBuffer_io_data_out_ready = io_tpuIO_out_ready; // @[top.scala 173:31]
+  assign outBuffer_io_ctrl_ob_data_in = controller_io_ctrl_ob_data_in; // @[top.scala 192:32]
+  assign outBuffer_io_data_in_0 = sa_io_out_c_0; // @[top.scala 197:24]
+  assign outBuffer_io_data_in_1 = sa_io_out_c_1; // @[top.scala 197:24]
+  assign outBuffer_io_data_out_ready = io_tpuIO_out_ready; // @[top.scala 191:31]
 endmodule

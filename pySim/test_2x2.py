@@ -133,7 +133,7 @@ async def run_test_write(dut, idle_inserter="cycle_pause", backpressure_inserter
         await RisingEdge(dut.clk)
 
 def cycle_pause():
-    return itertools.cycle([1, 1, 1, 0])
+    return itertools.cycle(random_int_list(0,1,100))
 
 factory = TestFactory(run_test_write)
 factory.add_option("idle_inserter", [None, cycle_pause])

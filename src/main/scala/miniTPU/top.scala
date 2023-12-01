@@ -184,12 +184,10 @@ class top (val TYPE: Int, val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int,
   inBuffer_h.io.data_in.valid := io.tpuIO.in.valid
   inBuffer_h.io.data_in.bits := io.tpuIO.in.bits.in_a
   inBuffer_h.io.ctrl_ib_data_out := controller.io.ctrl_ib_data_out
-  inBuffer_h.io.ctrl_sa_isIdle := controller.io.ctrl_sa_isIdle
 
   inBuffer_v.io.data_in.valid := io.tpuIO.in.valid
   inBuffer_v.io.data_in.bits := io.tpuIO.in.bits.in_b
   inBuffer_v.io.ctrl_ib_data_out := controller.io.ctrl_ib_data_out
-  inBuffer_v.io.ctrl_sa_isIdle := controller.io.ctrl_sa_isIdle
   io.tpuIO.in.ready := inBuffer_h.io.data_in.ready & inBuffer_v.io.data_in.ready
 
   io.tpuIO.out.valid := outBuffer.io.data_out.valid
@@ -201,8 +199,7 @@ class top (val TYPE: Int, val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int,
   sa.io.in_b := inBuffer_v.io.data_out
   sa.io.in_c := io.tpuIO.in.bits.in_c  // TODO: preload in_c as bias
   outBuffer.io.data_in := sa.io.out_c
-  sa.io.in_control.foreach(_.ctrl_send_data := controller.io.ctrl_sa_send_data)
-  sa.io.in_control.foreach(_.ctrl_stall_data := controller.io.ctrl_sa_isStall)
+  sa.io.in_control.foreach(_.ctrl_sa_send_data := controller.io.ctrl_sa_send_data)
 
   controller.io.ibh_data_in_done := inBuffer_h.io.ib_data_in_done
   controller.io.ibv_data_in_done := inBuffer_v.io.ib_data_in_done

@@ -4,7 +4,6 @@ import chisel3._
 import chisel3.util._
 
 
-// TODO: fusion vertical InputBuffer and OutputBuffer as one module?
 class OutputBuffer(val TYPE: Int, val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) extends Module {
   val io = IO(new Bundle {
     val ctrl_ob_data_in = Input(Bool())
@@ -25,7 +24,7 @@ class OutputBuffer(val TYPE: Int, val C_WIDTH: Int, val QUEUE_NUM: Int, val QUEU
       data_queue(i).io.deq := !allEmpty
     }
     else {
-      data_queue(i).io.deq := io.data_out.ready && !allEmpty
+      data_queue(i).io.deq := io.data_out.fire
     }
     data_queue(i).io.enqData := io.data_in(i)
     io.data_out.bits(i) := data_queue(i).io.deqData

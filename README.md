@@ -27,7 +27,7 @@ for WSL2:
 
 `pip install cocotb`
 
-`pip install cocotb-axi`
+`pip install cocotbext-axi`
 
 enter "pySim" directory and find your sim project
 

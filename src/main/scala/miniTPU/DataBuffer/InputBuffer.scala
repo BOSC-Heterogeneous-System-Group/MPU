@@ -35,7 +35,7 @@ class InputBuffer(val IN_WIDTH: Int, val QUEUE_NUM: Int, val QUEUE_LEN: Int) ext
     data_queue(i).io.enqData := io.data_in.bits(i)
     io.data_out(i) := data_queue(i).io.deqData
   }
-  io.data_in.ready := !allFull && state === prepare
+  io.data_in.ready := state === prepare
 
   when(state === prepare) {
     when(allFull) {

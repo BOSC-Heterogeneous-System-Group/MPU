@@ -5,31 +5,31 @@ import chisel3.util._
 import miniTPU.DataBuffer._
 import miniTPU.SystolicArray._
 
-class xsFUInput() extends Bundle {
+class xsFUInput_R() extends Bundle {
   val src = Input(Vec(2, UInt(64.W)))
   val uop = Input(Bool())
 }
 
-class xsFUOutput() extends Bundle {
+class xsFUOutput_R() extends Bundle {
   val data = Output(UInt(64.W))
   val uop  = Output(Bool())
 }
 
-class xsFUIO () extends Bundle {
+class xsFUIO_R () extends Bundle {
 
-  val in = Flipped(DecoupledIO(new xsFUInput()))
+  val in = Flipped(DecoupledIO(new xsFUInput_R()))
 
-  val out = DecoupledIO(new xsFUOutput())
+  val out = DecoupledIO(new xsFUOutput_R())
 }
 
-class XS_miniTPU() extends Module{
+class XS_miniTPU_R() extends Module{
   val io = IO(new Bundle {
-    val xsIO = new xsFUIO()
+    val xsIO = new xsFUIO_R()
   })
 
-  val inBridge  = Module(new InputBridge())
-  val mini_tpu  = Module(new top(0,4,16,2,2))
-  val outBridge = Module(new OutputBridge())
+  val inBridge  = Module(new InputBridge_R())
+  val mini_tpu  = Module(new top_R(0,4,16,2,2))
+  val outBridge = Module(new OutputBridge_R())
 
   val uop    = io.xsIO.in.bits.uop
   val newReq = io.xsIO.in.fire()
@@ -64,7 +64,7 @@ class XS_miniTPU() extends Module{
 
 }
 
-class OutputBridge() extends Module {
+class OutputBridge_R() extends Module {
   val io = IO(new Bundle {
     val in_valid  = Input(Bool())
     val out_ready = Output(Bool())
@@ -101,7 +101,7 @@ class OutputBridge() extends Module {
 
 }
 
-class InputBridge() extends Module {
+class InputBridge_R() extends Module {
   val io = IO(new Bundle {
     val in_valid  = Input(Bool())
     val out_ready = Output(Bool())
@@ -149,19 +149,19 @@ class InputBridge() extends Module {
   io.out_valid := valid_r
 }
 
-class miniTPUInput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
+class miniTPUInput_R(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
   val in_a = Input(Vec(SA_ROWS, SInt(IN_WIDTH.W)))
   val in_b = Input(Vec(SA_COLS, SInt(IN_WIDTH.W)))
   val in_c = Input(Vec(SA_COLS, SInt(C_WIDTH.W)))
 }
 
-class miniTPUOutput(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
+class miniTPUOutput_R(val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
   val out_c = Output(Vec(SA_COLS, SInt(C_WIDTH.W)))
 }
 
-class miniTPUIO (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
-  val in = Flipped(DecoupledIO(new miniTPUInput(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS)))
-  val out = DecoupledIO(new miniTPUOutput(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS))
+class miniTPUIO_R (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Bundle {
+  val in = Flipped(DecoupledIO(new miniTPUInput_R(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS)))
+  val out = DecoupledIO(new miniTPUOutput_R(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS))
 }
 
 
@@ -170,9 +170,9 @@ class miniTPUIO (val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_C
    type-1 : algorithm accelerator
    ...
 */
-class top (val TYPE: Int, val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
+class top_R (val TYPE: Int, val IN_WIDTH: Int, val C_WIDTH: Int, val SA_ROWS: Int, val SA_COLS: Int) extends Module {
   val io = IO(new Bundle {
-    val tpuIO = new miniTPUIO(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS)
+    val tpuIO = new miniTPUIO_R(IN_WIDTH, C_WIDTH, SA_ROWS, SA_COLS)
   })
 
   val sa = Module(new SystolicArray(IN_WIDTH,C_WIDTH,SA_ROWS,SA_COLS))

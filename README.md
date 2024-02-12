@@ -1,4 +1,4 @@
-# RV-Tensor
+# Matrix Processing Unit
 ## get started
 for WSL2:  
 

@@ -1,0 +1,64 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Dec 15 13:25:35 2023
+[*]
+[dumpfile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/ldBuffer/ldBuffer.vcd"
+[dumpfile_mtime] "Fri Dec 15 13:24:59 2023"
+[dumpfile_size] 17375
+[savefile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/ldBuffer/ldBuffer.gtkw"
+[timestart] 0
+[size] 2548 1495
+[pos] -1 -1
+*-3.947196 12 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 392
+[signals_width] 222
+[sst_expanded] 1
+[sst_vpaned_height] 466
+@28
+ldBuffer.valid_queue_0_0
+ldBuffer.valid_queue_0_1
+ldBuffer.valid_queue_1_0
+ldBuffer.valid_queue_1_1
+@22
+ldBuffer.robIdx_queue_0_0[4:0]
+ldBuffer.robIdx_queue_0_1[4:0]
+ldBuffer.robIdx_queue_0_2[4:0]
+ldBuffer.robIdx_queue_1_0[4:0]
+ldBuffer.robIdx_queue_1_1[4:0]
+ldBuffer.deqptrReg_0[4:0]
+ldBuffer.deqptrReg_1[4:0]
+ldBuffer.deqptrReg_2[4:0]
+ldBuffer.deqptrReg_3[4:0]
+ldBuffer.deqptrReg_4[4:0]
+ldBuffer.deqptrReg_5[4:0]
+ldBuffer.MatchVecUInt_0_0[5:0]
+ldBuffer.MatchVecUInt_0_1[5:0]
+ldBuffer.MatchVecUInt_1_0[5:0]
+ldBuffer.MatchVecUInt_1_1[5:0]
+ldBuffer.MatchVecMask_0_0[5:0]
+ldBuffer.MatchVecMask_0_1[5:0]
+ldBuffer.MatchVecMask_1_0[5:0]
+ldBuffer.MatchVecMask_0_2[5:0]
+ldBuffer.MatchVecMask_1_1[5:0]
+@28
+ldBuffer.minIndex_i
+@22
+ldBuffer.maxMatch[5:0]
+@28
+ldBuffer.minIndex_j[1:0]
+@22
+ldBuffer.minMask[5:0]
+ldBuffer.io_bufout_out_bits[63:0]
+@29
+ldBuffer.io_bufout_out_valid
+@22
+ldBuffer.data_queue_0_0[63:0]
+ldBuffer.data_queue_0_1[63:0]
+ldBuffer.data_queue_0_2[63:0]
+ldBuffer.data_queue_0_3[63:0]
+ldBuffer.data_queue_1_0[63:0]
+ldBuffer.data_queue_1_1[63:0]
+ldBuffer.data_queue_1_2[63:0]
+ldBuffer.data_queue_1_3[63:0]
+[pattern_trace] 1
+[pattern_trace] 0

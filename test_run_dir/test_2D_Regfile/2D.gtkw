@@ -1,0 +1,47 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Dec 22 13:17:37 2023
+[*]
+[dumpfile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_2D_Regfile/Regfile_2D.vcd"
+[dumpfile_mtime] "Fri Dec 22 13:17:29 2023"
+[dumpfile_size] 12976
+[savefile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_2D_Regfile/2D.gtkw"
+[timestart] 0
+[size] 2548 1495
+[pos] -1 -1
+*-2.840893 30 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] Regfile_2D.
+[sst_width] 266
+[signals_width] 243
+[sst_expanded] 1
+[sst_vpaned_height] 466
+@28
+Regfile_2D.clock
+@22
+Regfile_2D.io_wr_0_data[63:0]
+@28
+Regfile_2D.io_wr_0_wen
+@22
+Regfile_2D.io_wr_0_addr[4:0]
+@28
+Regfile_2D.io_wr_0_offset[2:0]
+Regfile_2D.io_wr_1_wen
+@22
+Regfile_2D.io_wr_1_data[63:0]
+Regfile_2D.io_wr_1_addr[4:0]
+@28
+Regfile_2D.io_wr_1_offset[2:0]
+@22
+Regfile_2D.io_out_bits_data[63:0]
+@28
+Regfile_2D.io_out_valid
+@22
+Regfile_2D.Reg_2D_3.io_data_out[63:0]
+Regfile_2D.Reg_2D_3.data2d_0[63:0]
+@28
+Regfile_2D.Reg_2D_3.io_valid_in
+Regfile_2D.Reg_2D_3.io_wen
+Regfile_2D.Reg_2D_3.io_valid_out
+Regfile_2D.Reg_2D_3.io_offset[2:0]
+[pattern_trace] 1
+[pattern_trace] 0

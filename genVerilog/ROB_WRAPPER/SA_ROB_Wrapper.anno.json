@@ -1,0 +1,17 @@
+[
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.VerilogEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"./genVerilog/ROB_WRAPPER"
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~SA_ROB_Wrapper|SA_ROB_Wrapper>io_out_bits",
+    "sources":[
+      "~SA_ROB_Wrapper|SA_ROB_Wrapper>io_out_ready"
+    ]
+  }
+]

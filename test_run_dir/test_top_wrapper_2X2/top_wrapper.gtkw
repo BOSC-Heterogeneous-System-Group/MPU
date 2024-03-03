@@ -1,0 +1,51 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Nov 22 03:42:22 2023
+[*]
+[dumpfile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_top_wrapper_2X2/top.vcd"
+[dumpfile_mtime] "Wed Nov 22 03:30:08 2023"
+[dumpfile_size] 99935
+[savefile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_top_wrapper_2X2/top_wrapper.gtkw"
+[timestart] 0
+[size] 2548 1495
+[pos] -1439 -292
+*-6.000000 331 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.outBuffer.
+[treeopen] top.sa.
+[sst_width] 214
+[signals_width] 354
+[sst_expanded] 1
+[sst_vpaned_height] 466
+@28
+top.clock
+@22
+top.io_tpuIO_in_bits_in_a_0[3:0]
+top.io_tpuIO_in_bits_in_a_1[3:0]
+top.io_tpuIO_in_bits_in_b_0[3:0]
+top.io_tpuIO_in_bits_in_b_1[3:0]
+@24
+top.io_tpuIO_out_bits_out_c_0[15:0]
+top.io_tpuIO_out_bits_out_c_1[15:0]
+@28
+top.io_tpuIO_out_valid
+top.controller.state[1:0]
+top.controller.io_ob_empty
+@22
+top.sa.sa_0_0.c_reg[15:0]
+top.sa.sa_0_1.c_reg[15:0]
+top.sa.sa_1_0.c_reg[15:0]
+top.sa.sa_1_1.c_reg[15:0]
+@28
+top.sa.sa_1_1.io_in_control_ctrl_stall_data
+top.sa.sa_1_1.io_in_control_ctrl_send_data
+top.controller.io_ctrl_sa_isStall
+@29
+top.controller.fall_done
+@28
+top.outBuffer.io_ob_empty
+top.outBuffer.data_queue_0.io_deq
+top.outBuffer.data_queue_0.readPtr[1:0]
+top.outBuffer.data_queue_0.writePtr[1:0]
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,6 +1,9 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1700574751" />
-    <testcase name="run_test_write_001" classname="test_2x2" file="/home/zcy/anaconda3/lib/python3.10/site-packages/cocotb/regression.py" lineno="731" time="0.06772541999816895" sim_time_ns="6170.001" ratio_time="91103.17810014046" />
+    <property name="random_seed" value="1701693958" />
+    <testcase name="run_test_write_001" classname="test_2x2" file="/home/zcy/.local/lib/python3.10/site-packages/cocotb/regression.py" lineno="731" time="0.07074785232543945" sim_time_ns="6170.001" ratio_time="87211.1420657415" />
+    <testcase name="run_test_write_002" classname="test_2x2" file="/home/zcy/.local/lib/python3.10/site-packages/cocotb/regression.py" lineno="731" time="0.07775521278381348" sim_time_ns="6210.001" ratio_time="79866.04084366615" />
+    <testcase name="run_test_write_003" classname="test_2x2" file="/home/zcy/.local/lib/python3.10/site-packages/cocotb/regression.py" lineno="731" time="0.061534881591796875" sim_time_ns="6180.001" ratio_time="100430.85872816316" />
+    <testcase name="run_test_write_004" classname="test_2x2" file="/home/zcy/.local/lib/python3.10/site-packages/cocotb/regression.py" lineno="731" time="0.07256054878234863" sim_time_ns="6240.001" ratio_time="85997.15830040646" />
   </testsuite>
 </testsuites>

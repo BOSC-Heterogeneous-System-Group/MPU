@@ -1,0 +1,38 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Nov 17 02:18:24 2023
+[*]
+[dumpfile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_top_wrapper_2X2/top_wrapper.vcd"
+[dumpfile_mtime] "Thu Nov 16 14:30:00 2023"
+[dumpfile_size] 206437
+[savefile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_top_wrapper_2X2/top.gtkw"
+[timestart] 0
+[size] 2548 1495
+[pos] -632 -617
+*-5.000000 263 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_wrapper.
+[treeopen] top_wrapper.top.
+[sst_width] 214
+[signals_width] 278
+[sst_expanded] 1
+[sst_vpaned_height] 466
+@28
+top_wrapper.clock
+top_wrapper.io_start
+top_wrapper.io_tpuIO_in_ready
+top_wrapper.io_tpuIO_in_valid
+@22
+top_wrapper.io_tpuIO_in_bits_in_a_0[7:0]
+top_wrapper.io_tpuIO_in_bits_in_a_1[7:0]
+top_wrapper.io_tpuIO_in_bits_in_b_0[7:0]
+top_wrapper.io_tpuIO_in_bits_in_b_1[7:0]
+@28
+top_wrapper.io_tpuIO_out_ready
+top_wrapper.io_tpuIO_out_valid
+@24
+top_wrapper.io_tpuIO_out_bits_out_c_0[31:0]
+top_wrapper.io_tpuIO_out_bits_out_c_1[31:0]
+@29
+top_wrapper.top.outBuffer.io_all_empty
+[pattern_trace] 1
+[pattern_trace] 0

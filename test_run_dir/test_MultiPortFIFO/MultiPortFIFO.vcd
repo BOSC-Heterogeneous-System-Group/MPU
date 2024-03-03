@@ -1,0 +1,151 @@
+$date
+2024-02-23T02:34+0000
+$end
+$version
+0.2
+$end
+$comment
+
+$end
+$timescale 1ns  $end
+$scope module MultiPortFIFO $end
+ $var wire 1 ! io_deq $end
+ $var wire 4 " readPtr $end
+ $var wire 1 # clock $end
+ $var wire 8 $ io_enqData_7 $end
+ $var wire 8 % io_enqData_6 $end
+ $var wire 8 & io_enqData_5 $end
+ $var wire 8 ' io_enqData_4 $end
+ $var wire 8 ( io_enqData_3 $end
+ $var wire 8 ) io_enqData_2 $end
+ $var wire 8 * io_enqData_1 $end
+ $var wire 8 + io_enqData_0 $end
+ $var wire 1 , reset $end
+ $var wire 1 - io_enq $end
+ $var wire 8 . io_deqData $end
+ $var wire 1 / io_full $end
+ $var wire 8 0 mem_7 $end
+ $var wire 8 1 mem_6 $end
+ $var wire 8 2 mem_5 $end
+ $var wire 8 3 mem_4 $end
+ $var wire 8 4 mem_3 $end
+ $var wire 8 5 mem_2 $end
+ $var wire 8 6 mem_1 $end
+ $var wire 1 7 isEmpty $end
+ $var wire 8 8 mem_0 $end
+ $var wire 1 9 io_empty $end
+ $var wire 1 : isFull $end
+ $var wire 8 ; deqData $end
+ $var wire 4 < writePtr $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+b00000000 +
+b00000000 *
+b00000000 '
+b00000000 &
+b00000000 )
+07
+b00000000 (
+09
+0:
+b00000000 %
+b00000000 $
+b00000000 ;
+b00000000 6
+b00000000 8
+b00000000 3
+b00000000 2
+b00000000 5
+b00000000 4
+b00000000 .
+b00000000 1
+b00000000 0
+b0000 "
+0!
+0#
+b0000 <
+0,
+0-
+0/
+$end
+#0
+17
+19
+1,
+#1
+1#
+#6
+0#
+b00000111 $
+b00000110 %
+b00000101 &
+b00000100 '
+b00000011 (
+b00000010 )
+b00000001 *
+0,
+#11
+1#
+#16
+0#
+1-
+#21
+1#
+1/
+b00000111 0
+b00000110 1
+b00000101 2
+b00000100 3
+b00000011 4
+b00000010 5
+b00000001 6
+07
+09
+1:
+b1000 <
+#26
+0#
+b00000000 $
+b00000000 %
+b00000000 &
+b00000000 '
+b00000000 (
+b00000000 )
+b00000000 *
+0-
+#31
+1#
+#36
+1!
+0#
+#41
+b0001 "
+1#
+0:
+b00000001 ;
+b00000001 .
+0/
+#46
+0#
+#51
+b0010 "
+1#
+b00000010 ;
+b00000010 .
+#56
+0#
+#61
+b0011 "
+1#
+b00000011 ;
+b00000011 .
+#66
+0!
+0#
+b00000000 ;
+b00000000 .
+#71
+1#
+#76
+0#

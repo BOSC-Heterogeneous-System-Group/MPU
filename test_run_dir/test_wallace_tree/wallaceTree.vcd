@@ -1,0 +1,958 @@
+$date
+2023-11-18T11:44+0000
+$end
+$version
+0.2
+$end
+$comment
+
+$end
+$timescale 1ns  $end
+$scope module wallaceTree $end
+ $var wire 1 < rca $end
+ $var wire 16 C l1_csa_in_2 $end
+ $var wire 16 M l1_csa_in_0 $end
+ $var wire 16 N l1_csa_in_1 $end
+ $var wire 16 [ l3_csa_os_0 $end
+ $var wire 16 t l1_csa_oc_0 $end
+ $var wire 1 u clock $end
+ $var wire 1 "* layer1CSA_0 $end
+ $var wire 16 "+ l2_csa_oc_0 $end
+ $var wire 16 ": l3_csa_out_0 $end
+ $var wire 16 "; l3_csa_out_1 $end
+ $var wire 16 "L io_data_i_0 $end
+ $var wire 16 "M io_data_i_1 $end
+ $var wire 1 "d reset $end
+ $var wire 16 "m io_data_i_4 $end
+ $var wire 16 "n io_data_i_2 $end
+ $var wire 16 "o io_data_i_3 $end
+ $var wire 16 "p l1_csa_out_0 $end
+ $var wire 16 "q l1_csa_out_3 $end
+ $var wire 16 "s l1_csa_out_2 $end
+ $var wire 16 "t l1_csa_out_1 $end
+ $var wire 1 #O layer3CSA_0 $end
+ $var wire 16 #P rca_in_0 $end
+ $var wire 16 #Q rca_in_1 $end
+ $var wire 1 #` layer2CSA_0 $end
+ $var wire 16 #f l2_csa_out_2 $end
+ $var wire 16 #h l2_csa_out_1 $end
+ $var wire 16 #j l2_csa_out_0 $end
+ $var wire 16 #n l3_csa_oc_0 $end
+ $var wire 16 #y l2_csa_in_2 $end
+ $var wire 16 #z l2_csa_in_1 $end
+ $var wire 16 #{ l2_csa_in_0 $end
+ $var wire 16 $1 l1_csa_os_0 $end
+ $var wire 16 $K io_data_o $end
+ $var wire 16 $N l2_csa_os_0 $end
+ $var wire 16 %> l3_csa_in_1 $end
+ $var wire 16 %? l3_csa_in_0 $end
+ $var wire 16 %@ l3_csa_in_2 $end
+  $scope module rca $end
+   $var wire 8 # output_S_lo $end
+   $var wire 1 $ p_comb_0 $end
+   $var wire 8 D output_S_hi $end
+   $var wire 1 g input_c_in $end
+   $var wire 1 y p_comb_9 $end
+   $var wire 1 z p_comb_8 $end
+   $var wire 1 { p_comb_7 $end
+   $var wire 1 | p_comb_6 $end
+   $var wire 1 } p_comb_5 $end
+   $var wire 1 ~ p_comb_4 $end
+   $var wire 1 "! p_comb_3 $end
+   $var wire 1 "" p_comb_2 $end
+   $var wire 1 "# p_comb_1 $end
+   $var wire 16 "% input_a_in $end
+   $var wire 1 #! c_comb_3 $end
+   $var wire 1 #" c_comb_2 $end
+   $var wire 1 #$ c_comb_1 $end
+   $var wire 1 #% c_comb_0 $end
+   $var wire 1 #& c_comb_9 $end
+   $var wire 1 #' c_comb_8 $end
+   $var wire 1 #( c_comb_7 $end
+   $var wire 1 #) c_comb_6 $end
+   $var wire 1 #* c_comb_5 $end
+   $var wire 1 #, c_comb_4 $end
+   $var wire 1 #- s_comb_11 $end
+   $var wire 1 #. s_comb_12 $end
+   $var wire 1 #/ s_comb_13 $end
+   $var wire 1 #0 s_comb_14 $end
+   $var wire 1 #1 s_comb_10 $end
+   $var wire 1 #2 s_comb_15 $end
+   $var wire 1 #: p_comb_14 $end
+   $var wire 1 #; p_comb_15 $end
+   $var wire 1 #= p_comb_12 $end
+   $var wire 1 #> p_comb_13 $end
+   $var wire 1 #? p_comb_10 $end
+   $var wire 1 #@ p_comb_11 $end
+   $var wire 2 #T output_S_hi_lo_lo $end
+   $var wire 2 #U output_S_hi_hi_lo $end
+   $var wire 1 #W g_comb_14 $end
+   $var wire 1 #X g_comb_13 $end
+   $var wire 1 #Y g_comb_12 $end
+   $var wire 1 #Z g_comb_11 $end
+   $var wire 1 #[ g_comb_10 $end
+   $var wire 1 #] g_comb_8 $end
+   $var wire 1 #^ g_comb_9 $end
+   $var wire 1 #a g_comb_4 $end
+   $var wire 1 #b g_comb_5 $end
+   $var wire 1 #c g_comb_6 $end
+   $var wire 1 #d g_comb_7 $end
+   $var wire 1 #e g_comb_0 $end
+   $var wire 1 #g g_comb_1 $end
+   $var wire 1 #i g_comb_2 $end
+   $var wire 1 #k g_comb_3 $end
+   $var wire 2 #o output_S_lo_hi_hi $end
+   $var wire 2 #q output_S_lo_lo_hi $end
+   $var wire 2 #r output_S_hi_lo_hi $end
+   $var wire 2 #s output_S_hi_hi_hi $end
+   $var wire 16 $" output_S $end
+   $var wire 2 $T output_S_lo_lo_lo $end
+   $var wire 2 $_ output_S_lo_hi_lo $end
+   $var wire 16 $` input_b_in $end
+   $var wire 4 %' output_S_lo_lo $end
+   $var wire 1 %( s_comb_2 $end
+   $var wire 1 %) s_comb_3 $end
+   $var wire 1 %* s_comb_0 $end
+   $var wire 1 %+ s_comb_1 $end
+   $var wire 1 %, s_comb_6 $end
+   $var wire 1 %- s_comb_7 $end
+   $var wire 1 %. s_comb_4 $end
+   $var wire 1 %/ s_comb_5 $end
+   $var wire 1 %0 s_comb_8 $end
+   $var wire 1 %1 s_comb_9 $end
+   $var wire 4 %4 output_S_hi_lo $end
+   $var wire 4 %5 output_S_lo_hi $end
+   $var wire 1 %6 c_comb_15 $end
+   $var wire 1 %7 c_comb_12 $end
+   $var wire 1 %8 c_comb_11 $end
+   $var wire 1 %9 c_comb_14 $end
+   $var wire 1 %: c_comb_13 $end
+   $var wire 1 %; c_comb_10 $end
+   $var wire 4 %B output_S_hi_hi $end
+  $upscope $end
+  $scope module layer3CSA_0 $end
+   $var wire 1 - p_comb_15 $end
+   $var wire 1 . p_comb_14 $end
+   $var wire 1 0 p_comb_13 $end
+   $var wire 1 1 p_comb_12 $end
+   $var wire 1 2 p_comb_11 $end
+   $var wire 1 3 p_comb_10 $end
+   $var wire 1 4 s_comb_15 $end
+   $var wire 1 5 s_comb_11 $end
+   $var wire 1 6 s_comb_12 $end
+   $var wire 1 7 s_comb_13 $end
+   $var wire 1 8 s_comb_14 $end
+   $var wire 1 : s_comb_10 $end
+   $var wire 16 @ input_pp0_in $end
+   $var wire 2 A output_S_hi_lo_hi $end
+   $var wire 1 E g_comb_10 $end
+   $var wire 1 F g_comb_15 $end
+   $var wire 1 G g_comb_14 $end
+   $var wire 1 H g_comb_13 $end
+   $var wire 1 I g_comb_12 $end
+   $var wire 1 K g_comb_11 $end
+   $var wire 2 ` output_S_hi_hi_hi $end
+   $var wire 4 e output_S_lo_hi $end
+   $var wire 4 f output_S_hi_hi $end
+   $var wire 4 q output_S_lo_lo $end
+   $var wire 4 s output_S_hi_lo $end
+   $var wire 8 v output_C_lo $end
+   $var wire 1 ", c_comb_9 $end
+   $var wire 1 "- c_comb_8 $end
+   $var wire 1 ". c_comb_5 $end
+   $var wire 1 "/ c_comb_4 $end
+   $var wire 1 "0 c_comb_7 $end
+   $var wire 1 "1 c_comb_6 $end
+   $var wire 2 "2 output_C_lo_lo_lo $end
+   $var wire 2 "3 output_S_lo_lo_hi $end
+   $var wire 1 "5 c_comb_1 $end
+   $var wire 1 "6 c_comb_0 $end
+   $var wire 1 "7 c_comb_3 $end
+   $var wire 1 "9 c_comb_2 $end
+   $var wire 2 "= output_C_lo_lo_hi $end
+   $var wire 2 "H output_C_lo_hi_lo $end
+   $var wire 2 "I output_S_lo_hi_hi $end
+   $var wire 2 "J output_S_lo_hi_lo $end
+   $var wire 2 "K output_S_lo_lo_lo $end
+   $var wire 16 "Z input_pp2_in $end
+   $var wire 4 "_ output_C_lo_hi $end
+   $var wire 2 "l output_C_lo_hi_hi $end
+   $var wire 4 "~ output_C_lo_lo $end
+   $var wire 8 #B output_S_lo $end
+   $var wire 2 #R output_C_hi_lo_lo $end
+   $var wire 16 #S input_pp1_in $end
+   $var wire 4 #\ output_C_hi_lo $end
+   $var wire 8 #_ output_S_hi $end
+   $var wire 2 #l output_C_hi_hi_lo $end
+   $var wire 2 #m output_C_hi_lo_hi $end
+   $var wire 16 #p output_C $end
+   $var wire 4 #u output_C_hi_hi $end
+   $var wire 16 #~ output_S $end
+   $var wire 1 $! g_comb_2 $end
+   $var wire 1 $# g_comb_3 $end
+   $var wire 1 $$ g_comb_0 $end
+   $var wire 1 $% g_comb_1 $end
+   $var wire 1 $& g_comb_6 $end
+   $var wire 1 $' g_comb_7 $end
+   $var wire 1 $( g_comb_4 $end
+   $var wire 1 $) g_comb_5 $end
+   $var wire 1 $* c_comb_12 $end
+   $var wire 1 $+ c_comb_11 $end
+   $var wire 1 $, c_comb_14 $end
+   $var wire 1 $- c_comb_13 $end
+   $var wire 1 $0 c_comb_10 $end
+   $var wire 1 $3 c_comb_15 $end
+   $var wire 8 $L output_C_hi $end
+   $var wire 1 $M g_comb_8 $end
+   $var wire 1 $O g_comb_9 $end
+   $var wire 1 $U s_comb_0 $end
+   $var wire 1 $V s_comb_1 $end
+   $var wire 1 $W s_comb_2 $end
+   $var wire 1 $X s_comb_3 $end
+   $var wire 1 $Y s_comb_4 $end
+   $var wire 1 $Z s_comb_5 $end
+   $var wire 1 $[ s_comb_6 $end
+   $var wire 1 $\ s_comb_7 $end
+   $var wire 1 $] s_comb_8 $end
+   $var wire 1 $^ s_comb_9 $end
+   $var wire 1 $y p_comb_9 $end
+   $var wire 1 ${ p_comb_5 $end
+   $var wire 1 $| p_comb_6 $end
+   $var wire 1 $} p_comb_7 $end
+   $var wire 1 $~ p_comb_8 $end
+   $var wire 1 %! p_comb_1 $end
+   $var wire 1 %" p_comb_2 $end
+   $var wire 1 %# p_comb_3 $end
+   $var wire 1 %$ p_comb_4 $end
+   $var wire 1 %% p_comb_0 $end
+   $var wire 2 %2 output_S_hi_hi_lo $end
+   $var wire 2 %3 output_C_hi_hi_hi $end
+   $var wire 2 %A output_S_hi_lo_lo $end
+  $upscope $end
+  $scope module layer1CSA_0 $end
+   $var wire 2 + output_C_lo_lo_lo $end
+   $var wire 2 , output_C_lo_hi_lo $end
+   $var wire 16 / input_pp0_in $end
+   $var wire 4 B output_S_hi_lo $end
+   $var wire 2 J output_C_lo_lo_hi $end
+   $var wire 2 L output_C_lo_hi_hi $end
+   $var wire 1 O s_comb_1 $end
+   $var wire 1 P s_comb_0 $end
+   $var wire 1 Q s_comb_3 $end
+   $var wire 1 R s_comb_2 $end
+   $var wire 1 S s_comb_5 $end
+   $var wire 1 T s_comb_4 $end
+   $var wire 1 V s_comb_7 $end
+   $var wire 1 W s_comb_6 $end
+   $var wire 1 Y s_comb_9 $end
+   $var wire 1 Z s_comb_8 $end
+   $var wire 1 \ c_comb_4 $end
+   $var wire 1 ] c_comb_5 $end
+   $var wire 1 ^ c_comb_2 $end
+   $var wire 1 _ c_comb_3 $end
+   $var wire 1 a c_comb_0 $end
+   $var wire 1 b c_comb_1 $end
+   $var wire 4 c output_S_hi_hi $end
+   $var wire 4 d output_S_lo_hi $end
+   $var wire 8 h output_S_lo $end
+   $var wire 4 j output_C_hi_hi $end
+   $var wire 1 k p_comb_11 $end
+   $var wire 1 l p_comb_10 $end
+   $var wire 1 m p_comb_15 $end
+   $var wire 1 n p_comb_14 $end
+   $var wire 1 o p_comb_13 $end
+   $var wire 1 p p_comb_12 $end
+   $var wire 8 r output_S_hi $end
+   $var wire 4 "$ output_S_lo_lo $end
+   $var wire 2 "' output_C_hi_hi_lo $end
+   $var wire 2 ") output_C_hi_lo_lo $end
+   $var wire 2 "8 output_C_hi_hi_hi $end
+   $var wire 2 "< output_C_hi_lo_hi $end
+   $var wire 1 "N c_comb_8 $end
+   $var wire 1 "O c_comb_9 $end
+   $var wire 1 "P c_comb_6 $end
+   $var wire 1 "Q c_comb_7 $end
+   $var wire 8 "e output_C_lo $end
+   $var wire 1 "f g_comb_12 $end
+   $var wire 1 "g g_comb_11 $end
+   $var wire 1 "h g_comb_10 $end
+   $var wire 1 "i g_comb_15 $end
+   $var wire 1 "j g_comb_14 $end
+   $var wire 1 "k g_comb_13 $end
+   $var wire 16 "r input_pp2_in $end
+   $var wire 1 "x s_comb_13 $end
+   $var wire 1 "y s_comb_14 $end
+   $var wire 1 "z s_comb_15 $end
+   $var wire 1 "{ s_comb_10 $end
+   $var wire 1 "| s_comb_11 $end
+   $var wire 1 "} s_comb_12 $end
+   $var wire 8 #+ output_C_hi $end
+   $var wire 16 #< output_C $end
+   $var wire 16 #A output_S $end
+   $var wire 1 #I c_comb_10 $end
+   $var wire 1 #J c_comb_12 $end
+   $var wire 1 #K c_comb_11 $end
+   $var wire 1 #L c_comb_14 $end
+   $var wire 1 #M c_comb_13 $end
+   $var wire 1 #N c_comb_15 $end
+   $var wire 2 #t output_S_hi_lo_lo $end
+   $var wire 2 #v output_S_lo_hi_hi $end
+   $var wire 2 #w output_S_lo_lo_hi $end
+   $var wire 2 $. output_S_hi_lo_hi $end
+   $var wire 2 $2 output_S_lo_lo_lo $end
+   $var wire 2 $4 output_S_lo_hi_lo $end
+   $var wire 2 $? output_S_hi_hi_lo $end
+   $var wire 1 $A g_comb_5 $end
+   $var wire 1 $B g_comb_4 $end
+   $var wire 1 $C g_comb_3 $end
+   $var wire 1 $D g_comb_2 $end
+   $var wire 1 $E g_comb_9 $end
+   $var wire 1 $F g_comb_8 $end
+   $var wire 1 $G g_comb_7 $end
+   $var wire 1 $H g_comb_6 $end
+   $var wire 1 $I g_comb_1 $end
+   $var wire 1 $J g_comb_0 $end
+   $var wire 4 $R output_C_lo_lo $end
+   $var wire 2 $a output_S_hi_hi_hi $end
+   $var wire 1 $g p_comb_1 $end
+   $var wire 1 $h p_comb_2 $end
+   $var wire 1 $k p_comb_0 $end
+   $var wire 1 $p p_comb_9 $end
+   $var wire 1 $q p_comb_7 $end
+   $var wire 1 $r p_comb_8 $end
+   $var wire 1 $s p_comb_5 $end
+   $var wire 1 $t p_comb_6 $end
+   $var wire 1 $u p_comb_3 $end
+   $var wire 1 $v p_comb_4 $end
+   $var wire 4 $z output_C_hi_lo $end
+   $var wire 4 %& output_C_lo_hi $end
+   $var wire 16 %< input_pp1_in $end
+  $upscope $end
+  $scope module layer2CSA_0 $end
+   $var wire 4 ! output_S_lo_hi $end
+   $var wire 4 " output_S_hi_hi $end
+   $var wire 1 % c_comb_13 $end
+   $var wire 1 & c_comb_12 $end
+   $var wire 1 ' c_comb_11 $end
+   $var wire 1 ( c_comb_10 $end
+   $var wire 1 ) c_comb_15 $end
+   $var wire 1 * c_comb_14 $end
+   $var wire 8 9 output_C_hi $end
+   $var wire 2 ; output_C_hi_hi_hi $end
+   $var wire 2 = output_S_lo_hi_lo $end
+   $var wire 16 > input_pp1_in $end
+   $var wire 2 ? output_S_lo_lo_hi $end
+   $var wire 8 U output_C_lo $end
+   $var wire 2 X output_S_lo_lo_lo $end
+   $var wire 2 i output_C_hi_lo_lo $end
+   $var wire 2 w output_C_hi_hi_lo $end
+   $var wire 2 x output_C_hi_lo_hi $end
+   $var wire 2 "& output_S_hi_lo_lo $end
+   $var wire 2 "( output_S_hi_hi_lo $end
+   $var wire 2 "4 output_S_hi_lo_hi $end
+   $var wire 1 "> p_comb_1 $end
+   $var wire 1 "? p_comb_0 $end
+   $var wire 1 "@ p_comb_3 $end
+   $var wire 1 "A p_comb_2 $end
+   $var wire 1 "B p_comb_5 $end
+   $var wire 1 "C p_comb_4 $end
+   $var wire 1 "D p_comb_7 $end
+   $var wire 1 "E p_comb_6 $end
+   $var wire 1 "F p_comb_9 $end
+   $var wire 1 "G p_comb_8 $end
+   $var wire 1 "R g_comb_15 $end
+   $var wire 1 "S g_comb_14 $end
+   $var wire 1 "T g_comb_11 $end
+   $var wire 1 "U g_comb_10 $end
+   $var wire 1 "V g_comb_13 $end
+   $var wire 1 "W g_comb_12 $end
+   $var wire 1 "X s_comb_1 $end
+   $var wire 1 "Y s_comb_2 $end
+   $var wire 1 "[ s_comb_3 $end
+   $var wire 1 "\ s_comb_4 $end
+   $var wire 1 "] s_comb_0 $end
+   $var wire 1 "^ s_comb_9 $end
+   $var wire 1 "` s_comb_5 $end
+   $var wire 1 "a s_comb_6 $end
+   $var wire 1 "b s_comb_7 $end
+   $var wire 1 "c s_comb_8 $end
+   $var wire 2 "u output_S_hi_hi_hi $end
+   $var wire 4 "v output_S_lo_lo $end
+   $var wire 4 "w output_S_hi_lo $end
+   $var wire 16 ## input_pp2_in $end
+   $var wire 16 #3 input_pp0_in $end
+   $var wire 1 #4 s_comb_14 $end
+   $var wire 1 #5 s_comb_15 $end
+   $var wire 1 #6 s_comb_12 $end
+   $var wire 1 #7 s_comb_13 $end
+   $var wire 1 #8 s_comb_10 $end
+   $var wire 1 #9 s_comb_11 $end
+   $var wire 1 #C p_comb_14 $end
+   $var wire 1 #D p_comb_13 $end
+   $var wire 1 #E p_comb_15 $end
+   $var wire 1 #F p_comb_10 $end
+   $var wire 1 #G p_comb_12 $end
+   $var wire 1 #H p_comb_11 $end
+   $var wire 16 #V output_C $end
+   $var wire 2 #x output_C_lo_lo_lo $end
+   $var wire 4 #| output_C_lo_lo $end
+   $var wire 16 #} output_S $end
+   $var wire 1 $/ g_comb_9 $end
+   $var wire 1 $5 g_comb_0 $end
+   $var wire 1 $6 g_comb_7 $end
+   $var wire 1 $7 g_comb_8 $end
+   $var wire 1 $8 g_comb_5 $end
+   $var wire 1 $9 g_comb_6 $end
+   $var wire 1 $: g_comb_3 $end
+   $var wire 1 $; g_comb_4 $end
+   $var wire 2 $< output_C_lo_lo_hi $end
+   $var wire 1 $= g_comb_1 $end
+   $var wire 1 $> g_comb_2 $end
+   $var wire 2 $@ output_C_lo_hi_lo $end
+   $var wire 2 $P output_C_lo_hi_hi $end
+   $var wire 4 $Q output_C_hi_hi $end
+   $var wire 8 $S output_S_hi $end
+   $var wire 1 $b c_comb_7 $end
+   $var wire 1 $c c_comb_8 $end
+   $var wire 1 $d c_comb_5 $end
+   $var wire 1 $e c_comb_6 $end
+   $var wire 1 $f c_comb_9 $end
+   $var wire 1 $i c_comb_0 $end
+   $var wire 8 $j output_S_lo $end
+   $var wire 1 $l c_comb_3 $end
+   $var wire 1 $m c_comb_4 $end
+   $var wire 1 $n c_comb_1 $end
+   $var wire 1 $o c_comb_2 $end
+   $var wire 4 $w output_C_lo_hi $end
+   $var wire 4 $x output_C_hi_lo $end
+   $var wire 2 %= output_S_lo_hi_hi $end
+  $upscope $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+b00 =
+b00 ;
+b00 ,
+b00 +
+0"!
+0""
+0"#
+0"*
+0",
+0"-
+0".
+0"/
+0"0
+0"1
+0"5
+0"6
+0"7
+0"9
+0">
+0"?
+0"@
+0#!
+0"A
+0#"
+0"B
+0"C
+0#$
+0"D
+0#%
+0"E
+0#&
+0"F
+0#'
+0"G
+0#(
+0#)
+0#*
+0#,
+0#-
+0#.
+0"N
+0#/
+0"O
+0#0
+0"P
+0#1
+0"Q
+0#2
+0"R
+0"S
+0#4
+0"T
+0#5
+0"U
+0#6
+0"V
+0#7
+0"W
+0#8
+0"X
+0#9
+0"Y
+0#:
+0#;
+0"[
+0"\
+0#=
+0"]
+0#>
+0"^
+0#?
+0#@
+0$!
+0"`
+0"a
+0$#
+0"b
+0#C
+0$$
+0"c
+0#D
+0$%
+0"d
+0#E
+0$&
+0#F
+0$'
+0"f
+0#G
+0$(
+0"g
+0#H
+0$)
+0"h
+0#I
+0$*
+0"i
+0#J
+0$+
+0"j
+0#K
+0$,
+0"k
+0#L
+0$-
+0#M
+0#N
+0$/
+0#O
+0$0
+0$3
+0$5
+b00 x
+0$6
+b00 w
+0$7
+0#W
+0$8
+0#X
+0$9
+0"x
+0#Y
+0$:
+0"y
+0#Z
+0$;
+0"z
+0#[
+0"{
+0$=
+0"|
+0#]
+0$>
+0"}
+0#^
+0%!
+0#`
+0$A
+0%"
+0#a
+0$B
+0%#
+0#b
+0$C
+0%$
+0#c
+0$D
+0%%
+b00 i
+0#d
+0$E
+0#e
+0$F
+0$G
+0%(
+0#g
+0$H
+0%)
+0$I
+0%*
+0#i
+0$J
+0%+
+0%,
+0#k
+0%-
+0$M
+0%.
+b00 `
+0%/
+0$O
+0%0
+0%1
+0$U
+0%6
+b00 X
+0$V
+0%7
+0$W
+0%8
+0$X
+0%9
+0$Y
+0%:
+0$Z
+0%;
+0$[
+0$\
+0$]
+0$^
+0$b
+0$c
+0$d
+0$e
+0$f
+0$g
+0$h
+0$i
+b00 L
+0$k
+b00 J
+0$l
+b00 A
+0$m
+0$n
+b00 ?
+0$o
+0$p
+0$q
+0$r
+0$s
+0$t
+0$u
+0$v
+0$y
+0${
+0$|
+0$}
+0$~
+b0000 "$
+b00000000 #
+b0000000000000000 t
+b00000000 9
+b0000000000000000 @
+b0000000000000000 >
+b0000000000000000 C
+b0000000000000000 M
+b0000000000000000 N
+0$
+0%
+0&
+0'
+0(
+0)
+0*
+b0000 "_
+0-
+b0000000000000000 [
+0.
+00
+01
+02
+03
+04
+05
+06
+07
+b00000000 h
+08
+0:
+0<
+b0000000000000000 /
+b0000 "w
+b0000 "v
+0E
+b00000000 v
+0F
+b0000 #\
+0G
+0H
+0I
+b00000000 r
+0K
+b0000 "~
+b0000 %&
+0O
+0P
+0Q
+b0000 %'
+b0000 "
+0R
+0S
+0T
+b0000 !
+0V
+0W
+0Y
+0Z
+b0000 $Q
+b00000000 D
+0\
+b0000 %4
+0]
+b0000 $R
+0^
+0_
+b0000 %5
+0a
+b0000 #u
+0b
+b0000 #|
+0g
+b0000 %B
+b00000000 U
+0k
+0l
+0m
+0n
+0o
+0p
+b00 %=
+b00 #v
+0u
+b00 #x
+b0000000000000000 ":
+b00 #w
+b0000000000000000 ";
+0y
+0z
+0{
+b00 $_
+0|
+0}
+b00 $a
+0~
+b0000000000000000 ##
+b00 %A
+b0000 $w
+b0000000000000000 "%
+b00 #l
+b0000 $x
+b0000 $z
+b0000000000000000 "+
+b00 #r
+b00 #q
+b00 %3
+b00 #t
+b00 #s
+b00 $T
+b00 #m
+b00 %2
+b00 #o
+b00 $P
+b00 $<
+b00 "u
+b00 #U
+b0000000000000000 "Z
+b0000000000000000 #<
+b00 $?
+b0000000000000000 #A
+b0000000000000000 $"
+b00 $@
+b00 #R
+b0000000000000000 "L
+b00 $2
+b0000000000000000 "M
+b00 #T
+b00 $4
+b00 "l
+b00 $.
+b0000000000000000 #3
+b00000000 "e
+b00 "I
+b00 "H
+b00 "K
+b00 "J
+b00000000 #_
+b00 "8
+b00 "4
+b00000000 $L
+b00 "=
+b00 "<
+b00000000 $S
+b00 ")
+b00 "(
+b00 "'
+b00 "&
+b00 "3
+b00 "2
+b00000000 $j
+b00000000 #+
+b00000000 #B
+b0000000000000000 "t
+b0000000000000000 #V
+b0000000000000000 "m
+b0000000000000000 "n
+b0000000000000000 "o
+b0000000000000000 #P
+b0000000000000000 $1
+b0000000000000000 "p
+b0000000000000000 #Q
+b0000000000000000 "q
+b0000000000000000 "r
+b0000000000000000 #S
+b0000000000000000 "s
+b0000000000000000 #y
+b0000000000000000 #z
+b0000000000000000 %<
+b0000000000000000 #{
+b0000000000000000 %>
+b0000000000000000 #}
+b0000000000000000 %?
+b0000000000000000 #~
+b0000000000000000 %@
+b0000000000000000 $`
+b0000000000000000 #f
+b0000000000000000 #h
+b0000000000000000 #j
+b0000000000000000 $K
+b0000000000000000 $N
+b0000000000000000 #n
+b0000000000000000 #p
+b0000 B
+b0000 d
+b0000 e
+b0000 c
+b0000 j
+b0000 f
+b0000 s
+b0000 q
+$end
+#0
+1"d
+#1
+1u
+#6
+0"d
+0u
+#11
+1u
+#16
+b00001111 #
+1$
+b11 +
+b0000000000000001 /
+b0000000000000110 >
+b00 ?
+1"!
+b0000000000000010 @
+1""
+1"#
+b0000 "$
+b0000000000000011 C
+b0000000000001111 "%
+b0000000000001000 "+
+b0000000000000001 M
+b0000000000000010 N
+0O
+0P
+b11 "3
+b00000100 U
+b10 X
+b0000000000001111 ":
+b0000000000001111 [
+1">
+0"?
+1"A
+b0000000000000100 ##
+1a
+1b
+b00000000 h
+b11 "K
+b0000000000000001 "L
+b0000000000000010 "M
+b0000000000000000 #3
+b1111 q
+b0000000000000110 t
+0u
+1"X
+0"Y
+b0000000000000101 "Z
+b0000000000000110 #<
+0"]
+b0000000000000000 #A
+b0000000000001111 $"
+b00001111 #B
+b00000011 "e
+b0000000000000101 "m
+b0000000000000011 "n
+b0000000000000000 $1
+b0000000000000100 "o
+b0000000000001111 #P
+b00 $2
+b0000000000000000 "p
+b0000000000000101 "q
+b0000000000000011 "r
+b0000000000001000 #S
+b0000000000000100 "s
+b0000000000000110 "t
+b0000000000001000 #V
+b0010 "v
+b01 $<
+1%!
+0%"
+1%#
+0%%
+b1111 %'
+b0000000000000101 #f
+1%(
+1%)
+b0000000000001000 #h
+1%*
+1%+
+b0000000000000010 #j
+b0000000000001111 $K
+b0000000000000010 $N
+b0011 $R
+b11 #q
+b11 $T
+1$U
+1$V
+1$W
+1$X
+b0000000000000100 #y
+b0000000000000010 %<
+b0000000000000110 #z
+b0000000000000000 #{
+b0100 #|
+b0000000000001000 %>
+b0000000000000010 #}
+b0000000000000010 %?
+b0000000000000101 %@
+b0000000000001111 #~
+1$g
+b00000010 $j
+1$k
+1$o
+#21
+1u
+#26
+0u
+b0000000000000000 "L
+b0000000000000000 "M
+b0000000000000000 "m
+b0000000000000000 "n
+b0000000000000000 "o

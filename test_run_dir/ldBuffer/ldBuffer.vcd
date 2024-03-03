@@ -1,0 +1,938 @@
+$date
+2023-12-15T13:33+0000
+$end
+$version
+0.2
+$end
+$comment
+
+$end
+$timescale 1ns  $end
+$scope module ldBuffer $end
+ $var wire 2 ! MatchVecUInt_0_3_hi_hi $end
+ $var wire 64 " data_queue_1_0 $end
+ $var wire 64 # data_queue_1_2 $end
+ $var wire 64 $ data_queue_1_1 $end
+ $var wire 64 % data_queue_1_3 $end
+ $var wire 1 & MatchVec_0_0_0 $end
+ $var wire 1 ' MatchVec_0_0_1 $end
+ $var wire 1 ( MatchVec_0_0_4 $end
+ $var wire 1 ) MatchVec_0_0_5 $end
+ $var wire 1 * MatchVec_0_0_2 $end
+ $var wire 1 + MatchVec_0_0_3 $end
+ $var wire 2 , MatchVecUInt_0_3_lo_hi $end
+ $var wire 2 - MatchVecUInt_1_0_lo_hi $end
+ $var wire 12 . minMask_1_2_3 $end
+ $var wire 12 / minMask_0_2_3 $end
+ $var wire 2 0 hi_hi_15 $end
+ $var wire 2 1 hi_hi_14 $end
+ $var wire 2 2 hi_hi_13 $end
+ $var wire 2 3 hi_hi_12 $end
+ $var wire 2 4 hi_hi_11 $end
+ $var wire 2 5 valid_writePtr_0 $end
+ $var wire 2 6 valid_writePtr_1 $end
+ $var wire 3 7 MatchVecUInt_1_3_hi_1 $end
+ $var wire 3 8 MatchVecUInt_1_3_lo_1 $end
+ $var wire 1 9 MatchVec_0_2_4 $end
+ $var wire 1 : MatchVec_0_2_5 $end
+ $var wire 1 ; MatchVec_0_2_2 $end
+ $var wire 1 < MatchVec_0_2_3 $end
+ $var wire 1 = MatchVec_0_2_0 $end
+ $var wire 1 > MatchVec_0_2_1 $end
+ $var wire 1 ? MatchVec_1_0_5 $end
+ $var wire 2 @ hi_hi_10 $end
+ $var wire 2 A data_writePtr_1 $end
+ $var wire 1 B MatchVec_1_0_0 $end
+ $var wire 2 C data_writePtr_0 $end
+ $var wire 1 D MatchVec_1_0_1 $end
+ $var wire 1 E MatchVec_1_0_2 $end
+ $var wire 1 F MatchVec_1_0_3 $end
+ $var wire 1 G MatchVec_1_0_4 $end
+ $var wire 3 H MatchVecUInt_0_3_lo $end
+ $var wire 2 I MatchVecUInt_0_2_hi_hi_1 $end
+ $var wire 6 J MatchVec_lastCycle_0_0 $end
+ $var wire 6 K MatchVec_lastCycle_0_1 $end
+ $var wire 6 L MatchVec_lastCycle_0_2 $end
+ $var wire 6 M MatchVec_lastCycle_0_3 $end
+ $var wire 12 N minMask_1_0_1 $end
+ $var wire 3 O MatchVecUInt_0_3_hi $end
+ $var wire 5 P robIdx_queue_0_3 $end
+ $var wire 3 Q MatchVecUInt_0_0_hi_1 $end
+ $var wire 5 R robIdx_queue_0_2 $end
+ $var wire 5 S robIdx_queue_0_1 $end
+ $var wire 5 T robIdx_queue_0_0 $end
+ $var wire 3 U MatchVecUInt_0_0_lo_1 $end
+ $var wire 3 V MatchVecUInt_0_1_lo $end
+ $var wire 64 W io_bufout_out_bits $end
+ $var wire 1 X clock $end
+ $var wire 2 Y MatchVecUInt_1_0_hi_hi $end
+ $var wire 2 Z MatchVecUInt_1_0_hi_hi_1 $end
+ $var wire 2 [ MatchVecUInt_0_1_hi_hi_1 $end
+ $var wire 12 \ maxMatch_1 $end
+ $var wire 12 ] maxMatch_0 $end
+ $var wire 2 ^ MatchVecUInt_1_1_hi_hi $end
+ $var wire 2 _ MatchVecUInt_1_1_lo_hi $end
+ $var wire 2 ` lo_hi_8 $end
+ $var wire 12 a MatchVecMask_1_3 $end
+ $var wire 2 b lo_hi_9 $end
+ $var wire 12 c MatchVecMask_1_2 $end
+ $var wire 2 d lo_hi_6 $end
+ $var wire 2 e lo_hi_7 $end
+ $var wire 2 f lo_hi_4 $end
+ $var wire 2 g lo_hi_5 $end
+ $var wire 2 h lo_hi_2 $end
+ $var wire 2 i lo_hi_3 $end
+ $var wire 2 j lo_hi_1 $end
+ $var wire 12 k MatchVecUInt_0_1 $end
+ $var wire 12 l MatchVecUInt_0_2 $end
+ $var wire 12 m MatchVecUInt_0_3 $end
+ $var wire 12 n MatchVecUInt_0_0 $end
+ $var wire 64 o io_ldin_data_0 $end
+ $var wire 64 p io_ldin_data_1 $end
+ $var wire 3 q MatchVecUInt_1_3_lo $end
+ $var wire 3 r MatchVecUInt_0_0_hi $end
+ $var wire 12 s MatchVecMask_1_1 $end
+ $var wire 12 t MatchVecMask_1_0 $end
+ $var wire 3 u MatchVecUInt_1_1_lo $end
+ $var wire 2 v MatchVecUInt_0_3_lo_hi_1 $end
+ $var wire 1 w valid_queue_1_3 $end
+ $var wire 1 x valid_queue_1_0 $end
+ $var wire 1 y valid_queue_1_1 $end
+ $var wire 2 z MatchVecUInt_1_3_lo_hi $end
+ $var wire 1 { valid_queue_1_2 $end
+ $var wire 3 | MatchVecUInt_1_3_hi $end
+ $var wire 2 } MatchVecUInt_0_1_lo_hi_1 $end
+ $var wire 2 ~ MatchVecUInt_1_1_lo_hi_1 $end
+ $var wire 1 "! MatchVec_1_2_3 $end
+ $var wire 1 "" MatchVec_1_2_4 $end
+ $var wire 1 "# MatchVec_1_2_5 $end
+ $var wire 3 "$ MatchVecUInt_1_1_hi $end
+ $var wire 1 "% reset $end
+ $var wire 1 "& MatchVec_1_2_0 $end
+ $var wire 1 "' MatchVec_1_2_1 $end
+ $var wire 1 "( MatchVec_1_2_2 $end
+ $var wire 12 ") maxMatch_1_0_1 $end
+ $var wire 5 "* io_ldin_robIdx_1 $end
+ $var wire 5 "+ io_ldin_robIdx_0 $end
+ $var wire 1 ", io_bufout_valid_3 $end
+ $var wire 1 "- io_bufout_valid_2 $end
+ $var wire 12 ". maxMatch_0_2_3 $end
+ $var wire 1 "/ io_bufout_valid_1 $end
+ $var wire 1 "0 io_bufout_valid_0 $end
+ $var wire 3 "1 MatchVecUInt_0_3_hi_1 $end
+ $var wire 3 "2 MatchVecUInt_0_3_lo_1 $end
+ $var wire 1 "3 io_ldin_valid_1 $end
+ $var wire 1 "4 io_ldin_valid_0 $end
+ $var wire 64 "5 deqData $end
+ $var wire 3 "6 MatchVecUInt_1_1_hi_1 $end
+ $var wire 3 "7 MatchVecUInt_1_1_lo_1 $end
+ $var wire 2 "8 MatchVecUInt_1_3_hi_hi_1 $end
+ $var wire 5 "9 deqptrReg_0 $end
+ $var wire 5 ": deqptrReg_5 $end
+ $var wire 5 "; deqptrReg_3 $end
+ $var wire 5 "< deqptrReg_4 $end
+ $var wire 5 "= deqptrReg_1 $end
+ $var wire 5 "> deqptrReg_2 $end
+ $var wire 2 "? MatchVecUInt_0_3_hi_hi_1 $end
+ $var wire 1 "@ io_bufout_out_valid $end
+ $var wire 12 "A maxMatch_1_2_3 $end
+ $var wire 6 "B io_maxMatch $end
+ $var wire 6 "C MatchVec_lastCycle_1_0 $end
+ $var wire 6 "D MatchVec_lastCycle_1_1 $end
+ $var wire 6 "E MatchVec_lastCycle_1_2 $end
+ $var wire 6 "F MatchVec_lastCycle_1_3 $end
+ $var wire 2 "G MatchVecUInt_1_1_hi_hi_1 $end
+ $var wire 3 "H hi_1 $end
+ $var wire 3 "I hi_2 $end
+ $var wire 3 "J lo_2 $end
+ $var wire 3 "K hi_3 $end
+ $var wire 3 "L lo_3 $end
+ $var wire 3 "M lo_15 $end
+ $var wire 3 "N hi_4 $end
+ $var wire 2 "O MatchVecUInt_0_2_lo_hi_1 $end
+ $var wire 3 "P hi_5 $end
+ $var wire 3 "Q lo_1 $end
+ $var wire 3 "R hi_6 $end
+ $var wire 3 "S lo_6 $end
+ $var wire 3 "T hi_7 $end
+ $var wire 3 "U lo_7 $end
+ $var wire 3 "V hi_8 $end
+ $var wire 3 "W lo_4 $end
+ $var wire 3 "X hi_9 $end
+ $var wire 3 "Y lo_5 $end
+ $var wire 3 "Z lo_8 $end
+ $var wire 3 "[ lo_9 $end
+ $var wire 64 "\ data_queue_0_1 $end
+ $var wire 64 "] data_queue_0_0 $end
+ $var wire 2 "^ MatchVecUInt_1_3_lo_hi_1 $end
+ $var wire 1 "_ MatchVec_0_1_5 $end
+ $var wire 64 "` data_queue_0_3 $end
+ $var wire 64 "a data_queue_0_2 $end
+ $var wire 1 "b MatchVec_0_1_0 $end
+ $var wire 2 "c MatchVecUInt_1_0_lo_hi_1 $end
+ $var wire 1 "d MatchVec_0_1_3 $end
+ $var wire 1 "e MatchVec_0_1_4 $end
+ $var wire 1 "f MatchVec_0_1_1 $end
+ $var wire 1 "g MatchVec_0_1_2 $end
+ $var wire 2 "h MatchVecUInt_1_2_hi_hi $end
+ $var wire 3 "i lo_12 $end
+ $var wire 3 "j lo_11 $end
+ $var wire 3 "k lo_14 $end
+ $var wire 3 "l lo_13 $end
+ $var wire 3 "m lo_10 $end
+ $var wire 2 "n MatchVecUInt_1_2_lo_hi $end
+ $var wire 1 "o minIndex_i $end
+ $var wire 2 "p minIndex_j $end
+ $var wire 12 "q minMask_1 $end
+ $var wire 12 "r minMask_0 $end
+ $var wire 12 "s maxMatch_0_0_1 $end
+ $var wire 1 "t MatchVec_0_3_5 $end
+ $var wire 1 "u MatchVec_0_3_3 $end
+ $var wire 1 "v MatchVec_0_3_4 $end
+ $var wire 1 "w MatchVec_0_3_1 $end
+ $var wire 1 "x MatchVec_0_3_2 $end
+ $var wire 1 "y MatchVec_0_3_0 $end
+ $var wire 1 "z MatchVec_1_1_4 $end
+ $var wire 1 "{ MatchVec_1_1_5 $end
+ $var wire 2 "| MatchVecUInt_0_1_hi_hi $end
+ $var wire 1 "} MatchVec_1_1_0 $end
+ $var wire 1 "~ MatchVec_1_1_1 $end
+ $var wire 1 #! MatchVec_1_1_2 $end
+ $var wire 1 #" MatchVec_1_1_3 $end
+ $var wire 5 ## io_deqptr_1 $end
+ $var wire 3 #$ hi $end
+ $var wire 5 #% io_deqptr_0 $end
+ $var wire 5 #& io_deqptr_3 $end
+ $var wire 5 #' io_deqptr_2 $end
+ $var wire 5 #( io_deqptr_5 $end
+ $var wire 5 #) io_deqptr_4 $end
+ $var wire 2 #* hi_hi $end
+ $var wire 2 #+ MatchVecUInt_0_0_hi_hi $end
+ $var wire 1 #, io_bufout_out_ready $end
+ $var wire 5 #- robIdx_queue_1_2 $end
+ $var wire 5 #. robIdx_queue_1_1 $end
+ $var wire 5 #/ robIdx_queue_1_0 $end
+ $var wire 3 #0 MatchVecUInt_0_2_lo $end
+ $var wire 5 #1 robIdx_queue_1_3 $end
+ $var wire 2 #2 MatchVecUInt_1_3_hi_hi $end
+ $var wire 3 #3 lo $end
+ $var wire 3 #4 MatchVecUInt_0_2_hi_1 $end
+ $var wire 3 #5 MatchVecUInt_0_2_lo_1 $end
+ $var wire 12 #6 maxMatch $end
+ $var wire 12 #7 MatchVecUInt_1_0 $end
+ $var wire 12 #8 MatchVecUInt_1_1 $end
+ $var wire 2 #9 MatchVecUInt_0_0_hi_hi_1 $end
+ $var wire 12 #: MatchVecUInt_1_2 $end
+ $var wire 12 #; MatchVecUInt_1_3 $end
+ $var wire 3 #< MatchVecUInt_1_0_hi_1 $end
+ $var wire 3 #= MatchVecUInt_1_0_lo_1 $end
+ $var wire 3 #> MatchVecUInt_0_2_hi $end
+ $var wire 6 #? io_bufout_MatchVec_2 $end
+ $var wire 6 #@ io_bufout_MatchVec_1 $end
+ $var wire 6 #A io_bufout_MatchVec_3 $end
+ $var wire 6 #B io_bufout_MatchVec_0 $end
+ $var wire 3 #C MatchVecUInt_0_0_lo $end
+ $var wire 12 #D MatchVecMask_0_3 $end
+ $var wire 3 #E io_ldin_fuOptype_1 $end
+ $var wire 3 #F io_ldin_fuOptype_0 $end
+ $var wire 3 #G MatchVecUInt_0_1_hi $end
+ $var wire 12 #H MatchVecMask_0_0 $end
+ $var wire 12 #I MatchVecMask_0_2 $end
+ $var wire 12 #J MatchVecMask_0_1 $end
+ $var wire 2 #K MatchVecUInt_0_2_lo_hi $end
+ $var wire 3 #L MatchVecUInt_1_2_hi_1 $end
+ $var wire 3 #M MatchVecUInt_1_2_lo_1 $end
+ $var wire 2 #N MatchVecUInt_1_2_lo_hi_1 $end
+ $var wire 2 #O lo_hi_10 $end
+ $var wire 2 #P lo_hi_12 $end
+ $var wire 2 #Q lo_hi_11 $end
+ $var wire 2 #R lo_hi_14 $end
+ $var wire 2 #S lo_hi_13 $end
+ $var wire 2 #T lo_hi_15 $end
+ $var wire 64 #U io_bufout_data_0 $end
+ $var wire 64 #V io_bufout_data_1 $end
+ $var wire 2 #W MatchVecUInt_0_0_lo_hi_1 $end
+ $var wire 64 #X io_bufout_data_2 $end
+ $var wire 64 #Y io_bufout_data_3 $end
+ $var wire 2 #Z MatchVecUInt_0_2_hi_hi $end
+ $var wire 2 #[ hi_hi_1 $end
+ $var wire 2 #\ robIdx_writePtr_0 $end
+ $var wire 2 #] hi_hi_2 $end
+ $var wire 2 #^ hi_hi_3 $end
+ $var wire 2 #_ hi_hi_4 $end
+ $var wire 2 #` hi_hi_5 $end
+ $var wire 3 #a MatchVecUInt_1_2_lo $end
+ $var wire 2 #b hi_hi_6 $end
+ $var wire 2 #c hi_hi_7 $end
+ $var wire 2 #d hi_hi_8 $end
+ $var wire 2 #e hi_hi_9 $end
+ $var wire 2 #f robIdx_writePtr_1 $end
+ $var wire 2 #g MatchVecUInt_0_0_lo_hi $end
+ $var wire 1 #h valid_queue_0_0 $end
+ $var wire 12 #i minMask_0_0_1 $end
+ $var wire 1 #j valid_queue_0_1 $end
+ $var wire 1 #k valid_queue_0_2 $end
+ $var wire 1 #l valid_queue_0_3 $end
+ $var wire 3 #m MatchVecUInt_1_0_lo $end
+ $var wire 2 #n lo_hi $end
+ $var wire 12 #o minMask $end
+ $var wire 2 #p MatchVecUInt_1_2_hi_hi_1 $end
+ $var wire 3 #q MatchVecUInt_1_2_hi $end
+ $var wire 1 #r MatchVec_1_3_2 $end
+ $var wire 1 #s MatchVec_1_3_3 $end
+ $var wire 1 #t MatchVec_1_3_4 $end
+ $var wire 1 #u MatchVec_1_3_5 $end
+ $var wire 2 #v MatchVecUInt_0_1_lo_hi $end
+ $var wire 1 #w MatchVec_1_3_0 $end
+ $var wire 1 #x MatchVec_1_3_1 $end
+ $var wire 3 #y MatchVecUInt_1_0_hi $end
+ $var wire 3 #z MatchVecUInt_0_1_hi_1 $end
+ $var wire 3 #{ MatchVecUInt_0_1_lo_1 $end
+ $var wire 3 #| hi_15 $end
+ $var wire 3 #} hi_13 $end
+ $var wire 3 #~ hi_14 $end
+ $var wire 3 $! hi_11 $end
+ $var wire 3 $" hi_12 $end
+ $var wire 3 $# hi_10 $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+b000000000000 #8
+b000000000000 #7
+b000000000000 #6
+b00 6
+b000000000000 #;
+b000000000000 #:
+b000000000000 /
+b000000000000 .
+b00 1
+09
+b00 0
+0:
+0;
+b000000000000 #D
+0<
+b00 5
+0=
+b00 4
+0>
+b00 3
+0?
+b00 2
+0B
+0D
+b00 -
+0E
+b00 ,
+0F
+0G
+b00 !
+b0000000000000000000000000000000000000000000000000000000000000000 "5
+0X
+b000000000000 "A
+b0000000000000000000000000000000000000000000000000000000000000000 "\
+b0000000000000000000000000000000000000000000000000000000000000000 "]
+b000000000000 ")
+b0000000000000000000000000000000000000000000000000000000000000000 "`
+b0000000000000000000000000000000000000000000000000000000000000000 "a
+b000000000000 ".
+b00 #v
+0w
+0x
+b0000000000000000000000000000000000000000000000000000000000000000 p
+0y
+0{
+b0000000000000000000000000000000000000000000000000000000000000000 o
+b00 #f
+b00 #e
+b00 #g
+b00 #n
+b00 #p
+b00 #Z
+b00 #\
+b00 #[
+b0000000000000000000000000000000000000000000000000000000000000000 W
+b00 #W
+b00 #b
+b00 #d
+b00 #c
+b00 #^
+b00 "|
+b00 #]
+b00 #`
+b00 #_
+0"!
+0""
+b00 "h
+0"#
+b00 #K
+0"%
+0"&
+0"'
+0"(
+b00 #R
+b00 "p
+b00 #Q
+b00 #T
+0",
+b00 #S
+0"-
+b00 #N
+0"/
+b00 #P
+0"0
+b00 "n
+b00 #O
+b00 #9
+0"3
+b00000 #)
+0"4
+b000000 #?
+b000000 #@
+b000000 #A
+b00000 #.
+b000000 #B
+b00000 #-
+b00000 #/
+b00 "c
+b00000 ##
+b00000 #&
+b00000 #%
+0"@
+0#!
+b00000 #(
+b00 "^
+0#"
+b00000 #'
+b00 #*
+b00000 "9
+b00000 ";
+b00 #+
+b00000 ":
+b00000 "=
+b000 r
+b00000 "<
+b00 "G
+b000 u
+b00000 ">
+b00 #2
+b000000 "D
+0#,
+b000000 "E
+b000000 "F
+b00 "O
+b000 |
+b00 "8
+b00000 "+
+b00000 "*
+b000000 "B
+b000000 "C
+b000 q
+0"_
+b00 "?
+0"b
+b000 V
+0"d
+0"e
+0"f
+b000000 K
+0"g
+b000000 J
+b000 U
+b000000 M
+b000000 L
+b00 ~
+0"o
+0"t
+b000 H
+0"u
+b00 v
+0"v
+b00 }
+0"w
+0"x
+0"y
+b00 z
+b000 O
+0"z
+0"{
+b000 Q
+0"}
+0"~
+b000 7
+b00 i
+b00 h
+b00 g
+b000 8
+b00 f
+0#h
+0#j
+b00 j
+0#k
+0#l
+b00 `
+b00 _
+b00 ^
+b00 e
+b00 d
+0#r
+b00 b
+0#s
+b00 Y
+0#t
+0#u
+0#w
+0#x
+b00 [
+b00 Z
+b00 I
+b00 A
+b00 @
+b00000 #1
+b00 C
+b000 #q
+b000 #}
+b000 #~
+b000 #{
+b000 #|
+b000 #y
+b000 #z
+b000 "V
+b000 "W
+b000 "T
+b000 #5
+b000 "U
+b000 "R
+b000 #3
+b000 "S
+b000 #4
+b000 "P
+b000 "Q
+b000 $!
+b000 #=
+b000 #>
+b000 "Z
+b000 "[
+b000 #<
+b000 "X
+b000 "Y
+b000 #G
+b000 #E
+b000 #F
+b000 #C
+b000 $"
+b000 $#
+b000 "l
+b000 #M
+b000 "m
+b000 "j
+b0000000000000000000000000000000000000000000000000000000000000000 $
+b000 "k
+b000 #L
+b0000000000000000000000000000000000000000000000000000000000000000 %
+b0000000000000000000000000000000000000000000000000000000000000000 "
+b000 "i
+b0000000000000000000000000000000000000000000000000000000000000000 #
+b000 #a
+b000 #m
+b00000 P
+b00000 S
+b00000 R
+b000000000000 t
+b000000000000 s
+b00000 T
+b000000000000 n
+b000 "$
+b000000000000 c
+b000000000000 a
+b000000000000 #i
+b000000000000 m
+b000000000000 #o
+b000000000000 l
+b0000000000000000000000000000000000000000000000000000000000000000 #X
+b000000000000 k
+b0000000000000000000000000000000000000000000000000000000000000000 #U
+b0000000000000000000000000000000000000000000000000000000000000000 #V
+b0000000000000000000000000000000000000000000000000000000000000000 #Y
+b000 "6
+b000 "7
+b000 "2
+b000 "1
+b000000000000 N
+b000000000000 ]
+b000000000000 \
+b000000000000 #H
+b000 #$
+b000000000000 #J
+0&
+b000000000000 #I
+0'
+b000 "N
+0(
+b000 #0
+0)
+b000 "L
+0*
+b000 "M
+0+
+b000 "J
+b000000000000 "s
+b000 "K
+b000000000000 "r
+b000 "H
+b000000000000 "q
+b000 "I
+$end
+#0
+b111111111111 a
+b111111111111 #D
+b111111111111 c
+1"%
+b111111111111 #H
+b111111111111 #I
+b111111111111 #i
+b111111111111 #J
+1",
+1"-
+b111111111111 #o
+1"/
+b111111111111 .
+b111111111111 N
+1"0
+b111111111111 /
+b111111111111 "q
+b111111111111 "r
+b111111111111 s
+b111111111111 t
+#1
+1X
+#6
+b00100 ##
+b00011 #%
+b111 #E
+0"%
+b01000 #&
+b110 #F
+b00111 #'
+b00110 #(
+b00101 #)
+b00010 "*
+b00001 "+
+1#,
+b0000000000000000000000000000000000000000000000000000000000000001 o
+b0000000000000000000000000000000000000000000000000000000000000010 p
+1"3
+1"4
+0X
+#11
+b01 A
+b0000000000000000000000000000000000000000000000000000000000000010 "
+b01 #f
+b00010 #/
+b01 6
+b00011 "9
+1X
+1x
+b00110 ":
+b01000 ";
+b00101 "<
+b00100 "=
+b00111 ">
+#16
+b0000000000000000000000000000000000000000000000000000000000000100 p
+b00001 ##
+b00100 #%
+b00000 #&
+b00010 #'
+b00000 #(
+b00000 #)
+0X
+b00100 "*
+b00011 "+
+b0000000000000000000000000000000000000000000000000000000000000011 o
+#21
+b10 A
+b10 "c
+1E
+b001 "j
+b001 "m
+b001 "7
+b00100 "9
+1X
+b00000 ":
+b00000 ";
+b00000 "<
+b00001 "=
+1"}
+b00010 ">
+b10 `
+b10 b
+b10 #f
+b0000000000000000000000000000000000000000000000000000000000000100 $
+b100 #m
+b00100 #.
+b10 -
+b001 u
+b10 6
+b100 "Z
+1y
+b100 "[
+b100 #=
+#26
+b0000000000000000000000000000000000000000000000000000000000000101 p
+b00010 ##
+b00001 #%
+b000 #F
+b00011 #'
+0X
+b00011 "*
+b00000 "+
+b0000000000000000000000000000000000000000000000000000000000000000 o
+#31
+b01 "c
+b100 "i
+b000 "j
+b100 #M
+b100 "l
+b10 #N
+b000 "m
+b10 "n
+1"o
+b10 #P
+b01 "p
+b000000000001 "q
+b10 #S
+0"}
+b100 #a
+b0000000000000000000000000000000000000000000000000000000000000101 #
+b11 #f
+b010 #m
+b000000000001 #o
+b01 -
+b11 6
+b11 A
+1D
+0E
+1"(
+b000000000100 ")
+b000000000001 N
+b0000000000000000000000000000000000000000000000000000000000000100 "5
+b000 "7
+b0000000000000000000000000000000000000000000000000000000000000100 W
+b00001 "9
+1X
+b00010 "=
+b000000000100 \
+b00011 ">
+1"@
+b01 `
+b01 b
+b00011 #-
+b000000000001 s
+b000000000100 t
+b000000000100 #7
+b000 u
+b000000000001 #8
+b010 "Z
+b010 "[
+b010 #=
+1{
+#36
+b00001 ##
+0"3
+b00100 #%
+b00101 #&
+b00110 #)
+0X
+b00110 "*
+b00101 "+
+#41
+b00 "c
+0D
+b000000000010 ")
+b000000000010 N
+b00 "p
+b000000000010 "q
+b0000000000000000000000000000000000000000000000000000000000000010 "5
+b0000000000000000000000000000000000000000000000000000000000000010 W
+b00100 "9
+1X
+b00101 ";
+b00110 "<
+b00001 "=
+b000000000100 "A
+b00 `
+b000100 "B
+b000100 "C
+b00 b
+b000001 "D
+b000000000100 c
+b000 #m
+b000000000010 #o
+b00 -
+b000000000100 .
+b111111111111 s
+b000000000100 #6
+b000000000010 t
+b000000000010 #7
+b000000000000 #8
+b000000000100 #:
+b000 "Z
+0y
+b000 "[
+b000 #=
+#46
+b0000000000000000000000000000000000000000000000000000000000000110 p
+b00100 ##
+1"3
+b00000 #%
+b00000 #&
+b00000 #'
+b00000 #)
+0X
+b00100 "*
+b00000 "+
+#51
+b000 "i
+b010 "k
+b000 #M
+b000 "l
+b00 #N
+b00 "n
+b00 #P
+b10 "p
+b000000001000 "q
+b01 #R
+b00 #S
+b01 #T
+b000 #a
+b00 #f
+b0000000000000000000000000000000000000000000000000000000000000110 %
+b000000001000 #o
+b000000001000 .
+1#x
+b00 6
+b010 8
+b00 A
+0"(
+b000000000000 ")
+b111111111111 N
+b0000000000000000000000000000000000000000000000000000000000000101 "5
+b0000000000000000000000000000000000000000000000000000000000000101 W
+b00000 "9
+1X
+b00000 ";
+b00000 "<
+b00100 "=
+b000000001000 \
+b00000 ">
+b000000001000 "A
+b000010 "C
+b000000 "D
+b000000001000 c
+b000100 "E
+b010 "M
+b00100 #1
+b010 q
+b111111111111 t
+b000000000000 #7
+1w
+b000000001000 #:
+0x
+b01 z
+b01 "^
+#56
+b0000000000000000000000000000000000000000000000000000000000000000 p
+0"3
+0"4
+b000 #E
+0X
+b00000 "*
+#61
+b001000 "B
+b000000000110 a
+b000000 "C
+b111111111111 c
+b001000 "E
+b000000000110 #o
+b000000000110 .
+b11 "p
+b000000000110 "q
+b0000000000000000000000000000000000000000000000000000000000000110 "5
+b000000001000 #6
+b0000000000000000000000000000000000000000000000000000000000000110 W
+b000000000000 #:
+1X
+b000000000110 #;
+0{
+b000000000110 \
+b000000000110 "A
+#66
+0X
+#71
+b000 "k
+0"o
+b00 "p
+b111111111111 "q
+b00 #R
+b00 #T
+b0000000000000000000000000000000000000000000000000000000000000000 "5
+b0000000000000000000000000000000000000000000000000000000000000000 W
+1X
+b000000000000 \
+0"@
+b000000000000 "A
+b000110 "B
+b111111111111 a
+b000000 "E
+b000110 "F
+b000 "M
+b111111111111 #o
+b111111111111 .
+b000 q
+b000000000110 #6
+0#x
+0w
+b000 8
+b000000000000 #;
+b00 z
+b00 "^
+#76
+0X
+#81
+b000000 "B
+b000000000000 #6
+b000000 "F
+1X
+#86
+0X
+#91
+1X
+#96
+0X
+#101
+1X
+#106
+0X
+#111
+1X
+#116
+0X
+#121
+1X
+#126
+0X
+#131
+1X
+#136
+0X
+#141
+1X
+#146
+0X
+#151
+1X
+#156
+b00000 ##
+0X
+0#,

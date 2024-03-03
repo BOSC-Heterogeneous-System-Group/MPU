@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="json4s-scalap_2.13-3.6.12.jar">
+        <CLASSES>
+            <root url="jar://$PROJECT_DIR$/.coursier/https/repo1.maven.org/maven2/org/json4s/json4s-scalap_2.13/3.6.12/json4s-scalap_2.13-3.6.12.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar://$PROJECT_DIR$/.coursier/https/repo1.maven.org/maven2/org/json4s/json4s-scalap_2.13/3.6.12/json4s-scalap_2.13-3.6.12-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

@@ -1,0 +1,11 @@
+{
+    "value": [
+        "qref:66f8e595:/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.8/scala-compiler-2.13.8.jar",
+        "qref:aa19a947:/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.8/scala-reflect-2.13.8.jar",
+        "qref:abdaa1f7:/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.8/scala-library-2.13.8.jar",
+        "qref:b2f16024:/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/jline/jline/3.21.0/jline-3.21.0.jar",
+        "qref:ff881619:/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.9.0/jna-5.9.0.jar"
+    ],
+    "valueHash": 1868998416,
+    "inputsHash": -1118468529
+}

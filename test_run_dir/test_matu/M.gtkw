@@ -1,0 +1,65 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Dec 15 13:45:16 2023
+[*]
+[dumpfile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_matu/XS_miniTPU_M.vcd"
+[dumpfile_mtime] "Fri Dec 15 13:39:29 2023"
+[dumpfile_size] 106673
+[savefile] "/home/zcy/chiselProj/Matrix-XS/test_run_dir/test_matu/M.gtkw"
+[timestart] 0
+[size] 2548 1495
+[pos] -1409 -640
+*-4.291929 28 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] XS_miniTPU_M.
+[sst_width] 428
+[signals_width] 206
+[sst_expanded] 1
+[sst_vpaned_height] 466
+@22
+XS_miniTPU_M.rob.io_out_bits[63:0]
+@28
+XS_miniTPU_M.rob.io_out_valid
+@22
+XS_miniTPU_M.rob.robIdx_queue_0_0[4:0]
+XS_miniTPU_M.rob.robIdx_queue_0_1[4:0]
+XS_miniTPU_M.rob.robIdx_queue_0_2[4:0]
+XS_miniTPU_M.rob.robIdx_queue_0_3[4:0]
+XS_miniTPU_M.rob.robIdx_queue_1_0[4:0]
+XS_miniTPU_M.rob.robIdx_queue_1_1[4:0]
+XS_miniTPU_M.rob.robIdx_queue_1_2[4:0]
+XS_miniTPU_M.rob.robIdx_queue_1_3[4:0]
+@28
+XS_miniTPU_M.rob.valid_queue_0_0
+XS_miniTPU_M.rob.valid_queue_0_1
+XS_miniTPU_M.rob.valid_queue_0_2
+XS_miniTPU_M.rob.valid_queue_0_3
+XS_miniTPU_M.rob.valid_queue_1_0
+XS_miniTPU_M.rob.valid_queue_1_1
+XS_miniTPU_M.rob.valid_queue_1_2
+XS_miniTPU_M.rob.valid_queue_1_3
+@22
+XS_miniTPU_M.rob.deqptrReg_0[4:0]
+XS_miniTPU_M.rob.deqptrReg_1[4:0]
+XS_miniTPU_M.rob.deqptrReg_2[4:0]
+XS_miniTPU_M.rob.deqptrReg_3[4:0]
+XS_miniTPU_M.rob.deqptrReg_4[4:0]
+XS_miniTPU_M.rob.deqptrReg_5[4:0]
+XS_miniTPU_M.rob.MatchVecUInt_0_0[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_0_1[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_0_2[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_0_3[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_1_0[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_1_1[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_1_2[11:0]
+XS_miniTPU_M.rob.MatchVecUInt_1_3[11:0]
+XS_miniTPU_M.rob.data_queue_0_0[63:0]
+XS_miniTPU_M.rob.data_queue_0_1[63:0]
+XS_miniTPU_M.rob.data_queue_0_2[63:0]
+XS_miniTPU_M.rob.data_queue_0_3[63:0]
+XS_miniTPU_M.rob.data_queue_1_0[63:0]
+XS_miniTPU_M.rob.data_queue_1_1[63:0]
+XS_miniTPU_M.rob.data_queue_1_2[63:0]
+@23
+XS_miniTPU_M.rob.data_queue_1_3[63:0]
+[pattern_trace] 1
+[pattern_trace] 0

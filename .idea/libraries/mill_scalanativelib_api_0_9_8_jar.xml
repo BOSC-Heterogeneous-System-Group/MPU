@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="mill-scalanativelib-api-0.9.8.jar">
+        <CLASSES>
+            <root url="jar://$PROJECT_DIR$/.coursier/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalanativelib-api/0.9.8/mill-scalanativelib-api-0.9.8.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar://$PROJECT_DIR$/.coursier/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalanativelib-api/0.9.8/mill-scalanativelib-api-0.9.8-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

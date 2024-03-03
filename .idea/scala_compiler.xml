@@ -1,0 +1,21 @@
+<project version="4">
+    <component name="ScalaCompilerConfiguration">
+        <profile name="mill 1" modules="top,top.test">
+            <parameters>
+                <parameter value="-language:reflectiveCalls"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-Xcheckinit"/>
+                <parameter value="-P:chiselplugin:genBundleElements"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/edu/berkeley/cs/chisel3-plugin_2.13.8/3.5.4/chisel3-plugin_2.13.8-3.5.4.jar"/>
+                <plugin path="/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.8/scala-compiler-2.13.8.jar"/>
+                <plugin path="/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.8/scala-library-2.13.8.jar"/>
+                <plugin path="/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.8/scala-reflect-2.13.8.jar"/>
+                <plugin path="/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/org/jline/jline/3.21.0/jline-3.21.0.jar"/>
+                <plugin path="/home/zcy/chiselProj/Matrix-XS/.coursier/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.9.0/jna-5.9.0.jar"/>
+            </plugins>
+        </profile>
+    </component>
+</project>

@@ -1,0 +1,17 @@
+[
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.VerilogEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"./genVerilog/wallace_tree"
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~MultiPortFIFO|MultiPortFIFO>io_deqData",
+    "sources":[
+      "~MultiPortFIFO|MultiPortFIFO>io_deq"
+    ]
+  }
+]

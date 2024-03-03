@@ -1,0 +1,22 @@
+[
+  {
+    "class":"firrtl.transforms.DedupedResult",
+    "original":"~InputBuffer|MultiPortFIFO",
+    "duplicate":"~InputBuffer|InputBuffer/data_queue_0:MultiPortFIFO",
+    "index":0.0
+  },
+  {
+    "class":"firrtl.transforms.DedupedResult",
+    "original":"~InputBuffer|MultiPortFIFO_1",
+    "duplicate":"~InputBuffer|InputBuffer/data_queue_1:MultiPortFIFO",
+    "index":0.5
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.VerilogEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"./genVerilog/test_InputBuffer"
+  }
+]
